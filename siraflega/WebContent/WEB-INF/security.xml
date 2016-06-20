@@ -25,8 +25,8 @@
 			<!-- </user-service> -->
 			<password-encoder hash="bcrypt"/>
 			<jdbc-user-service data-source-ref="datasource"
-				authorities-by-username-query="SELECT user.userName,role.name from user join role on user.RoleId=role.id where user.userName=?"
-				users-by-username-query="select userName,password,enabled from user where userName=?" />
+				authorities-by-username-query="SELECT USER.userName, Role.name from USER join Role on USER.RoleId=Role.id where USER.userName=?"
+				users-by-username-query="select userName,password,enabled from USER where userName=?" />
 		</authentication-provider>
 	</authentication-manager>
 	

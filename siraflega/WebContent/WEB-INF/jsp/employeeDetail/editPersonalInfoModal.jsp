@@ -1,9 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 	<!-- Modal -->
+	
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
+	
+<%-- 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script> --%>
 	<div class="modal fade" id="editPersonalInfoModal" tabindex="-1"
 		role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
+
 			<form:form id="updateEmpInfo" class="form-horizontal"
 				commandName="employee"
 				action="${pageContext.request.contextPath}/updateEmployee">
@@ -77,8 +83,66 @@
 						<input type="submit" class="btn btn-lg btn-primary"
 							value="Save changes">
 					</div>
-
 				</div>
 			</form:form>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+
+
+		$(document).ready(function() {
+
+			$("#updateEmpInfo").validate(
+				{
+					rules : {
+					firstName : {
+							required : true,
+							minlength : 2,
+							lettersonly:true
+						},
+					lastName : {
+							required : true,
+							minlength : 2,
+							lettersonly:true
+						},
+	 				age: {
+	 					required: true,
+	 					alphanumeric:true,
+	 					},
+	 				sex: {
+	 					required: true,
+	 					},
+	 				address:{
+	 					required: true,
+	 					},
+ 					telephone:{
+	 						required:true
+// 	 						phonesUK:fa
+	 					},
+					},
+					messages : {
+						firstName : {
+							required : "Please enter your first name",
+							minlength : "First name shoud be more than 2 characters",
+						},
+					lastName : {
+							required : "Please enter your last name",
+							minlength : "Last name shoud be more than 2 characters"
+						},
+	 				age: {
+	 					required: "Please enter your age"
+	 					},
+	 				sex: {
+	 					required: "Enter your sex"
+	 					},
+	 				address:{
+	 					required: "Address is required"
+	 					},
+ 					telephone:{
+	 						required:"Enter your telephone number"
+	 					},
+					}
+				});
+	})
+	</script>

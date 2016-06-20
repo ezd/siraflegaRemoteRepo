@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 	<!-- Modal -->
+	
+	<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+	
 	<div class="modal fade" id="editEmployerPersonalInfoModal" tabindex="-1"
 		role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
@@ -113,3 +117,44 @@
 		});
 	});
 	</script>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+		$("#Register").validate(
+				{
+					rules : {
+					firstNameEmployer : {
+						required : true,
+						minlength : 2
+						},
+					lastNameEmployer : {
+						required : true,
+						minlength : 2
+						},
+					phoneEmployer: {
+	 					required: true,
+// phone number
+	 					},
+	 				
+					},
+					
+					messages : {
+						firstNameEmployer : {
+							required : "Please enter your first name",
+							minlength : "Your first name must consist of at lease 2 letters"
+						},
+						lastNameEmployer : {
+							required : "Please enter your first name",
+							minlength : "Your first name must consist of at lease 2 letters"
+						},
+						phoneEmployer : {
+							required : "Please enter your phone number",
+	// valid phone number	minlength : "Please enter valid phone number"
+						},
+					}
+				});
+	})
+	</script>
+	
+	// letters only validation --> should be added

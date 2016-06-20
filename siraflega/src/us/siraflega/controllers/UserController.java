@@ -35,6 +35,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -156,6 +157,7 @@ public class UserController {
 			@RequestParam("type") String type,
 			final RedirectAttributes redirectAttributes,
 			HttpServletRequest request) {
+		System.out.println("it comesssssssssssssssssssssssssssssssssz");
 		String unEncPass = user.getPassword();
 		String unEncUserName = user.getUserName();
 		System.out.println("type is:" + type + "password name is" + unEncPass);
@@ -417,22 +419,40 @@ public class UserController {
 	// updatePassword
 	@RequestMapping(value = "/updateUser", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String updateUser(@RequestBody String jsonUser,
-			Principal principal, HttpServletRequest request) {
+			Principal principal, HttpServletRequest request, HttpServletResponse response) {
 		String name = principal.getName();
 		System.out.println("come to ajax with" + jsonUser);
 		User exisitingUser = userService.getUserByName(name);
 		JSONObject jsonObject = new JSONObject(jsonUser);
 		String newUserName = jsonObject.getString("userName");
 		String newUserEmail = jsonObject.getString("userEmail");
-		exisitingUser.setUserName(newUserName);
-		exisitingUser.setEmail(newUserEmail);
-		if ((userService.getUserByEmail(newUserEmail) != null)
-				|| (userService.getUserByName(newUserName) != null)) {
-			return jsonObject.put("isExists", "exist").toString();
-		} else {
-			User updatedUser = userService.saveUser(exisitingUser);
+		String userPassword = jsonObject.getString("userOldPassword"); //not found
+		System.out.println("this is oldpasssssssss########### : " + userPassword);
+		String userNewPassword = jsonObject.getString("userNewPassword");
+		User updatedUser=null;
+		BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
+		if(!encoder.matches(userPassword, exisitingUser.getPassword())) {
+			return jsonObject.put("isPassCorrect", "notCorrect").toString();
+		}
+		else {
+			exisitingUser.setUserName(newUserName);
+			exisitingUser.setEmail(newUserEmail);
+			System.out.println(userNewPassword+"is the password");
+			if(!userNewPassword.equals("")){
+				userPassword=userNewPassword;
+			exisitingUser.setPassword(userPassword);
+			updatedUser = userService.saveUser(exisitingUser);
+			logOutAndInvalidate(request, response);
+			authenticateUserAndSetSession(updatedUser.getUserName(),
+					userPassword, request);
+			}else{
+				updatedUser = userService.saveUser(exisitingUser);
+			}
+			
 			// authenticateUserAndSetSession(updatedUser.getUserName(),
 			// updatedUser.getPassword(), request);
+			
+			jsonObject.put("redirect", "true");
 			jsonObject.put("id", "" + updatedUser.getId());
 			jsonObject.put("userName", updatedUser.getUserName());
 			jsonObject.put("email", updatedUser.getEmail());
@@ -446,10 +466,27 @@ public class UserController {
 			HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("come to ajax with" + jsonUserPassword);
 		JSONObject jsonObject = new JSONObject(jsonUserPassword);
-		String newUserEmail = jsonObject.getString("userEmail");
+		String newUserEmail = jsonObject.getString("userEmail").trim();
+		System.out.println("the email is :"+newUserEmail);
 		String newUserPassword = jsonObject.getString("userPassword");
+		String inputOldpassunEncoded = jsonObject.getString("userOldPassword");
+		
+		BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
+		String  inputOldpassEncoded=encoder.encode(inputOldpassunEncoded);
 		User exisitingUser = userService.getUserByEmail(newUserEmail);
-		exisitingUser.setEmail(newUserEmail);
+		System.out.println("---------------------------------------Unencoded password is :" + inputOldpassunEncoded);
+		System.out.println("---------------------------------------Encoded password is :" + inputOldpassEncoded);
+		System.out.println("Existing Password is " + exisitingUser.getPassword());
+		
+		System.out.println(encoder.matches(inputOldpassunEncoded, exisitingUser.getPassword()));
+		
+		//exisitingUser.setEmail(newUserEmail);
+		//compare the oldpassword from user from getstring with exisstinguser.getpassword
+		//encrypte oldpasswor compare with  exisstinguser.getpassword
+		//if succes continue if not redirect /userdetil?userpasswordsaved:notsave page
+		//BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
+		//string  inputOldpassEncoded=encoder.encode(inputOldpassunEncodedinputOldpassunEncoded);
+		//exisitingUser.getPassword().equals(inputOldpassEncoded);
 		exisitingUser.setPassword(newUserPassword);
 		User updatedUser = userService.saveUser(exisitingUser);
 		if (updatedUser != null) {

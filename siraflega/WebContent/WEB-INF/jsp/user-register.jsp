@@ -15,6 +15,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 	<br>
 	<br>
 	<div class="col-md-8">
@@ -51,7 +52,7 @@
 				<div class="form-group">
 					<label for="email" class="col-sm-2 control-label">Email:</label>
 					<div class="col-sm-10">
-						<frm:input id="password" path="email" class="form-control"
+						<frm:input id="email" path="email" class="form-control"
 							placeholder="Email" name="email" />
 					</div>
 				</div>
@@ -130,6 +131,9 @@
 	 					minlength: 6,
 	 					equalTo: "#password"
 	 					},
+	 					type:{
+	 						required:true,
+	 					},
 					},
 					messages : {
 						userName : {
@@ -149,6 +153,9 @@
 							minlength : "Your password must be at least 6 characters long",
 							equalTo : "Please enter the same password as above"
 						},
+						type: {
+						      required: "Please select an option from the list",
+						     },
 					}
 				});
 	})

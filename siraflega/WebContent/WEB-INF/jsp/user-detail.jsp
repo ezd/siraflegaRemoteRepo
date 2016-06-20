@@ -7,6 +7,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <%@ include file="../defs/lib-file.jsp"%>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
+
+
 <style type="text/css">
 #userAccountInformation {
 	/* border:1px solid red; */
@@ -58,6 +63,7 @@ p.title {
 </style>
 <script type="text/javascript">
 	$(function() {
+
 		$('#errorMsg').hide();
 		$('.userInput').hide();
 		$('.lables').show();
@@ -65,135 +71,227 @@ p.title {
 		$('#cancelChangeBtn').hide();
 		$('#editUserBtn').show();
 		$('#userPassUpdateArea').hide();
-		$('#changePassBtn').show();
+		$('#passwordChangeRequest').show();//passwordChangeRequest passwordChangeAction
+		$('#passwordChangeAction').hide();
 		$('#editUserBtn').on('click', function() {
+			alert("I am inside showuserInput");
 			$('#saveChangeBtn').show();
 			$('#cancelChangeBtn').show();
 			$('.userInput').show();
 			$('.lables').hide();
 			$('#editUserBtn').hide();
-			$('#changePassBtn').hide();
+		});
+		$('#passwordChangeRequest').on('click', function(){
+			$('#passwordChangeRequest').hide();
+			$('#passwordChangeAction').show();
+			$('#passwordChangeRequest').hide();
+			
 		});
 		$('#cancelChangeBtn').on('click', function() {
+			alert("I am inside CanceluserInput");
 			$('#saveChangeBtn').hide();
 			$('#cancelChangeBtn').hide();
 			$('.userInput').hide();
 			$('.lables').show();
 			$('#editUserBtn').show();
-			$('#changePassBtn').show();
 		});
-		$('#saveChangeBtn')
-				.on(
-						'click',
-						function() {
-							alert("user updated with:" + $('#userNameIn').val()
-									+ "," + $('#userEmailIn').val())
-							$
-									.ajax({
-										type : 'POST',
-										url : 'updateUser',
-										contentType : 'application/json',
-										dataType : 'json',
-										data : JSON
-												.stringify({
-													userName : $('#userNameIn')
-															.val(),
-													userEmail : $(
-															'#userEmailIn')
-															.val(),
-												}),
-										success : function(data) {
-											alert("data values" + data.id + ","
-													+ data.userName + ","
-													+ data.email + ','
-													+ data.isExists);
-											if (data.isExists == 'exist') {
-												$('#errorMsg')
-														.html(
-																'User name or email is already being used');
-												$('#errorMsg').show().fadeOut(
-														3000);
 
-											} else {
-												$('#errorMsg')
-														.html(
-																'The information is updated successfuly!!');
-												$('#errorMsg').show().fadeOut(
-														3000);
-												$('#userIdIn').val(data.id);
-												$('#userNameIn').val(
-														data.userName);
-												$('#userEmailIn').val(
-														data.email);
-												$('#userNameLb').html(
-														data.userName);
-												$('#userEmailLb').html(
-														data.email);
-											}
-										},
-										error : function(ts) {
-											alert(ts.responseText);
-										}
-									});
-							$('#saveChangeBtn').hide();
-							$('#cancelChangeBtn').hide();
-							$('.userInput').hide();
-							$('.lables').show();
-							$('#editUserBtn').show();
-							$('#changePassBtn').show();
-						});
 		$('#changePassBtn').on('click', function() {
 			$('#userInfoUpdateArea').hide();
 			$('#userPassUpdateArea').show();
 			$('#saveNewPass').show();
 			$('#cancelPass').show();
 		});
-		$('#saveNewPass')
-				.on(
-						'click',
-						function() {
-							//userEmailLb
-
-							alert("user updated withllll:"
-									+ $('#userEmailLb').html() + ","
-									+ $('#newPassword').val())
-							$
-									.ajax({
-										type : 'POST',
-										url : 'updatePassword',
-										contentType : 'application/json',
-										dataType : 'json',
-										data : JSON.stringify({
-											userEmail : $('#userEmailLb')
-													.html(),
-											userPassword : $('#newPassword')
-													.val(),
-										}),
-										success : function(data) {
-											if (data.redirect == 'true') {
-												window.location
-														.replace("${pageContext.request.contextPath}/userDetail");
-											} else {
-												// Process the expected results...
-											}
-										},
-										error : function(ts) {
-											alert(ts.responseText);
-										}
-									});
-							$('#userInfoUpdateArea').show();
-							$('#userPassUpdateArea').hide();
-							$('#saveNewPass').hide();
-							$('#cancelPass').hide();
-						});
+		
 		$('#cancelPass').on('click', function() {
 			$('#userInfoUpdateArea').show();
 			$('#userPassUpdateArea').hide();
 			$('#saveNewPass').hide();
 			$('#cancelPass').hide();
 		});
+		
+// 		$("#passUpdateAreaForm").validate({
+// 			onfocusout: function(e) {
+// 	              this.element(e);
+// 	          },
+// 				rules : {
+// 					newPassword: {
+// 						required: true,
+// 						minlength: 5
+// 						},
+// 					reNewPassword: {
+// 						required: true,
+// 						minlength: 5,
+// 						equalTo: "#newPassword"
+// 						},
+					
+// 					},
+// 					messages : {
+// 					newPassword: {
+// 						required: "Please provide a password",
+// 						minlength: "Your password must be at least 5 characters long"
+// 						},
+// 					reNewPassword: {
+// 						required: "Please provide a password",
+// 						minlength: "Your password must be at least 5 characters long",
+// 						equalTo: "Please enter the same password as above"
+// 						}
+// 					},
+					
+// 			submitHandler:function(){
+// 				$('#saveNewPass').on('click',function() {
+// 					alert("user updated withllll:" + $('#userEmailLb').html() + "," + $('#newPassword').val());
+// 					$.ajax({
+// 						type : 'POST',
+// 						url : 'updatePassword',
+// 						contentType : 'application/json',
+// 						dataType : 'json',
+// 						data : JSON.stringify({
+// 							userEmail : $('#userEmailLb').html(),
+// 							userPassword : $('#newPassword').val(),
+// 							userOldPassword:$('#oldPassword').val(),
+// 						}),
+// 						success : function(data) {
+// 							if (data.redirect == 'true') {
+// 								window.location.replace("${pageContext.request.contextPath}/userDetail");
+// 							} else {
+// 								// Process the expected results...
+// 							}
+// 						},
+// 						error : function(ts) {
+// 							alert(ts.responseText);
+// 						}
+// 							});
+// 					$('#userInfoUpdateArea').show();
+// 					$('#userPassUpdateArea').hide();
+// 					$('#saveNewPass').hide();
+// 					$('#cancelPass').hide();
+// 						});
+// 			}
+// 		});
+
+
+		$("#userInfoUpdateAreaForm").validate({
+					
+			onfocusout: function(e) {
+	              this.element(e);
+	          },
+		
+				rules : {
+					userNameIn : {
+						required : true,
+						minlength : 2,
+						lettersonly:true
+						},
+					userEmailIn : {
+						required: true,
+						email: true
+						},	
+					oldPassword: {
+						required: true,
+						minlength: 5
+						},
+					newPassword: {
+						required: true,
+						minlength: 5
+						},
+					reNewPassword: {
+						required: true,
+						minlength: 5,
+						equalTo: "#newPassword"
+						}
+					},
+					
+				messages : {
+					userNameIn : {
+						required : "Please enter your first name",
+						minlength : "User name shoud be more than 2 characters",
+						},
+					userEmailIn : {
+						email: "Email is required",
+						agree: "Enter valid email"
+						},
+					oldPassword: {
+						required: "Enter old password",
+						minlength: "Your password must be at least 5 characters long"
+						},
+					newPassword: {
+						required: "Please provide a password",
+						minlength: "Your password must be at least 5 characters long"
+						},
+					reNewPassword: {
+						required: "Please provide a password",
+						minlength: "Your password must be at least 5 characters long",
+						equalTo: "Please enter the same password as above"
+						}
+					},
+	submitHandler:function(){
+		$('#saveChangeBtn').on('click',function() {
+				alert("user updated with:" + $('#userNameIn').val()
+						+ "," + $('#userEmailIn').val())
+				$.ajax({
+							type : 'POST',
+							url : 'updateUser',
+							contentType : 'application/json',
+							dataType : 'json',
+							data : JSON
+									.stringify({
+										userName : $('#userNameIn')
+												.val(),
+										userEmail : $(
+												'#userEmailIn')
+												.val(),
+										userOldPassword : $(
+												'#oldPassword')
+												.val(),
+										userNewPassword : $(
+												'#newPassword')
+												.val()
+									}),
+							success : function(data) {
+								alert("data values" + data.id + ","
+										+ data.userName + ","
+										+ data.email + ','
+										+ data.isExists);
+								if (data.isExists == 'exist') {
+									$('#errorMsg').html('User name or email is already being used');
+									$('#errorMsg').show().fadeOut(3000);
+						
+								} else if (data.isPassCorrect == 'notCorrect'){
+									//return jsonObject.put("isExists", "exist").toString();
+									$('#errorMsg').html('This old password does not exist');
+									$('#errorMsg').show().fadeOut(3000);
+								}
+								else {
+									if (data.redirect == 'true') {
+		 								window.location.replace("${pageContext.request.contextPath}/userDetail");
+		 								}
+									$('#errorMsg') .html( 'The information is updated successfuly!!');
+									$('#errorMsg').show().fadeOut( 3000);
+									$('#userIdIn').val(data.id);
+									$('#userNameIn').val( data.userName);
+									$('#userEmailIn').val( data.email);
+									$('#userNameLb').html( data.userName);
+									$('#userEmailLb').html( data.email);
+								}
+							},
+							error : function(ts) {
+								alert(ts.responseText);
+							}
+						});
+				$('#saveChangeBtn').hide();
+				$('#cancelChangeBtn').hide();
+				$('.userInput').hide();
+				$('.lables').show();
+				$('#editUserBtn').show();
+			});
+		} 
+		});
+		
 	});
-</script>
+
+	</script>
+	
 </head>
 <body>
 	<br>
@@ -201,7 +299,9 @@ p.title {
 	<div class="col-md-8">
 		<div class="container-fluid container-holder">
 			<div id="userAccountInformation">
-				<div id="userInfoUpdateArea">
+				<form id="userInfoUpdateAreaForm">
+				
+<!-- 				<div id="userInfoUpdateArea"> -->
 					<div class="alert alert-danger" id="errorMsg"></div>
 					<p class="title">
 						<c:choose>
@@ -215,141 +315,50 @@ p.title {
 					</p>
 					<input type="hidden" value="${user.id}" id="userIdIn" />
 					<p>
-						<span class="caption">User name:</span><span class="lables"
-							id="userNameLb"> ${user.userName}</span><input
-							class="form-control userInput" value="${user.userName}"
-							id="userNameIn" />
+						<span class="caption">User name:</span>
+						<span class="lables" id="userNameLb"> ${user.userName}</span>
+						<input class="form-control userInput" value="${user.userName}" id="userNameIn"  name="userNameIn" />
 					</p>
 					<p>
-						<span class="caption">User email:</span><span class="lables"
-							id="userEmailLb"> ${user.email}</span><input
-							class="form-control userInput" value="${user.email}"
-							id="userEmailIn" />
+						<span class="caption">User email:</span>
+						<span class="lables" id="userEmailLb"> ${user.email}</span>
+						<input class="form-control userInput" value="${user.email}" id="userEmailIn" name="userEmailIn"/>
 					</p>
 
 					<p>
-						<button class="btn btn-link" id="editUserBtn">Edit user</button>
-						<button class="btn btn-link" id="saveChangeBtn">Save
-							Change</button>
-						<button class="btn btn-link" id="cancelChangeBtn">cancel</button>
-						<button class="btn btn-link" id="changePassBtn">Change
-							password</button>
-						<a class="btn btn-link" href="${pageContext.request.contextPath}/account">Bulid your Profile</a>
+						<span class="captionPass">Old password:</span>
+						<span class="lables" id="userPassLb">******</span>
+						<input class="form-control userInput" id="oldPassword" name="oldPassword"/>
 					</p>
-				</div>
-				<div id="userPassUpdateArea">
+					<div id="passwordChangeRequest">
+						<p>
+							<button type="button" id="passwordChange_btn" class="userInput btn btn-link" >Change your password?</button>
+						</p>
+						
+					</div>
+					
+					<div id="passwordChangeAction">
+						<p>
+						<span class="userInput">New password:</span>
+						<input class="form-control userInput" id="newPassword" name="newPassword"/>
+						</p>
 					<p>
-						<span class="captionPass">New password:</span><input
-							class="form-control" id="newPassword" />
+						<span class="userInput">Re-enter New password:</span>
+						<input class="form-control userInput" id="reNewPassword" name="reNewPassword"/>
 					</p>
-					<p>
-						<span class="captionPass">Re-enter New password:</span><input
-							class="form-control " id="reNewPassword" />
-					</p>
-					<p>
-						<button class="btn btn-link" id="saveNewPass">Save Change</button>
-						<button class="btn btn-link" id="cancelPass">Cancel</button>
-					</p>
+					</div>
 
-				</div>
+					<p>	
+						<input type="button" class="btn btn-link" id="editUserBtn" value="Edit user" />
+						<input type="submit" class="btn btn-link" id="saveChangeBtn" value="Save Change"/>
+						<input type="button" class="btn btn-link" id="cancelChangeBtn" value="Cancel"/>
+						<a class="btn btn-link" href="${pageContext.request.contextPath}/account">Build your Profile</a>
+					</p>					
+
+				</form>
 			</div>
 			<br>
-			
-<!-- 			<div id="personalInformation"> -->
-<%-- 				<c:choose> --%>
-<%-- 					<c:when test="${type eq 'employer' }"> --%>
-<!-- 						<div id="employerInfoBody"> -->
-<!-- 							<p class="title"> -->
-<%-- 								<c:out value="Employer personal information" /> --%>
-<!-- 							</p> -->
-<!-- 						</div> -->
-<%-- 					</c:when> --%>
-<%-- 					<c:when test="${type eq 'employee' }"> --%>
-<!-- 						<div id="employerInfoBody"> -->
-<!-- 							<p class="title"> -->
-<%-- 								<c:out value="Employee personal information" /> --%>
-<!-- 							</p> -->
-<%-- 							<frm:form class="form-horizontal"  --%>
-<%-- 							commandName="employee" --%>
-<%-- 							action="${pageContext.request.contextPath}/saveEmployeePersonalInfo"> --%>
-<%-- 																action="${pageContext.request.contextPath}/saveEmployeePersonalInfo"> --%>
-<%-- 								<c:choose> --%>
-<%-- 									<c:when test="${param.status eq 'success'}"> --%>
-<!-- 										<div class="alert alert-success"> -->
-<!-- 											Employee Information successfully saved<br> -->
-<%-- 									</c:when> --%>
-<%-- 									<c:when test="${param.status eq 'fail'}"> --%>
-<!-- 										<div class="alert alert-danger">Employee Information not -->
-<!-- 											saved!</div> -->
-<%-- 									</c:when> --%>
-<%-- 								</c:choose> --%>
-<!-- 								<div class="form-group"> -->
-<!-- 									<label class="col-sm-2 control-label">First Name:</label> -->
-<!-- 									<div class="col-sm-10"> -->
-<%-- 										<frm:input path="firstName" class="form-control" --%>
-<%-- 											title="First Name" id="firstName" /> --%>
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 								<div class="form-group"> -->
-<!-- 									<label class="col-sm-2 control-label">Middle Name:</label> -->
-<!-- 									<div class="col-sm-10"> -->
-<%-- 										<frm:input path="middleName" class="form-control" --%>
-<%-- 											title="Middle Name" /> --%>
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 								<div class="form-group"> -->
-<!-- 									<label class="col-sm-2 control-label">Last Name:</label> -->
-<!-- 									<div class="col-sm-10"> -->
-<%-- 										<frm:input path="lastName" class="form-control" --%>
-<%-- 											title="Last Name" /> --%>
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 								<div class="form-group"> -->
-<!-- 									<label class="col-sm-2 control-label">Age:</label> -->
-<!-- 									<div class="col-sm-10"> -->
-<%-- 										<frm:input path="age" class="form-control" title="Age" /> --%>
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 								<div class="form-group"> -->
-<!-- 									<label for="sex" class="col-sm-3 control-label">Sex:</label> -->
-<!-- 									<div class="col-sm-9">  -->
-<%-- 										<frm:select path="sex" class="form-control" > --%>
-<%-- 											<frm:option value="F">Female</frm:option> --%>
-<%-- 											<frm:option value="M">Male</frm:option> --%>
-<%-- 										</frm:select> --%>
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 								<div class="form-group"> -->
-<!-- 									<label class="col-sm-2 control-label">Email:</label> -->
-<!-- 									<div class="col-sm-10"> -->
-<%-- 										<frm:input path="" class="form-control" title="Email" /> --%>
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 								<div class="form-group"> -->
-<!-- 									<label class="col-sm-2 control-label">Telephone:</label> -->
-<!-- 									<div class="col-sm-10"> -->
-<%-- 										<frm:input path="telephone" class="form-control" --%>
-<%-- 											title="Telephone" /> --%>
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 								<div class="form-group"> -->
-<!-- 									<label class="col-sm-2 control-label">Address:</label> -->
-<!-- 									<div class="col-sm-10"> -->
-<%-- 										<frm:input path="address" class="form-control" title="Address" /> --%>
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 								<div class="form-group"> -->
-<!-- 									<div class="col-sm-offset-2 col-sm-10"> -->
-<!-- 										<button type="submit" class="btn btn-default">Save -->
-<!-- 											change</button> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<%-- 							</frm:form> --%>
 
-<!-- 						</div> -->
-<%-- 					</c:when> --%>
-<%-- 				</c:choose> --%>
-<!-- 			</div> -->
 		</div>
 	</div>
 </body>
