@@ -43,10 +43,6 @@
 <body>
 	<div class="col-md-8">
 		<div class="container-fluid container-holder">
-			<!-- 			<table class="table table-hover"> -->
-			<!-- 			<thead><tr><td>Position</td><td>Company</td><td>Applied Employees</td><td>Status</td><td></td></tr></thead> -->
-			<!-- 			<tbody><tr><td>System analist and Software developer</td><td>Information and Network Security of Ethiopia</td><td>1989</td><td>Expierd</td><td><a href="viewJob"></a>etaile</td></tr></tbody> -->
-			<!-- 			</table> -->
 											<div class="row outPutRow ">
 												<div class="col-xs-12 mainTiltle" style="margin: 0px; padding: 0px;">
 													<h4>${postedJob.position}, 

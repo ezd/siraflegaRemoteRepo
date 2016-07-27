@@ -43,6 +43,10 @@ public class PostedJobService {
 		// TODO Auto-generated method stub
 		return (int) jobRepository.count();
 	}
+	public int getPostedJobsSize(String catigory) {
+		// TODO Auto-generated method stub
+		return (int) jobRepository.countCatigory(catigory);
+	}
 	public List<PostedJob> getPostedJobs(int pageNumber, int pageHoldingCapacity) {
 		// TODO Auto-generated method stub
 		Page<PostedJob> currentPage=jobRepository.findAll(new PageRequest(pageNumber-1, pageHoldingCapacity, Direction.DESC, "deadLine"));
@@ -51,6 +55,33 @@ public class PostedJobService {
 			jobList.add(postedJob);
 		}
 		return jobList;
+	}
+	public List<PostedJob> getPostedJobs(int pageNumber,String catigoriy, int pageHoldingCapacity) {
+		// TODO Auto-generated method stub
+		
+		Page<PostedJob> currentPage=jobRepository.findByTitle(catigoriy,new PageRequest(pageNumber-1, pageHoldingCapacity, Direction.DESC, "deadLine"));//,((pageNumber-1)*pageHoldingCapacity),pageHoldingCapacity,"DESC" new PageRequest(pageNumber-1, pageHoldingCapacity, Direction.DESC, "deadLine")
+		List<PostedJob> jobList=new ArrayList<PostedJob>();
+		for(PostedJob postedJob:currentPage){
+			jobList.add(postedJob);
+		}
+		return jobList;
+	}
+	public List<String> getcatigoriesContains(String query) {
+		// TODO Auto-generated method stub
+		List<String> mostrelatedPostions = new ArrayList<String>();
+		mostrelatedPostions=jobRepository.findJobCatigoriesContainsPositionStarts(query);
+//		List<String> lessrelatedPostions = new ArrayList<String>();
+		for(String lessrelateditem:jobRepository.findJobCatigoriesContainsDescriptionStarts(query)){
+			if(!mostrelatedPostions.contains(lessrelateditem)){
+				mostrelatedPostions.add(lessrelateditem);
+			}
+		}
+		//lessrelatedPostions=jobRepository.findJobCatigoriesContainsDescriptionStarts(query);
+//		mostrelatedPostions.addAll(lessrelatedPostions);
+		return mostrelatedPostions;
+		
+		
+		
 	}
 
 }

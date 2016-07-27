@@ -20,24 +20,14 @@
 	min-width: 160px;
 	_width: 160px;
 	padding: 4px 0;
-	margin: 2px 0 0 0;
+	margin: 4px 0 0 0;
 	list-style: none;
 	background-color: #ffffff;
 	border-color: #ccc;
 	border-color: rgba(0, 0, 0, 0.2);
 	border-style: solid;
 	border-width: 1px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-	-webkit-background-clip: padding-box;
-	-moz-background-clip: padding;
-	background-clip: padding-box;
-	*border-right-width: 2px;
-	*border-bottom-width: 2px;
+	
 }
 
 .ui-menu-item:hover {
@@ -47,6 +37,7 @@
 	cursor: pointer;
 	cursor: hand;
 	font-weight: bold;
+	background-color: rgba(245, 245, 245, 1);
 }
 /* to bring the autocomplet up front */
 .ui-autocomplete {
@@ -103,6 +94,13 @@
 
 <!-- cdn ends here -->
 
+<!-- validation -->
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
+
+
 
 <style type="text/css">
 div.container-holder {
@@ -132,9 +130,9 @@ div.container-holder {
 }
 
 .titleTwo {
- 	border-bottom: 1px solid rgba(53, 86, 129, 0.3); 
-/* padding: 10px 0px 0px 0px; */
-margin-top: 30px;
+	border-bottom: 1px solid rgba(53, 86, 129, 0.3);
+	/* padding: 10px 0px 0px 0px; */
+	margin-top: 30px;
 }
 
 .titleTwo button {
@@ -155,11 +153,13 @@ margin-top: 30px;
 	color: #355681;
 	text-transform: capitalize;
 }
+
 .titleThree button {
 	border-radius: 0px;
 	position: relative;
 	float: right;
 }
+
 .titleThree .titleThreeText {
 	font-weight: 600;
 	font-family: 'Titillium Web', sans-serif;
@@ -168,8 +168,8 @@ margin-top: 30px;
 	line-height: 26px;
 	color: #788699;
 	font-family: 'Muli', sans-serif;
-/* 	border: 1px solid red; */
-	}
+	/* 	border: 1px solid red; */
+}
 
 h5 {
 	margin: 0px;
@@ -189,11 +189,12 @@ h5 {
 	line-height: 32px;
 	margin: 0 0 24px;
 }
-.descriptionText{
-font-family: sans-serif;
-font-size: 14px;
-text-align: justify;
-margin-bottom: 10px;
+
+.descriptionText {
+	font-family: sans-serif;
+	font-size: 14px;
+	text-align: justify;
+	margin-bottom: 10px;
 }
 </style>
 </head>
@@ -215,8 +216,7 @@ margin-bottom: 10px;
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li class="${current == 'home' ? 'active' : ''}"><a href="#">Home</a></li>
-				<li><a href="#contact">For Employers</a></li>
+				<li class="${current == 'home' ? 'active' : ''}"><a href="<spring:url value="/index" />">Home</a></li>
 				<security:authorize access="hasRole('ADMIN')">
 					<li class="${current == 'users' ? 'active' : ''}"><a
 						href="<spring:url value="/users.html" />">Users</a></li>
@@ -228,15 +228,14 @@ margin-bottom: 10px;
 					<li class="${current == 'account' ? 'active' : ''}"><a
 						href="<spring:url value="/account.html" />">My Profile</a></li>
 				</security:authorize>
-				<security:authorize
-					access="hasRole('EMPLOYER')">
+				<security:authorize access="hasRole('EMPLOYER')">
 					<li class="${current == 'employerPosts' ? 'active' : ''}"><a
 						href="<spring:url value="/employerPosts/1.html" />">My Posts</a></li>
 				</security:authorize>
 				<security:authorize access="!isAuthenticated()">
-				<li class="${current == 'register' ? 'active' : ''}"><a
-					href="<spring:url value="/register.html" />">Register</a></li>
-					</security:authorize>
+					<li class="${current == 'register' ? 'active' : ''}"><a
+						href="<spring:url value="/register.html" />">Register</a></li>
+				</security:authorize>
 				<security:authorize access="!isAuthenticated()">
 					<li class="${current == 'login' ? 'active' : ''}"><a
 						href="<spring:url value="/login.html" />">Login</a></li>

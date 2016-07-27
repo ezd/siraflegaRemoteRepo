@@ -90,15 +90,19 @@
 	
 	<script type="text/javascript">
 
-
 		$(document).ready(function() {
-
+alert("inthevalidation");
 			$("#updateEmpInfo").validate(
 				{
 					rules : {
 					firstName : {
 							required : true,
 							minlength : 2,
+							lettersonly:true
+						},
+					middleName:{
+							required: true,
+							minlength: 2,
 							lettersonly:true
 						},
 					lastName : {
@@ -109,6 +113,7 @@
 	 				age: {
 	 					required: true,
 	 					alphanumeric:true,
+	 					min:15,
 	 					},
 	 				sex: {
 	 					required: true,
@@ -126,20 +131,25 @@
 							required : "Please enter your first name",
 							minlength : "First name shoud be more than 2 characters",
 						},
-					lastName : {
+						middleName:{
+							required : "Please enter your middle name",
+							minlength : "Middle name shoud be more than 2 characters",
+							},
+						lastName : {
 							required : "Please enter your last name",
 							minlength : "Last name shoud be more than 2 characters"
 						},
-	 				age: {
-	 					required: "Please enter your age"
-	 					},
-	 				sex: {
-	 					required: "Enter your sex"
-	 					},
-	 				address:{
-	 					required: "Address is required"
-	 					},
- 					telephone:{
+		 				age: {
+		 					required: "Please enter your age",
+		 					min: "Minimum age allowed is 15"
+		 					},
+		 				sex: {
+		 					required: "Enter your sex"
+		 					},
+		 				address:{
+		 					required: "Address is required"
+		 					},
+	 					telephone:{
 	 						required:"Enter your telephone number"
 	 					},
 					}

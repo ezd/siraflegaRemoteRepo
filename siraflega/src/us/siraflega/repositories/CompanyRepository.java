@@ -2,6 +2,7 @@ package us.siraflega.repositories;
 
 import java.util.List;
 
+import org.hibernate.metamodel.source.binder.Sortable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +23,5 @@ public interface CompanyRepository extends JpaRepository<Company, Integer>{
 	
 	@Query("SELECT DISTINCT c.city from Company AS c WHERE c.city like %:term%")
 	List<String> findCompanyDistinctByCity(@Param("term") String term);
+	List<Company> findAllByOrderByNameAsc();
 }

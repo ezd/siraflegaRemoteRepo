@@ -9,20 +9,7 @@
 			Inventore, perspiciatis adipisci accusamus laudantium odit aliquam
 			repellat tempore quos aspernatur vero.</p>
 	</div>
-	<!-- Blog Search Well -->
-	<div class="container-fluid"
-		style="background-color: #ECE9E6; margin: 10px 5px; padding: 5px; box-shadow: 1px 1px 2px grey;">
-		<h4>Blog Search</h4>
-		<div class="input-group">
-			<input type="text" class="form-control"> <span
-				class="input-group-btn">
-				<button class="btn btn-default" type="button">
-					<span class="glyphicon glyphicon-search"></span>
-				</button>
-			</span>
-		</div>
-		<!-- /.input-group -->
-	</div>
+
 	<div class="container-fluid"
 		style="background-color: #ECE9E6; margin: 10px 5px; padding: 5px; box-shadow: 1px 1px 2px grey;">
 		<h4>Blog Categories</h4>
@@ -49,3 +36,28 @@
 		<!-- /.row -->
 	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$("#ccity").autocomplete({
+			source : function(query, process) {
+				$.ajax({
+					type : 'GET',
+					url : '${pageContext.request.contextPath}/cities.html',
+					contentType : 'application/json',
+					dataType : 'json',
+					data : {
+						q : query.term
+					},
+					success : function(data) {
+						process(data);
+					},
+					error : function(ts) {
+						alert(ts.responseText);
+					}
+				});
+			}
+		});
+	});
+</script>
+	

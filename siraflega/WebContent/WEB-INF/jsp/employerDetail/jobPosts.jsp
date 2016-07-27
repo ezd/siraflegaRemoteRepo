@@ -58,7 +58,7 @@ border-radius: 0px;
 							<th>#of Applied Employees</th>
 							<th style="text-align: right;">
 								<button class="btn btn-primary btn-sm" data-toggle="modal"
-										data-target="#jobModal" id="addJob">
+										data-target="#jobModal" id="addJob">Job
 									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 								</button>
 							</th>

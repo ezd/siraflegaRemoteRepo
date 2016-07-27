@@ -45,6 +45,7 @@ public class EmployeerService {
 //		}
 		employer.setPosts(postedJobs);
 		}
+		
 		return employer;
 	}
 	public Employer saveEmployer(Employer employer) {

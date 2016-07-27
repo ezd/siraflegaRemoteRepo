@@ -772,11 +772,13 @@ public class UserController {
 	//employerPosts
 	@RequestMapping("/employerPosts/{pageNumber}")
 	public String registerForm(Model model,Principal principal,@PathVariable int pageNumber) {
+		System.out.println("comes with value of :"+pageNumber);
 		String userName=principal.getName();
 		User user=userService.getUserByName(userName);
 		Employer employer=employerService.getEmployerBy(user.getEmail());
+		//count should be used to count total
 		int totalJobsSize=postedJobService.getPostedJobs(employer)==null?0:postedJobService.getPostedJobs(employer).size();
-		int pageHoldingCapacity=1;
+		int pageHoldingCapacity=6;
 		int totalPageSize=(totalJobsSize%pageHoldingCapacity==0?totalJobsSize/pageHoldingCapacity:((totalJobsSize-(totalJobsSize%pageHoldingCapacity))/pageHoldingCapacity)+1);
 		System.out.println("????????????totalPageSize:"+totalPageSize);
 		model.addAttribute("totalPageSize", totalPageSize);

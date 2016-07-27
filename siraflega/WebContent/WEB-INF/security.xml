@@ -10,6 +10,7 @@
 		<intercept-url pattern="/users**" access="hasRole('ADMIN')" />
 		<intercept-url pattern="/users/**" access="hasRole('ADMIN')" />
 		<intercept-url pattern="/userDetail" access="hasAnyRole('ROLE_EMPLOYEE','ROLE_EMPLOYER')" />
+		<intercept-url pattern="/employerPosts**" access="hasRole('ROLE_EMPLOYER')" />
 		<csrf disabled="true" />
 		<form-login login-page="/login.html" />
 		<logout logout-url="/logout" />
