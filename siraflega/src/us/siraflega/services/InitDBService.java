@@ -60,6 +60,9 @@ public class InitDBService {
 	EmployerRepository employerRepostiory;
 	@Autowired
 	WorkRepository workRepository;
+	
+	
+	
 	@PostConstruct
 	public void init() {
 		Date startDate = null, endDate = null;
