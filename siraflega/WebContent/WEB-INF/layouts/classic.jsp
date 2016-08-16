@@ -212,11 +212,11 @@ h5 {
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">Sira</a>
+			<a class="navbar-brand" href="<spring:url value="/index.html" />">Sira</a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li class="${current == 'home' ? 'active' : ''}"><a href="<spring:url value="/index" />">Home</a></li>
+				<li class="${current == 'home' ? 'active' : ''}"><a href="<spring:url value="/index.html" />">Home</a></li>
 				<security:authorize access="hasRole('ADMIN')">
 					<li class="${current == 'users' ? 'active' : ''}"><a
 						href="<spring:url value="/users.html" />">Users</a></li>
@@ -234,7 +234,9 @@ h5 {
 				</security:authorize>
 				<security:authorize access="!isAuthenticated()">
 					<li class="${current == 'register' ? 'active' : ''}"><a
-						href="<spring:url value="/register.html" />">Register</a></li>
+<%-- 						href="<spring:url value="/register.html" />" --%>
+							href="index.html"
+						title="Coming soon">Register</a></li>
 				</security:authorize>
 				<security:authorize access="!isAuthenticated()">
 					<li class="${current == 'login' ? 'active' : ''}"><a
@@ -245,7 +247,7 @@ h5 {
 				</security:authorize>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="../navbar-static-top/">Top</a></li>
+				<li></li>
 				<!--             <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li> -->
 			</ul>
 		</div>

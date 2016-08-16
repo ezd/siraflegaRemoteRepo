@@ -25,8 +25,8 @@
 					<c:choose>
 						<c:when test="${param.message eq 'Exists'}">
 							<div class="alert alert-danger">
-								Email address is already in used <br> <a
-									href="${pageContext.request.contextPath}/login">Login?</a>
+								Email address is already in used.<a
+									href="${pageContext.request.contextPath}/login">Login</a>
 							</div>
 						</c:when>
 						<c:when test="${param.message eq 'notsaved'}">

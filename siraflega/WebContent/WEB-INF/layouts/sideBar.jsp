@@ -2,62 +2,18 @@
 	pageEncoding="UTF-8"%>
 <div class="col-md-4">
 	<!-- Side Widget Well -->
-	<div class="container-fluid"
-		style="background-color: #ECE9E6; margin: 10px 1px; padding: 1px; box-shadow: 1px 1px 2px grey;">
-		<h4>Advertisement</h4>
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-			Inventore, perspiciatis adipisci accusamus laudantium odit aliquam
-			repellat tempore quos aspernatur vero.</p>
-	</div>
 
-	<div class="container-fluid"
-		style="background-color: #ECE9E6; margin: 10px 5px; padding: 5px; box-shadow: 1px 1px 2px grey;">
-		<h4>Blog Categories</h4>
-		<div class="row">
-			<div class="col-lg-6">
-				<ul class="list-unstyled">
-					<li><a href="#">Category Name</a></li>
-					<li><a href="#">Category Name</a></li>
-					<li><a href="#">Category Name</a></li>
-					<li><a href="#">Category Name</a></li>
-				</ul>
-			</div>
-			<!-- /.col-lg-6 -->
-			<div class="col-lg-6">
-				<ul class="list-unstyled">
-					<li><a href="#">Category Name</a></li>
-					<li><a href="#">Category Name</a></li>
-					<li><a href="#">Category Name</a></li>
-					<li><a href="#">Category Name</a></li>
-				</ul>
-			</div>
-			<!-- /.col-lg-6 -->
-		</div>
-		<!-- /.row -->
-	</div>
+
 </div>
-<script type="text/javascript">
-	$(document).ready(function() {
+<div class="container-fluid">
+	<h4>Advertisement</h4>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+		Inventore, perspiciatis adipisci accusamus laudantium odit aliquam
+		repellat tempore quos aspernatur vero.</p>
+	<h4>Advertisement</h4>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+		Inventore, perspiciatis adipisci accusamus laudantium odit aliquam
+		repellat tempore quos aspernatur vero.</p>
+</div>
+<!-- <form>Name:<input type="text" />Email:<input type="text"/><input type="submit" value="Alert me"></form> -->
 
-		$("#ccity").autocomplete({
-			source : function(query, process) {
-				$.ajax({
-					type : 'GET',
-					url : '${pageContext.request.contextPath}/cities.html',
-					contentType : 'application/json',
-					dataType : 'json',
-					data : {
-						q : query.term
-					},
-					success : function(data) {
-						process(data);
-					},
-					error : function(ts) {
-						alert(ts.responseText);
-					}
-				});
-			}
-		});
-	});
-</script>
-	

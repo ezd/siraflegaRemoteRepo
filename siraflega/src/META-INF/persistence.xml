@@ -11,5 +11,6 @@
 		<class>us.siraflega.entities.Employer</class>
 		<class>us.siraflega.entities.PostedJob</class>
 		<class>us.siraflega.entities.Work</class>
+		<class>us.siraflega.entities.EmailAlertRequest</class>
 	</persistence-unit>
 </persistence>

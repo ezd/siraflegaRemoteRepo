@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
 import us.siraflega.entities.Employer;
@@ -31,6 +32,12 @@ public interface JobRepository extends JpaRepository<PostedJob, Integer>{
 	Page<PostedJob> findByTitle(@Param("term") String categorySelected,Pageable pageable);//,@Param("starts") int starts,@Param("size") int size,String order
 	@Query(value="SELECT count(*) FROM siraflega_db.posted_job where position= ?1",nativeQuery=true)
 	int countCatigory(String catigory);
+	
+	@Query("SELECT DISTINCT pj.position FROM PostedJob as pj ")
+	List<String> findAllPositions();
+//	ByOrderByStartsFromDesc     findTopByOrderByAgeDesc();
+	List<PostedJob> findTop10ByPositionOrderByPostedDateDesc(String position);
+//	(String position,Sort sort);
 	
 //	SELECT * FROM siraflega_db.posted_job
 //	where position='Software programmer II'

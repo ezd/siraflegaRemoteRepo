@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import us.siraflega.entities.Company;
 import us.siraflega.entities.Education;
+import us.siraflega.entities.EmailAlertRequest;
 import us.siraflega.entities.Employee;
 import us.siraflega.entities.Employer;
 import us.siraflega.entities.Language;
@@ -27,6 +29,7 @@ import us.siraflega.entities.Work;
 import us.siraflega.entities.WorkExperience;
 import us.siraflega.repositories.CompanyRepository;
 import us.siraflega.repositories.EducationRepository;
+import us.siraflega.repositories.EmailAlertRepository;
 import us.siraflega.repositories.EmployeeRepository;
 import us.siraflega.repositories.EmployerRepository;
 import us.siraflega.repositories.JobRepository;
@@ -60,11 +63,14 @@ public class InitDBService {
 	EmployerRepository employerRepostiory;
 	@Autowired
 	WorkRepository workRepository;
-	
-	
+	@Autowired
+	EmailAlertRepository emailAlertRepository;
 	
 	@PostConstruct
 	public void init() {
+		
+		
+		
 		Date startDate = null, endDate = null;
 		Role userRole = new Role();
 		userRole.setName("ROLE_USER");
@@ -295,7 +301,7 @@ public class InitDBService {
 		//employer.setWorksFor(INSACompany);
 		employerRepostiory.save(employerJohan);
 //		List<PostedJob> jobs = new ArrayList<PostedJob>();
-		PostedJob job;
+		PostedJob job=null;
 for(int i=0;i<12;i++){
 		job = new PostedJob();
 		try {
@@ -368,15 +374,9 @@ for(int i=0;i<12;i++){
 				+ "We see that you are fluent in Swedish and English when communication takes place in both languages");
 		job2.setSallery("Negotaible");
 		job2.setTitle("Software programmer");
-
-		
 //		jobs.add(job2);
-		
-
-		
 		job2.setJobPostedBy(employerJohan);
 		jobRepository.save(job2);
-		
 		Work employerWork=new Work();
 		employerWork.setCompany(ericssonCompany);
 		employerWork.setCurrentlyWorking(true);
@@ -395,6 +395,34 @@ for(int i=0;i<12;i++){
 		employerWork.setStartsFrom(startDate);
 		// System.out.println("THe status is++++++++++"+employeeRepository.findByEmail("user@gmail.com").getEducations().size()+"++++++++++++++++++++++");
 		workRepository.save(employerWork);
+		
+		
+		EmailAlertRequest ear3=new EmailAlertRequest();
+		ear3.setPosition(job2.getPosition());
+		ear3.setRecEmailAddress("seatac.test@gmail.com");
+		ear3.setRecName("Kebede");
+		ear3.setVerified(true);
+		ear3.setVerifyKey("vcx12903843");
+		emailAlertRepository.save(ear3);
+		
+		EmailAlertRequest ear4=new EmailAlertRequest();
+		ear4.setPosition(job.getPosition());
+		ear4.setRecEmailAddress("seatac.test@gmail.com");
+		ear4.setRecName("Kebede");
+		ear4.setVerified(false);
+		ear4.setVerifyKey("vcx12903844");
+		emailAlertRepository.save(ear4);
+		
+		//send notification
+//		EamilAllertSchedule scheduler=new EamilAllertSchedule();
+//		try {
+//			scheduler.executeintervaljob();
+//		} catch (SchedulerException e) {
+//			// TODO Auto-generated catch block
+//			System.out.println("error in scheduler rrrrrrrrrrrrrrrrrrrrrrrrr");
+//			e.printStackTrace();
+//		}
+		
 	}
 
 }

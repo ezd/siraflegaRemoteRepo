@@ -33,21 +33,27 @@ public class IndexController {
 		int totalPageSize=(totalJobsSize%PAGE_HOLDING_CAPACITY==0?totalJobsSize/PAGE_HOLDING_CAPACITY:((totalJobsSize-(totalJobsSize%PAGE_HOLDING_CAPACITY))/PAGE_HOLDING_CAPACITY)+1);
 		model.addAttribute("totalPageSize", totalPageSize);
 		List<PostedJob>postedJobs=postedJobService.getPostedJobs(pageNumber,PAGE_HOLDING_CAPACITY);
+		
 		for(PostedJob job:postedJobs)
 			job.setDiscription(this.shortString(job.getDiscription()));
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("postedJobs", postedJobs);
 		model.addAttribute("catigory", "all");
 		model.addAttribute("currentDate", new Date());
+		List<String>positionList=postedJobService.getPositionList();
+		model.addAttribute("positions", positionList);
 		if(totalPageSize<=10){
 			model.addAttribute("startat", 1);
 			model.addAttribute("endat", totalPageSize);
+			System.out.println("between======================1 and "+totalPageSize);
 		}else{
 			model.addAttribute("startat", 1);
 			model.addAttribute("endat", 10);
+			System.out.println("between======================1 and 10");
 		}
 		return "index";
 	}
+	//
 	@RequestMapping(value="/jobPosts/{category}/{number}")
 	public String pageJobs(Model model,@PathVariable("category") String category, @PathVariable("number") int pageNumber){
 		int totalJobsSize=postedJobService.getPostedJobsSize(category);
@@ -60,7 +66,8 @@ public class IndexController {
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("catigory", category);
 		model.addAttribute("postedJobs", postedJobs);
-		
+		List<String>positionList=postedJobService.getPositionList();
+		model.addAttribute("positions", positionList);
 		model.addAttribute("currentDate", new Date());
 		if(totalPageSize<=10){
 			model.addAttribute("startat", 1);

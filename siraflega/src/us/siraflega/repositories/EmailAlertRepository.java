@@ -9,6 +9,8 @@ import us.siraflega.entities.EmailAlertRequest;
 
 public interface EmailAlertRepository extends JpaRepository<EmailAlertRequest, Integer> {
 	
-	List<EmailAlertRequest> findByRecEmailAddress(String recepiantEamil); 
+	List<EmailAlertRequest> findByRecEmailAddressAndPosition(String recepiantEamil,String position); 
+	List<EmailAlertRequest> findByIsVerified(boolean isverified);
+	List<EmailAlertRequest> findByRecEmailAddressAndPositionAndVerifyKey(String recepiantEamil,String position,String key);
 
 }
