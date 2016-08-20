@@ -40,10 +40,7 @@ public List<WorkExperience> getExpeianceWithCompany(Employee employee){
 			.findByWorkedByOrderByStartsDesc(employee);
 	for(WorkExperience experiance:expriances){
 		
-		System.out.println("Query starts-----------------------------------------");
 		Company company=companyRepository.findByExperienceRefers(experiance);
-		System.out.println("company city is :"+company.getCity());
-		System.out.println("Query ends-------------------------------------------");
 		experiance.setCompany(company);
 	}
 	return expriances;
@@ -63,9 +60,7 @@ public List<WorkExperience> getExpeianceWithCompany(Employee employee){
 		return employee;
 	}
 	public void updateEmployee(Employee employee) {
-		System.out.println("+++++++++++++++++++++++++++++++++++update for wosen-----------------");
 		employeeRepository.save(employee);
-		System.out.println("+++++++++++++++++++++++++++++++++++update for wosen ends-----------------------------");
 	}
 	public void saveEmployee(Employee employee) {
 		employeeRepository.save(employee);

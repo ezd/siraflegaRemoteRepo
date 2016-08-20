@@ -32,7 +32,6 @@ public class WorkeService {
 
 	public void deleteExp(int id) {
 		// TODO Auto-generated method stub
-		System.out.println("======================id to delete in service:"+id);
 		workExperienceRepository.delete(id);
 	}
 

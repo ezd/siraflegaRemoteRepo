@@ -74,7 +74,6 @@ p.title {
 		$('#passwordChangeRequest').show();//passwordChangeRequest passwordChangeAction
 		$('#passwordChangeAction').hide();
 		$('#editUserBtn').on('click', function() {
-			alert("I am inside showuserInput");
 			$('#saveChangeBtn').show();
 			$('#cancelChangeBtn').show();
 			$('.userInput').show();
@@ -88,7 +87,6 @@ p.title {
 			
 		});
 		$('#cancelChangeBtn').on('click', function() {
-			alert("I am inside CanceluserInput");
 			$('#saveChangeBtn').hide();
 			$('#cancelChangeBtn').hide();
 			$('.userInput').hide();
@@ -227,8 +225,6 @@ p.title {
 					},
 	submitHandler:function(){
 		$('#saveChangeBtn').on('click',function() {
-				alert("user updated with:" + $('#userNameIn').val()
-						+ "," + $('#userEmailIn').val())
 				$.ajax({
 							type : 'POST',
 							url : 'updateUser',
@@ -249,10 +245,6 @@ p.title {
 												.val()
 									}),
 							success : function(data) {
-								alert("data values" + data.id + ","
-										+ data.userName + ","
-										+ data.email + ','
-										+ data.isExists);
 								if (data.isExists == 'exist') {
 									$('#errorMsg').html('User name or email is already being used');
 									$('#errorMsg').show().fadeOut(3000);
@@ -276,7 +268,7 @@ p.title {
 								}
 							},
 							error : function(ts) {
-								alert(ts.responseText);
+								//alert(ts.responseText);
 							}
 						});
 				$('#saveChangeBtn').hide();

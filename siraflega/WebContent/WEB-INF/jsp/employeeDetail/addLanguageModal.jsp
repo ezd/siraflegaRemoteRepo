@@ -99,7 +99,7 @@
 					// 									$.clearFormFields(this);
 				},
 				error : function(ts) {
-					alert(ts.responseText);
+					//alert(ts.responseText);
 				}
 			});
 	});
@@ -122,7 +122,7 @@
 				// 									$.clearFormFields(this);
 			},
 			error : function(ts) {
-				alert(ts.responseText);
+				//alert(ts.responseText);
 			}
 		});
 	});

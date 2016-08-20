@@ -221,14 +221,13 @@
 						// 	populateExData(data);$('#employerWorkExpModal .editIndex')
 						var indexToBeUpdated = $('#employerWorkExpModal .editIndex').val();
 						var list = addExData(data);
-						alert("indx:"+indexToBeUpdated+" data:"+list);
 						$('#workExpList').children().eq(indexToBeUpdated).replaceWith(list);
 						$('#workExpList').listview('refresh');
 						$('#updateEmployerWrokExp').modal('hide');
 						$.clearInput(this);
 					},
 					error : function(ts) {
-						alert(ts.responseText);
+						//alert(ts.responseText);
 					}
 						});
 										});

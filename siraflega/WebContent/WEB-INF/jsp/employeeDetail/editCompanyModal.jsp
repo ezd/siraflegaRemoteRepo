@@ -128,7 +128,7 @@
 										$('#companyModal').modal('hide');
 									},
 									error : function(ts) {
-										alert(ts.responseText);
+										//alert(ts.responseText);
 									}
 								});
 
@@ -153,7 +153,7 @@
 					process(data);
 				},
 				error : function(ts) {
-					alert(ts.responseText);
+					//alert(ts.responseText);
 				}
 			});
 		}

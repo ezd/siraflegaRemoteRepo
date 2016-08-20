@@ -47,7 +47,7 @@
 				}
 			},
 			error : function(ts) {
-				alert(ts.responseText);
+				//alert(ts.responseText);
 			}
 		});
 		var $un = $("#uname");
@@ -67,7 +67,6 @@
 				success : function(data) {
 					var item = data[0];
 					if (item == "faile") {
-						alert("Not saved!")
 					} else {
 						addOrder(item);
 						$("#uname").val("");
@@ -75,7 +74,7 @@
 					}
 				},
 				error : function(ts) {
-					alert(ts.responseText);
+					//alert(ts.responseText);
 				}
 			});
 		});

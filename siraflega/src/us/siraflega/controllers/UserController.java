@@ -121,7 +121,6 @@ public class UserController {
 	@RequestMapping("/users")
 	public String getUsersList(Model model) {
 		List<User> usersList = userService.getAllUsers();
-		System.out.println("comes to user controller : " + usersList.size());
 		model.addAttribute("users", usersList);
 		return "users";
 	}
@@ -130,7 +129,6 @@ public class UserController {
 		List<String> companyNameList = new ArrayList<String>();
 		for (Company company : companyList) {
 			companyNameList.add(company.getName());
-			System.out.println("list********************************");
 		}
 		return companyNameList;
 	}
@@ -141,9 +139,7 @@ public class UserController {
 		String query = req.getParameter("q");
 		List<String> existingCitiesList = companyService.getCityList(query);
 		Gson gson = new Gson();
-		System.out.println("raw value:" + req.getParameter("q"));
 		String jsonstring = gson.toJson(existingCitiesList);
-		System.out.println("the json value:" + jsonstring);
 		return jsonstring;
 	}
 
@@ -157,17 +153,14 @@ public class UserController {
 			@RequestParam("type") String type,
 			final RedirectAttributes redirectAttributes,
 			HttpServletRequest request) {
-		System.out.println("it comesssssssssssssssssssssssssssssssssz");
 		String unEncPass = user.getPassword();
 		String unEncUserName = user.getUserName();
-		System.out.println("type is:" + type + "password name is" + unEncPass);
 		if ((userService.getUserByEmail(user.getEmail()) != null)
 				|| (userService.getUserByName(user.getUserName()) != null)) {
 			redirectAttributes.addFlashAttribute("user", user);
 			return "redirect:/register.html?success=false&message=Exists";
 		}
 		User savedUser = userService.saveUser(user, type);
-		System.out.println("comes to save");
 		if (savedUser == null) {
 			// model.addAttribute("user", user);
 			return "redirect:/register.html?success=false&message=notsaved";
@@ -182,10 +175,6 @@ public class UserController {
 
 	private void authenticateUserAndSetSession(String username,
 			String password, HttpServletRequest request) {
-		// String username = user.getUserName();
-		// String password = unEncPass;
-		System.out.println("==================error happen wnen trying to use:"
-				+ username + " and " + password + "========================");
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
 				username, password);
 
@@ -210,17 +199,12 @@ public class UserController {
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		if (user == null) {
-			System.out.println("about to session invalidate and log in again");
 			logOutAndInvalidate(request, response);
 
 			return "redirect:/userDetail";
 		}
-		System.out.println("username:" + name);
-		System.out
-				.println("=====================Role checking============================");
 		Role userRole = user.getRole();
 		// for (Role r : userRoles) {
-		System.out.println("userrole:" + userRole.getName());
 		// }
 		model.addAttribute("user", user);
 		Employee employee = employeeService.getEmployeeBy(user.getEmail());
@@ -229,14 +213,10 @@ public class UserController {
 		model.addAttribute("employer", employer);
 		if (userRole.getName().toString().equalsIgnoreCase("ROLE_EMPLOYEE")) {
 			model.addAttribute("type", "employee");
-			System.out.println("employee type setted");
 		} else if (userRole.getName().toString()
 				.equalsIgnoreCase("ROLE_EMPLOYER")) {
 			model.addAttribute("type", "employer");
-			System.out.println("employer type setted");
 		}
-		System.out.println(" as a type it comes to user detal with:"
-				+ user.getUserName());
 		return "userDetail";
 	}
 
@@ -258,7 +238,6 @@ public class UserController {
 	@RequestMapping("/users/sendReminder/{id}")
 	public String sendReminder(Model model, @PathVariable int id) {
 		String result;
-		System.out.println("Email to be used:" + id);
 		User user = userService.getOneBy(id);
 		String to = user.getEmail();
 		String from = "seatac.test@gmail.com";
@@ -396,7 +375,6 @@ public class UserController {
 
 	@RequestMapping(value = "/saveCompany", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String saveCompany(@RequestBody String jsonCompany) {
-		System.out.println(jsonCompany.toString());
 		Gson gson = new Gson();
 		Company company = (Company) gson.fromJson(jsonCompany, Company.class);
 		Company savedCompany = companyService.saveNewCompany(company);
@@ -410,8 +388,6 @@ public class UserController {
 
 		JSONObject jsonObject = new JSONObject(jsonWork);
 		String idToBeDeleted = jsonObject.getString("id");
-		System.out.println("Id to be delete isssssssssssssssssss:"
-				+ idToBeDeleted);
 		workExperienceService.deleteExp(Integer.parseInt(idToBeDeleted));
 		return jsonObject.toString();
 	}
@@ -421,13 +397,11 @@ public class UserController {
 	public @ResponseBody String updateUser(@RequestBody String jsonUser,
 			Principal principal, HttpServletRequest request, HttpServletResponse response) {
 		String name = principal.getName();
-		System.out.println("come to ajax with" + jsonUser);
 		User exisitingUser = userService.getUserByName(name);
 		JSONObject jsonObject = new JSONObject(jsonUser);
 		String newUserName = jsonObject.getString("userName");
 		String newUserEmail = jsonObject.getString("userEmail");
 		String userPassword = jsonObject.getString("userOldPassword"); //not found
-		System.out.println("this is oldpasssssssss########### : " + userPassword);
 		String userNewPassword = jsonObject.getString("userNewPassword");
 		User updatedUser=null;
 		BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
@@ -437,7 +411,6 @@ public class UserController {
 		else {
 			exisitingUser.setUserName(newUserName);
 			exisitingUser.setEmail(newUserEmail);
-			System.out.println(userNewPassword+"is the password");
 			if(!userNewPassword.equals("")){
 				userPassword=userNewPassword;
 			exisitingUser.setPassword(userPassword);
@@ -464,22 +437,14 @@ public class UserController {
 	public @ResponseBody String updatePassword(
 			@RequestBody String jsonUserPassword, Principal principal,
 			HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("come to ajax with" + jsonUserPassword);
 		JSONObject jsonObject = new JSONObject(jsonUserPassword);
 		String newUserEmail = jsonObject.getString("userEmail").trim();
-		System.out.println("the email is :"+newUserEmail);
 		String newUserPassword = jsonObject.getString("userPassword");
 		String inputOldpassunEncoded = jsonObject.getString("userOldPassword");
 		
 		BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
 		String  inputOldpassEncoded=encoder.encode(inputOldpassunEncoded);
 		User exisitingUser = userService.getUserByEmail(newUserEmail);
-		System.out.println("---------------------------------------Unencoded password is :" + inputOldpassunEncoded);
-		System.out.println("---------------------------------------Encoded password is :" + inputOldpassEncoded);
-		System.out.println("Existing Password is " + exisitingUser.getPassword());
-		
-		System.out.println(encoder.matches(inputOldpassunEncoded, exisitingUser.getPassword()));
-		
 		//exisitingUser.setEmail(newUserEmail);
 		//compare the oldpassword from user from getstring with exisstinguser.getpassword
 		//encrypte oldpasswor compare with  exisstinguser.getpassword
@@ -490,7 +455,6 @@ public class UserController {
 		exisitingUser.setPassword(newUserPassword);
 		User updatedUser = userService.saveUser(exisitingUser);
 		if (updatedUser != null) {
-			System.out.println("++++++++++++++++++++++");
 			logOutAndInvalidate(request, response);
 			authenticateUserAndSetSession(updatedUser.getUserName(),
 					newUserPassword, request);
@@ -502,8 +466,6 @@ public class UserController {
 	@RequestMapping(value = "/updateEmployerInfo", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String updateEmployerInfo(
 			@RequestBody String jsonEmployer) {
-		System.out.println("come to ajax with" + jsonEmployer);
-
 		JSONObject jsonObject = new JSONObject(jsonEmployer);
 		String firstName = jsonObject.getString("fName");
 		String meddileName = jsonObject.getString("mName");
@@ -526,8 +488,6 @@ public class UserController {
 	@RequestMapping(value = "/saveEmployerInfo", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String saveEmployerInfo(
 			@RequestBody String jsonEmployer) {
-		System.out.println("come to ajax with" + jsonEmployer);
-
 		JSONObject jsonObject = new JSONObject(jsonEmployer);
 		String firstName = jsonObject.getString("fName");
 		String meddileName = jsonObject.getString("mName");
@@ -606,7 +566,6 @@ public class UserController {
 	@RequestMapping(value = "/saveEmployerWrorkExp", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String saveEmployerWrorkExp(
 			@RequestBody String jsonWork, Principal principal) {
-		System.out.println("mitamitamitmita "+jsonWork);
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		Employer employer = employerService.getEmployerBy(user.getEmail());
@@ -655,8 +614,6 @@ public class UserController {
 	}
 	@RequestMapping(value = "/updateWrorkExp", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String updateWorkExp(@RequestBody String jsonWork) {
-		System.out.println("updateeeeeeeeeeeee come withhhhhhh"
-				+ jsonWork.toString());
 		JSONObject jsonObject = new JSONObject(jsonWork);
 		String companyId = jsonObject.getString("companyId");
 		String position = jsonObject.getString("position");
@@ -679,9 +636,6 @@ public class UserController {
 		String description = jsonObject.getString("description");
 		String workExpId = jsonObject.getString("workExpId");
 		boolean isCurrentlyWorking = jsonObject.getBoolean("isCurrent");
-		System.out.println(companyId + '-' + position + '-' + startDate + '-'
-				+ endDate + '-' + description + '-' + workExpId + '-'
-				+ isCurrentlyWorking);
 		Company newCompanySelected = companyService.getCompany(Integer
 				.parseInt(companyId));
 		WorkExperience workExpToBeEdited = workExperienceService
@@ -710,7 +664,6 @@ public class UserController {
 	@RequestMapping(value = "/updateEmployerWrokExp", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String updateEmployerWrokExp(
 			@RequestBody String jsonWork, Principal principal) {
-		System.out.println("mitamitamitmita "+jsonWork);
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		Employer employer = employerService.getEmployerBy(user.getEmail());
@@ -764,15 +717,12 @@ public class UserController {
 
 		JSONObject jsonObject = new JSONObject(jsonWork);
 		String idToBeDeleted = jsonObject.getString("id");
-		System.out.println("===============******Id to be delete isssssssssssssssssss:"
-				+ idToBeDeleted);
 		workService.deleteExp(Integer.parseInt(idToBeDeleted));
 		return jsonObject.toString();
 	}
 	//employerPosts
 	@RequestMapping("/employerPosts/{pageNumber}")
 	public String registerForm(Model model,Principal principal,@PathVariable int pageNumber) {
-		System.out.println("comes with value of :"+pageNumber);
 		String userName=principal.getName();
 		User user=userService.getUserByName(userName);
 		Employer employer=employerService.getEmployerBy(user.getEmail());
@@ -780,10 +730,8 @@ public class UserController {
 		int totalJobsSize=postedJobService.getPostedJobs(employer)==null?0:postedJobService.getPostedJobs(employer).size();
 		int pageHoldingCapacity=6;
 		int totalPageSize=(totalJobsSize%pageHoldingCapacity==0?totalJobsSize/pageHoldingCapacity:((totalJobsSize-(totalJobsSize%pageHoldingCapacity))/pageHoldingCapacity)+1);
-		System.out.println("????????????totalPageSize:"+totalPageSize);
 		model.addAttribute("totalPageSize", totalPageSize);
 		List<PostedJob>postedJobs=postedJobService.getPostedJobs(employer,pageNumber,pageHoldingCapacity);
-		System.out.println("========size"+postedJobs.size());
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("employer", employer);
 		model.addAttribute("postedJobs", postedJobs);
@@ -820,7 +768,6 @@ public class UserController {
 	}
 	@RequestMapping(value="/postJob",method=RequestMethod.POST)
 	String postJob(Model model,@ModelAttribute @Valid PostedJob job,BindingResult result, Principal principal ){
-		System.out.println("come for job posting===========================================");
 		String userName=principal.getName();
 		User user=userService.getUserByName(userName);
 		Employer poster=employerService.getEmployerBy(user.getEmail());
@@ -828,7 +775,6 @@ public class UserController {
 		if(job.getId()==null){
 		postedJobService.save(job);
 		}else{
-//			System.out.println("the id value isssssssssssssssssss:"+request.getParameter("pageNumber")+"is the vaaaaaaaaaaaaaaaalue");
 			PostedJob existingJob=postedJobService.getPostdJob(job.getId());
 			existingJob.setCompany(job.getCompany());
 			existingJob.setDeadLine(job.getDeadLine());
@@ -852,7 +798,6 @@ public class UserController {
 	
 	@RequestMapping(value="/jobPost/{jobId}", method=RequestMethod.GET)
 	String preview(Model model, @PathVariable int jobId){ 
-		System.out.println("it wi comes to preview withlhhhhhhhhhhhhhhhh"+1);
 		PostedJob postedJob=postedJobService.getPostdJob(jobId);
 		model.addAttribute("postedJob", postedJob);
 		model.addAttribute("currentDate", new Date());
@@ -864,8 +809,6 @@ public class UserController {
 
 		JSONObject jsonObject = new JSONObject(jsonPostedJob);
 		String idToBeDeleted = jsonObject.getString("id");
-		System.out.println("===============******Id to be delete isssssssssssssssssss:"
-				+ idToBeDeleted);
 		postedJobService.deletePostedJob(Integer.parseInt(idToBeDeleted));
 		return jsonObject.toString();
 	}

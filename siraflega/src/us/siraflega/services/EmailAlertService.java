@@ -73,10 +73,8 @@ public class EmailAlertService {
 			EmailAlertRequest emailAlertRequest = existingEmailAlertRequests.get(0);
 			emailAlertRequest.setVerified(true);
 			emailAlertRepository.save(emailAlertRequest);
-			System.out.println("email verifiedddddddddddddddddddddddddddddddddd");
 			return true;
 		}
-		System.out.println("email nooooooooooooooooot verifieddddddddddddddddddddd");
 		return false;
 
 	}
@@ -91,10 +89,7 @@ public class EmailAlertService {
 	}
 
 	public List<EmailAlertRequest> getVerifiedRequests() {
-		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		List<EmailAlertRequest> vrreq = emailAlertRepository.findByIsVerified(true);
-		System.out.println("num of verified req:" + vrreq.size());
-		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		return vrreq;
 	}
 
@@ -131,8 +126,6 @@ public class EmailAlertService {
 		String[] words = longString.split(" ");
 		for (int i = 0; i < (words.length > 20 ? 20 : words.length); i++)
 			string += words[i] + " ";
-
-		System.out.println("the string cutted:" + string);
 		return string;
 	}
 
@@ -167,14 +160,12 @@ public class EmailAlertService {
 
 	public void sendemailalert(String to, String subject, String description, String messageText) {
 		// TODO Auto-generated method stub
-		System.out.println("email is" + to);
-		System.out.println("Email to be used:" + to);
-		String from = "seatac.test@gmail.com";
+		String from = "siraflega2016@gmail.com";
 		Properties props = System.getProperties();
 		props.put("mail.smtp.starttls.enable", "true"); // added this line
 		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.user", "seatac.test@gmail.com");
-		props.put("mail.smtp.password", "test654321");
+		props.put("mail.smtp.user", "siraflega2016@gmail.com");
+		props.put("mail.smtp.password", "2016siraflega");
 		props.put("mail.smtp.port", "587");
 		props.put("mail.smtp.auth", "true");
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
@@ -190,10 +181,8 @@ public class EmailAlertService {
 			message.setSubject(subject);
 			message.setContent(messageText, "text/html; charset=utf-8");
 			Transport.send(message);
-			System.out.println("pass the sender code");
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
-			System.out.println("Error: unable to send message....");
 		}
 
 	}

@@ -48,14 +48,11 @@ public class EducationController {
 		String query=req.getParameter("q");
 		List<String>existingInistituteList=educationService.getInistitutionList(query);
 		Gson gson = new Gson();
-		System.out.println("raw value:"+req.getParameter("q"));
 		String jsonstring=gson.toJson(existingInistituteList);
-		System.out.println("the json value:"+jsonstring);
 		return jsonstring;
 	}
 	@RequestMapping(value="/saveEducation",method=RequestMethod.POST,produces="application/json")
 	public @ResponseBody String saveEducation(@RequestBody String jsonEducation,Principal principal){
-		System.out.println(jsonEducation+"Education .........................................................");
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		Employee employee=employeeService.getEmployeeBy(user.getEmail());
@@ -102,7 +99,6 @@ public class EducationController {
 	}
 	@RequestMapping(value="/updateEducation",method=RequestMethod.POST,produces="application/json")
 	public @ResponseBody String updateEducation(@RequestBody String jsonEducation){
-		System.out.println(jsonEducation+"Education .........................................................");
 		JSONObject jsonObject=new JSONObject(jsonEducation);
 		
 		String educationId=jsonObject.getString("educationId");
@@ -151,13 +147,11 @@ public class EducationController {
 		
 		JSONObject jsonObject=new JSONObject(jsonEducation);
 		String idToBeDeleted=jsonObject.getString("id");
-		System.out.println("Id to be delete isssssssssssssssssss:"+idToBeDeleted);
 		educationService.deleteEducation(Integer.parseInt(idToBeDeleted));
 		return jsonObject.toString();
 	}
 	@RequestMapping(value="/saveLanguage",method=RequestMethod.POST,produces="application/json")
 	public @ResponseBody String saveLanguage(@RequestBody String jsonLanguage,Principal principal){
-		System.out.println(jsonLanguage+"Language .........................................................");
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		Employee employee=employeeService.getEmployeeBy(user.getEmail());
@@ -177,7 +171,6 @@ public class EducationController {
 	
 	@RequestMapping(value="/updateLanguage",method=RequestMethod.POST,produces="application/json")
 	public @ResponseBody String updateLanguage(@RequestBody String jsonLanguage){
-		System.out.println(jsonLanguage+"Language update .........................................................");
 		JSONObject jsonObject=new JSONObject(jsonLanguage);
 		String languageName=jsonObject.getString("languageName");
 		String proficencyLevel=jsonObject.getString("languageLevel");
@@ -198,7 +191,6 @@ public class EducationController {
 		
 		JSONObject jsonObject=new JSONObject(jsonLanguage);
 		String idToBeDeleted=jsonObject.getString("id");
-		System.out.println("Id to be delete isssssssssssssssssss:"+idToBeDeleted);
 		languageService.deleteEducation(Integer.parseInt(idToBeDeleted));
 		return jsonObject.toString();
 	}

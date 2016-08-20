@@ -95,13 +95,11 @@
 <script type="text/javascript">
 	//prepare exp list
 	function addExData(data) {
-		alert("value:"+data.isCurrentlyWorking);
 		var crnt="Previous:";
 		if(data.isCurrentlyWorking==true){
 			crnt='Current:';
 			$('#isCurrentLbl').html("Previous:");
 		}
-		alert("currnt :"+crnt);
 		var listToAdd = '<li>'
 				+ '<div class="titleThree"> '
 				+ '<security:authorize access="isAuthenticated()">'
@@ -203,7 +201,7 @@
 									$.clearInput(this);
 								},
 								error : function(ts) {
-									alert(ts.responseText);
+									//alert(ts.responseText);
 								}
 							});
 						});
@@ -230,8 +228,6 @@
 															var indexToBeUpdated = $(
 																	'#editWorkExpModal .editIndex')
 																	.val();
-															alert(indexToBeUpdated);
-															
 															var list = addExData(data);
 															$('#workExpList')
 																	.children()
@@ -246,7 +242,7 @@
 															$.clearInput(this);
 														},
 														error : function(ts) {
-															alert(ts.responseText);
+															//alert(ts.responseText);
 														}
 													});
 										});

@@ -31,7 +31,6 @@
 	$('#deleteConfirmedBtn').on('click',function(e) {
 						var idtodelete = $(this).attr(
 								'data-idToBeDelete');
-						alert("id to delett is "+idtodelete);
 						var selectedLisIndex = $(this)
 								.attr('data-deleteIndex');
 						var itemToBeDeleted = $(this).attr(
@@ -49,7 +48,7 @@
 										$('#delet_Modal').modal('toggle');
 									},
 									error : function(ts) {
-										alert(ts.responseText);
+										//alert(ts.responseText);
 									}
 								});
 						} else if (itemToBeDeleted == 'Employer Work Experience') {
@@ -65,7 +64,7 @@
 										$('#delet_Modal').modal('toggle');
 									},
 									error : function(ts) {
-										alert(ts.responseText);
+										//alert(ts.responseText);
 									}
 								});
 						} else if (itemToBeDeleted == 'Education') {
@@ -81,11 +80,10 @@
 										$('#delet_Modal').modal('toggle');
 									},
 									error : function(ts) {
-										alert(ts.responseText);
+										//alert(ts.responseText);
 									}
 								});
 						}  else if (itemToBeDeleted == 'Posted Job') {
-							alert("it comes realy t ");
 							$.ajax({
 								type : 'POST',
 								url : '${pageContext.request.contextPath}/deletePostedJob',
@@ -96,7 +94,7 @@
 									window.location.reload();
 								},
 								error : function(ts) {
-									alert(ts.responseText);
+									//alert(ts.responseText);
 								}
 							});
 					} else if (itemToBeDeleted == 'Language') {
@@ -108,12 +106,11 @@
 									data : JSON.stringify({id : idtodelete}),
 									success : function(data) {
 										var calculatedIndex = parseInt(selectedLisIndex,10) + 1;
-										alert("index of language to be deleteddddd:"+ selectedLisIndex);
 										$('#languageProfLevel tbody tr').eq(selectedLisIndex).remove();
 										// 					$('#delet_Modal').modal('toggle');
 									},
 									error : function(ts) {
-										alert(ts.responseText);
+										//alert(ts.responseText);
 									}
 								});
 						}

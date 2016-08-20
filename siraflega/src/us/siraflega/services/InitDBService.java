@@ -337,7 +337,6 @@ for(int i=0;i<12;i++){
 		job.setTitle("Software programmer");
 //		jobs.add(job);
 		job.setJobPostedBy(employerJohan);
-		System.out.println("..................................................................................................");
 		jobRepository.save(job);
 }
 		// Job2
@@ -393,7 +392,6 @@ for(int i=0;i<12;i++){
 		}
 		employerWork.setCurrentlyWorking(true);
 		employerWork.setStartsFrom(startDate);
-		// System.out.println("THe status is++++++++++"+employeeRepository.findByEmail("user@gmail.com").getEducations().size()+"++++++++++++++++++++++");
 		workRepository.save(employerWork);
 		
 		

@@ -39,14 +39,11 @@ public class UserService {
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.setEnabled(true);
 		if(type.equals("employer")){
-			System.out.println("Employer");
 			user.setRole(roleRepository.findByName("ROLE_EMPLOYER"));
 			savedUser=userRepository.save(user);
 		}else{
-			System.out.println("Employee");
 //			roles.add(roleRepository.findByName("ROLE_EMPLOYEE"));
 			user.setRole(roleRepository.findByName("ROLE_EMPLOYEE"));
-			System.out.println("object before saved========="+user.getPassword());
 			savedUser=userRepository.save(user);
 		}
 		return savedUser;

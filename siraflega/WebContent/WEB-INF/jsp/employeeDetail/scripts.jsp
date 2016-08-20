@@ -27,7 +27,6 @@
 		$('#updateWrokExp').show();
 		$('#saveWrokExp').hide();
 		var listIndexToBeChange = $(this).closest('li').index();
-		alert("this is to update:"+$(this).closest('li').index());
 		$('#editWorkExpModal .editIndex').val(listIndexToBeChange);
 		$('#editWorkExpModal .editId').val($(this).attr("data-id"));
 		$('#editWorkExpModal .editPostion').val($(this).attr("data-position"));
@@ -43,7 +42,6 @@
 		$('.endDate').val(fmtEndDt);
 		$('.editDescription').val($(this).attr("data-discription"));
 		$('#isCurrentlyChk').prop('checked',$(this).attr("data-currentlyWorking")=='true'?true:false);
-		alert("is checked?"+$(this).attr("data-currentlyWorking"));
 	});
 	$('#educationList').delegate('.trigerEducationEdit','click',function(e) {
 		$('#updateEducation').show();

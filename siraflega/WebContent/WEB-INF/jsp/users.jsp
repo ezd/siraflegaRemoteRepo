@@ -14,7 +14,6 @@
 			$('#deletModal').modal();
 		});
 		$('.trigerEdit').click(function(e){
-			alert($(this).data('data-userName'));
 			e.preventDefault();
 			$('#editModal .editUserName').attr("value",$(this).attr("data-userName"))
 			

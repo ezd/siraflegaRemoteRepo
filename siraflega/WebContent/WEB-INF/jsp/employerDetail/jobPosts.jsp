@@ -268,7 +268,6 @@ border-radius: 0px;
 				});
 				$('.deletePostedJobBtn').click(function(e) {
 //			 		var parrentUli = $(this).parent().parent();
-					alert("come to delete..hhhhh............."+$(this).attr('data-id'));
 					$('#nameItemToBeDeleted').html("Posted Job");
 					$('#deleteConfirmationMessage').html("Do you want the posted job to be deleted?");
 					$('#deleteConfirmedBtn').attr('data-idToBeDelete',$(this).attr('data-id'));

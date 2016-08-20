@@ -22,7 +22,7 @@ import us.siraflega.services.PostedJobService;
 
 @Controller
 public class IndexController {
-	private final int PAGE_HOLDING_CAPACITY=6;
+	private final int PAGE_HOLDING_CAPACITY=10;
 	int pageNumber;
 	@Autowired
 	PostedJobService postedJobService;//
@@ -45,11 +45,9 @@ public class IndexController {
 		if(totalPageSize<=10){
 			model.addAttribute("startat", 1);
 			model.addAttribute("endat", totalPageSize);
-			System.out.println("between======================1 and "+totalPageSize);
 		}else{
 			model.addAttribute("startat", 1);
 			model.addAttribute("endat", 10);
-			System.out.println("between======================1 and 10");
 		}
 		return "index";
 	}
@@ -83,9 +81,6 @@ public class IndexController {
 		String[] words=longString.split(" ");
 		for(int i=0;i<(words.length>20?20:words.length);i++)
 			string+=words[i]+" ";
-		
-		
-		System.out.println("the string cutted:"+string);
 		return string;
 	}
 	@RequestMapping(value = "/catigories", method = RequestMethod.GET)
@@ -94,9 +89,7 @@ public class IndexController {
 		String query = req.getParameter("q");
 		List<String> catigoryList = postedJobService.getcatigoriesContains(query);
 		Gson gson = new Gson();
-		System.out.println("raw value:" + req.getParameter("q"));
 		String jsonstring = gson.toJson(catigoryList);
-		System.out.println("the json value:" + jsonstring);
 		return jsonstring;
 	}
 }

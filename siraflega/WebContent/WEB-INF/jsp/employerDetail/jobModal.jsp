@@ -268,7 +268,7 @@
 						process(data);
 					},
 					error : function(ts) {
-						alert(ts.responseText);
+						//alert(ts.responseText);
 					}
 				});
 			}
@@ -281,7 +281,6 @@
 			}
 		});
 		$('#cancelCompanyBtn').on("click", function() {
-			alert("close me" + $('.prevCompanyId').val());
 			$('#editCompany').val($('.prevCompanyId').val());
 			$('#editCompany').selectpicker('render');
 		});

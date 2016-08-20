@@ -28,7 +28,6 @@ import us.siraflega.services.UserService;
 public class JQueryController {
 	@RequestMapping("/jquery")
 	public String getJQueryPage(){
-		System.out.println("it comes to jquery");
 		return "jquery";
 	}
 	@Autowired
@@ -46,31 +45,23 @@ public class JQueryController {
 		}
 				Gson gson = new Gson();
 		 String jsonUsersList = gson.toJson(objList);
-		System.out.println("jsongggggg"+jsonUsersList);
 		 return jsonUsersList;
 	}
 	@RequestMapping(value="/jqusers",method=RequestMethod.POST,produces="application/json")
 	public @ResponseBody String  saveUser(@RequestBody String jsonUser) {
-		System.out.println("first user json is:"+jsonUser.toString());
-
 		Gson gson = new Gson();
 		User user =(User)gson.fromJson(jsonUser, User.class);
 		user.setEmail("biliyala.ezd2@gmail.com");
-		System.out.println("password is:"+user.getPassword()); 
 	try {
-		System.out.println("to saved");
 		userService.saveUser(user, "Employee");
-		System.out.println("saved"); 
 		HashMap<String, String> normalObj = new HashMap<String, String>();
 		 normalObj.put("userName", user.getUserName());
 		 normalObj.put("password", user.getPassword());
 		 List<HashMap<String, String>> objList=new ArrayList<HashMap<String, String>>();
 		 objList.add(normalObj);
 		String convertedJsonObject=gson.toJson(objList);
-		 System.out.println("converted to: "+convertedJsonObject);
 		 return convertedJsonObject;
 	} catch (Exception e) {
-		System.out.println("not saved error");
 			return "faile";
 	}
 		

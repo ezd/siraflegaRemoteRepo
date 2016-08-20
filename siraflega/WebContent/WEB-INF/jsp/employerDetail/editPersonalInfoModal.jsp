@@ -84,7 +84,7 @@
 				$('#editEmployerPersonalInfoModal').modal('hide');
 			},
 			error : function(ts) {
-				alert(ts.responseText);
+				//alert(ts.responseText);
 			}
 		});
 	});
@@ -112,7 +112,7 @@
 				$('#editEmployerPersonalInfoModal').modal('hide');
 			},
 			error : function(ts) {
-				alert(ts.responseText);
+				//alert(ts.responseText);
 			}
 		});
 	});

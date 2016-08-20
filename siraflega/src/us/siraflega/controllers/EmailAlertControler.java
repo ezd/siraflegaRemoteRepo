@@ -22,8 +22,6 @@ public class EmailAlertControler {
 //jobPosts/{category}/{number}
 	@RequestMapping("/verifyEmailAlert")
 	public String sendReminder(Model model,@RequestParam("e") String email,@RequestParam("k") String key,@RequestParam("p") String position) {
-System.out.println("it comes to verify");
-System.out.println("email:"+email+",key:"+key+",position:"+position);
 		if (key != null) {
 //			String unencryptedKey = encryptedKey.substring(3);
 			if (emailAlertService.verifyAlertRequest(key, email,position)) {
@@ -65,12 +63,9 @@ System.out.println("email:"+email+",key:"+key+",position:"+position);
 		String verificatinmsgs[]=emailAlertService.getVerificationMessage(alertRequesterEmail,emailAlertRequestPosition).split("#");
 		emailAlertRequest.setVerifyKey(verificatinmsgs[0]);
 		if(emailAlertService.saveAlertRequest(emailAlertRequest)){
-			System.out.println("email is saved");
 			emailAlertService.sendemailalert(alertRequesterEmail, "Email alert request verification", "Email alert request verification", verificatinmsgs[1]);
-			System.out.println("email send");
 			jsonObject.put("isSaved", "true");
 		}else{
-		System.out.println("email is not saved");
 		jsonObject.put("isSaved", "false");
 		}
 		return jsonObject.toString();
