@@ -181,7 +181,7 @@
 			$("#saveEmployerWrokExp").on("click", function() {
 				$.ajax({
 					type : 'POST',
-					url : 'saveEmployerWrorkExp',
+					url : '${pageContext.request.contextPath}/saveEmployerWrorkExp',
 					contentType : 'application/json',
 					dataType : 'json',
 					data : JSON.stringify({
@@ -206,7 +206,7 @@
 			$("#updateEmployerWrokExp").on("click",function() {
 				$.ajax({
 					type : 'POST',
-					url : 'updateEmployerWrokExp',
+					url : '${pageContext.request.contextPath}/updateEmployerWrokExp',
 					contentType : 'application/json',
 					dataType : 'json',
 					data : JSON.stringify({

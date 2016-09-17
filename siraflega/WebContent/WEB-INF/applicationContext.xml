@@ -24,9 +24,9 @@
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/siraflega_db" />
-		<property name="username" value="root" />
-		<property name="password" value="rootroot" />
+		<property name="url" value="jdbc:mysql://localhost:3306/sirafleg_db" />
+		<property name="username" value="sirafleg_user" />
+		<property name="password" value="2016siraflega2016" />
 	</bean>
 	<!-- jdbc connection ends -->
 	<bean id="emf"
@@ -40,7 +40,7 @@
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.format_sql">true</prop>
 				<prop key="use_sql_comments">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>
 		<property name="persistenceProvider">
@@ -56,6 +56,6 @@
 		<property name="dataSource" ref="datasource" />
 	</bean>
 	<import resource="security.xml" />
-	<mvc:resources mapping="/resources/**" location="/resources/**" />
+<!-- 	<mvc:resources mapping="/resources/**" location="/resources/" /> -->
 	<!-- for company list option formatting -->
 </beans>

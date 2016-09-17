@@ -212,7 +212,7 @@ h5 {
 					class="icon-bar"></span> <span class="icon-bar"></span> <span 
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<spring:url value="/index.html" />"><img src="/resources/icon.jpg" /></a>
+			<a class="navbar-brand" href="<spring:url value="/index.html" />"><img width="100px" height="51px" src="${pageContext.request.contextPath}/resources/icon.jpg" alt="Siraflega" /></a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">

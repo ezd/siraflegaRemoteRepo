@@ -37,7 +37,7 @@
 	$(function() {
 		$.ajax({
 			type : 'GET',
-			url : 'jqusers.html',
+			url : '${pageContext.request.contextPath}/jqusers.html',
 			contentType : 'application/json',
 			dataType : 'json',
 			success : function(data) {
@@ -60,7 +60,7 @@
 
 			$.ajax({
 				type : 'POST',
-				url : 'jqusers.html',
+				url : '${pageContext.request.contextPath}/jqusers.html',
 				contentType : 'application/json',
 				dataType : 'json',
 				data : JSON.stringify(user),

@@ -182,7 +182,7 @@
 						$("#saveWrokExp").on("click", function() {
 							$.ajax({
 								type : 'POST',
-								url : 'saveWrorkExp',
+								url : '${pageContext.request.contextPath}/saveWrorkExp',
 								contentType : 'application/json',
 								dataType : 'json',
 								data : JSON.stringify({
@@ -211,7 +211,7 @@
 									
 											$.ajax({
 														type : 'POST',
-														url : 'updateWrorkExp',
+														url : '${pageContext.request.contextPath}/updateWrorkExp',
 														contentType : 'application/json',
 														dataType : 'json',
 														data : JSON.stringify({

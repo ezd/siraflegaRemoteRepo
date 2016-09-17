@@ -66,6 +66,7 @@ public class InitDBService {
 	@Autowired
 	EmailAlertRepository emailAlertRepository;
 	
+	/*
 	@PostConstruct
 	public void init() {
 		
@@ -421,6 +422,6 @@ for(int i=0;i<12;i++){
 //			e.printStackTrace();
 //		}
 		
-	}
+	}*/
 
 }

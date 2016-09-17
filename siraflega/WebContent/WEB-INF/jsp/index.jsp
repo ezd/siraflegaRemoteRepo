@@ -255,7 +255,8 @@ ul {
 		$('#email_alertme').val(null);
 // 		$('#position_alertme').val('selectpositon');
 // 		$('#position_alertme').html('Select position');
-		$("#position_alertme").val($("#selectpositon option:first").val());
+		$("#position_alertme").val($("#position_alertme option:first").val());
+		$("#position_alertme option:first").attr('selected','selected');
 		$('#alert_errormsg').css('display','none');
 		$('#alert_successmsg').css('display','none');
 		$('#btnAlert').show();
@@ -364,7 +365,7 @@ ul {
 			source : function(query, process) {
 				$.ajax({
 					type : 'GET',
-					url : '/siraflega/catigories',
+					url : '${pageContext.request.contextPath}/catigories',
 					contentType : 'application/json',
 					dataType : 'json',
 					data : {

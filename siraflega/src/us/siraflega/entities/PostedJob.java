@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name="Posted_Job")
+@Table(name="PostedJob")
 public class PostedJob {
 	@Id
 	@GeneratedValue

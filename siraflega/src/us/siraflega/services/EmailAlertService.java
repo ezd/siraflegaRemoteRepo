@@ -154,7 +154,7 @@ public class EmailAlertService {
 		String key=this.intrandom+"";
 		return key+"#Thank you for requesting email verification "
 				+ "from Siraflega&copy; for <b>"+position+"</b> positions. "
-				+ "Pleas follow the following link to <a href=\"http://localhost:8080/siraflega/verifyEmailAlert?e="
+				+ "Pleas follow the following link to <a href=\"http://siraflega.com/verifyEmailAlert?e="
 				+ email + "&&k=" + key + "&&p="+position+"\">verify your email alert request.</a>";
 	}
 

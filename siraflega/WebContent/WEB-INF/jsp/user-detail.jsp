@@ -227,7 +227,7 @@ p.title {
 		$('#saveChangeBtn').on('click',function() {
 				$.ajax({
 							type : 'POST',
-							url : 'updateUser',
+							url : '${pageContext.request.contextPath}/updateUser',
 							contentType : 'application/json',
 							dataType : 'json',
 							data : JSON

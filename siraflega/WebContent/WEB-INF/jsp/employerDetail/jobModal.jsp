@@ -258,7 +258,7 @@
 			source : function(query, process) {
 				$.ajax({
 					type : 'GET',
-					url : '/siraflega/catigories',
+					url : '${pageContext.request.contextPath}/catigories',
 					contentType : 'application/json',
 					dataType : 'json',
 					data : {

@@ -64,7 +64,7 @@
 	$('#updateEmployerPersonalInfo').click(function(){
 		$.ajax({
 			type: 'POST',
-			url: 'updateEmployerInfo',
+			url: '${pageContext.request.contextPath}/updateEmployerInfo',
 			contentType: 'application/json',
 			dataType:'json',
 			data: JSON.stringify({
@@ -92,7 +92,7 @@
 	$('#saveEmployerPersonalInfo').click(function(){
 		$.ajax({
 			type: 'POST',
-			url: 'saveEmployerInfo',
+			url: '${pageContext.request.contextPath}/saveEmployerInfo',
 			contentType: 'application/json',
 			dataType:'json',
 			data: JSON.stringify({

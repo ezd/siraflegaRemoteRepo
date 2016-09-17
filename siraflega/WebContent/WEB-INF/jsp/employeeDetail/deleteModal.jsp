@@ -38,7 +38,7 @@
 						if (itemToBeDeleted == 'Work Experience') {
 							$.ajax({
 									type : 'POST',
-									url : 'deleteWorkExp',
+									url : '${pageContext.request.contextPath}/deleteWorkExp',
 									contentType : 'application/json',
 									dataType : 'json',
 									data : JSON.stringify({id : idtodelete}),
@@ -54,7 +54,7 @@
 						} else if (itemToBeDeleted == 'Employer Work Experience') {
 							$.ajax({
 									type : 'POST',
-									url : 'deleteEmployerWorkExp',
+									url : '${pageContext.request.contextPath}/deleteEmployerWorkExp',
 									contentType : 'application/json',
 									dataType : 'json',
 									data : JSON.stringify({id : idtodelete}),
@@ -70,7 +70,7 @@
 						} else if (itemToBeDeleted == 'Education') {
 							$.ajax({
 									type : 'POST',
-									url : 'deleteEducation',
+									url : '${pageContext.request.contextPath}/deleteEducation',
 									contentType : 'application/json',
 									dataType : 'json',
 									data : JSON.stringify({id : idtodelete}),
@@ -100,7 +100,7 @@
 					} else if (itemToBeDeleted == 'Language') {
 							$.ajax({
 									type : 'POST',
-									url : 'deleteLanguage',
+									url : '${pageContext.request.contextPath}/deleteLanguage',
 									contentType : 'application/json',
 									dataType : 'json',
 									data : JSON.stringify({id : idtodelete}),

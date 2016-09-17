@@ -85,7 +85,7 @@
 	$("#saveLanguage").on("click",function() {
 			$.ajax({
 				type : 'POST',
-				url : 'saveLanguage',
+				url : '${pageContext.request.contextPath}/saveLanguage',
 				contentType : 'application/json',
 				dataType : 'json',
 				data : JSON.stringify({
@@ -106,7 +106,7 @@
 	$("#updateLanguage").on("click",function() {
 		$.ajax({
 			type : 'POST',
-			url : 'updateLanguage',
+			url : '${pageContext.request.contextPath}/updateLanguage',
 			contentType : 'application/json',
 			dataType : 'json',
 			data : JSON.stringify({

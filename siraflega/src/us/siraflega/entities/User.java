@@ -11,8 +11,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-@Entity(name="USER")
+@Entity(name="USERS")
+@Table(name="USERS")
 public class User {
 	@Id
 	@GeneratedValue

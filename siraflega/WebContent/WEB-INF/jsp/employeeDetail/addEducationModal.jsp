@@ -124,7 +124,7 @@
 							source : function(query, process) {
 								$.ajax({
 									type : 'GET',
-									url : 'educationInistitiute.html',
+									url : '${pageContext.request.contextPath}/educationInistitiute.html',
 									contentType : 'application/json',
 									dataType : 'json',
 									data : {
@@ -165,7 +165,7 @@
 						$("#saveEducation").on("click", function() {
 							$.ajax({
 								type : 'POST',
-								url : 'saveEducation',
+								url : '${pageContext.request.contextPath}/saveEducation',
 								contentType : 'application/json',
 								dataType : 'json',
 								data : JSON.stringify({
@@ -191,7 +191,7 @@
 						$("#updateEducation").on("click", function() {
 							$.ajax({
 								type : 'POST',
-								url : 'updateEducation',
+								url : '${pageContext.request.contextPath}/updateEducation',
 								contentType : 'application/json',
 								dataType : 'json',
 								data : JSON.stringify({

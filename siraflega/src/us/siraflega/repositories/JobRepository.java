@@ -30,7 +30,7 @@ public interface JobRepository extends JpaRepository<PostedJob, Integer>{
 	List<String> findJobCatigoriesContainsDescriptionStarts(@Param("term") String term);
 	@Query("SELECT pj FROM PostedJob as pj where pj.position=:term")// limit :starts,:size"
 	Page<PostedJob> findByTitle(@Param("term") String categorySelected,Pageable pageable);//,@Param("starts") int starts,@Param("size") int size,String order
-	@Query(value="SELECT count(*) FROM siraflega_db.posted_job where position= ?1",nativeQuery=true)
+	@Query(value="SELECT count(*) FROM PostedJob where position= ?1",nativeQuery=true)
 	int countCatigory(String catigory);
 	
 	@Query("SELECT DISTINCT pj.position FROM PostedJob as pj ")
