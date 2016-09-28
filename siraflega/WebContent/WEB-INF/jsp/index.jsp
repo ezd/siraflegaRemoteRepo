@@ -131,7 +131,7 @@ ul {
 							</div>
 							<div class="subTitle">
 								<p>
-									For <a href="index.php">${postedJob.company.name}</a> from
+									For <a href="${pageContext.request.contextPath}/company/${postedJob.company.id}.html">${postedJob.company.name}</a> from
 									<fmt:formatDate type="date" value="${postedJob.postedDate}" />
 									to
 									<fmt:formatDate type="date" value="${postedJob.deadLine}" />

@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 
 import us.siraflega.entities.Company;
 import us.siraflega.entities.PostedJob;
+import us.siraflega.services.CompanyService;
 import us.siraflega.services.PostedJobService;
 
 @Controller
@@ -26,6 +27,8 @@ public class IndexController {
 	int pageNumber;
 	@Autowired
 	PostedJobService postedJobService;//
+	@Autowired
+	CompanyService companyService;
 	@RequestMapping({"/index","/"})
 	public String getIndex(Model model){
 		int totalJobsSize=postedJobService.getPostedJobsSize();
@@ -52,6 +55,7 @@ public class IndexController {
 		return "index";
 	}
 	//
+	
 	@RequestMapping(value="/jobPosts/{category}/{number}")
 	public String pageJobs(Model model,@PathVariable("category") String category, @PathVariable("number") int pageNumber){
 		int totalJobsSize=postedJobService.getPostedJobsSize(category);
