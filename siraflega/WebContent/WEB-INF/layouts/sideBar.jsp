@@ -6,14 +6,13 @@
 
 </div>
 <div class="container-fluid">
-	<h4>Advertisement</h4>
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-		Inventore, perspiciatis adipisci accusamus laudantium odit aliquam
-		repellat tempore quos aspernatur vero.</p>
-	<h4>Advertisement</h4>
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-		Inventore, perspiciatis adipisci accusamus laudantium odit aliquam
-		repellat tempore quos aspernatur vero.</p>
+	<h4>Lonely Planet</h4>
+	<p>Welcome to Ethiopia
+
+In Ethiopia you’d be hard-pressed to find a better combination of nature and culture. The best part: there’ll be no crowds to hinder the experience.
+<a href="https://www.lonelyplanet.com/ethiopia">more...</a></p>
+	<h4>Ethiotube</h4>
+	<p>EthioTube is Ethiopia's premier destination to watch all things Ethiopia and home of Fugera News.<a href="http://www.ethiotube.net/">more ...</a></p>
 </div>
 <!-- <form>Name:<input type="text" />Email:<input type="text"/><input type="submit" value="Alert me"></form> -->
 

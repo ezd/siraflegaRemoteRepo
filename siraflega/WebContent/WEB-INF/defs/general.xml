@@ -13,6 +13,7 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
 		<put-attribute name="current" value="index" />
 	</definition>
+	
 	<definition name="companypage" extends="common">
 		<put-attribute name="title" value="Company detail" />
 		<put-attribute name="body" value="/WEB-INF/jsp/companydeatil.jsp" />

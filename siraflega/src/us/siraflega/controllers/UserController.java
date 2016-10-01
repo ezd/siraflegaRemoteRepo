@@ -795,14 +795,7 @@ public class UserController {
 				//"redirect:/employerPosts/1.html";
 	}
 	
-	@RequestMapping(value="/company/{companyId}", method=RequestMethod.GET)
-	String getCampany(Model model,@PathVariable int companyId){
-		System.out.println("it is comiiiiiiiiiiiiiiiiiiiiiiiiiiiiiing");
-		
-		Company company=companyService.getCompany(companyId);
-		model.addAttribute("company",company);
-		return "companypage";
-	}
+
 	@RequestMapping(value="/jobPost/{jobId}", method=RequestMethod.GET)
 	String preview(Model model, @PathVariable int jobId){ 
 		PostedJob postedJob=postedJobService.getPostdJob(jobId);

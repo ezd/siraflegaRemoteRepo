@@ -233,10 +233,11 @@ h5 {
 						href="<spring:url value="/employerPosts/1.html" />">My Posts</a></li>
 				</security:authorize>
 				<security:authorize access="!isAuthenticated()">
-					<li class="${current == 'register' ? 'active' : ''}"><a
+					<li class="${current == 'register' ? 'active' : ''}" id="registerlink"><a
 <%-- 						href="<spring:url value="/register.html" />" --%>
 							href="index.html"
 						title="Coming soon">Register</a></li>
+						
 				</security:authorize>
 				<security:authorize access="!isAuthenticated()">
 					<li class="${current == 'login' ? 'active' : ''}"><a
@@ -266,4 +267,16 @@ h5 {
 		<footer> <tiles:insertAttribute name="footer" /> </footer>
 	</div>
 </body>
+<script>
+var oldData;
+$("#registerlink").mouseenter(
+		oldData=$("#registerlink").text();
+		  function() {
+			  $("#registerlink a").text("Coming soon");
+		  });
+$("#registerlink").mouseleave(
+		  function() {
+			  $("#registerlink a").text(oldData);
+		  });
+</script>
 </html>
