@@ -14,6 +14,9 @@ public class WorkeService {
 
 	public Work saveExpriance(Work newWorkExp) {
 		// TODO Auto-generated method stub
+		if (newWorkExp.isCurrentlyWorking()){
+			workExperienceRepository.setOffCurrentlyWorking(false);
+		}
 		return workExperienceRepository.save(newWorkExp);
 	}
 
@@ -24,8 +27,9 @@ public class WorkeService {
 
 	public Work updateExpriance(Work existingWorkExp) {
 		// TODO Auto-generated method stub
-		if (existingWorkExp.isCurrentlyWorking())
+		if (existingWorkExp.isCurrentlyWorking()){
 			workExperienceRepository.setOffCurrentlyWorking(false);
+		}
 		Work savedEx = workExperienceRepository.save(existingWorkExp);
 		return savedEx;
 	}

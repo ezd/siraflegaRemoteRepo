@@ -68,6 +68,10 @@ public class UserService {
 		exisitingUser.setPassword(encoder.encode(exisitingUser.getPassword()));
 		return userRepository.save(exisitingUser);
 	}
+	public User saveUserWithOutPassword(User exisitingUser) {
+		// TODO Auto-generated method stub
+		return userRepository.save(exisitingUser);
+	}
 
 	public User getUserByEmail(String newUserEmail) {
 		// TODO Auto-generated method stub

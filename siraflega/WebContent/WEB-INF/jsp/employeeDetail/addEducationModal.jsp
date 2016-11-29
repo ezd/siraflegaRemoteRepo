@@ -13,7 +13,7 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">Edit work experience</h4>
+				<h4 class="modal-title" id="myModalLabel">Edit education</h4>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal">
@@ -28,7 +28,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="educationLevel" class="col-sm-3 control-label">Level:</label>
+						<label for="educationLevel" class="col-sm-3 control-label">Degree:</label>
 						<div class="col-sm-9">
 							<input type="text" class="form-control " id="educationLevel" />
 						</div>
@@ -67,7 +67,7 @@
 						<label for="educationRemark" class="col-sm-3 control-label">Remark:</label>
 						<div class="col-sm-9">
 							<textarea id="educationRemark" class="form-control" cols="30"
-								rows="5"></textarea>
+								rows="5" placeholder="Use up to 1000 character" maxlength="1000"></textarea>
 						</div>
 					</div>
 					<!-- 				ends here -->
@@ -180,7 +180,7 @@
 									var list = addEducationData(data);
 									$('#educationList').prepend(list);
 									$('#addEducationModal').modal('hide');
-// 									$.clearFormFields(this);
+									clearFormFields();
 								},
 								error : function(ts) {
 									//alert(ts.responseText);
@@ -209,7 +209,7 @@
 									$('#educationList').children().eq(indexToBeUpdated).replaceWith(list);
 									$('#educationList').listview('refresh');
 									$('#addEducationModal').modal('hide');
-// 									$.clearFormFields(this);
+									clearFormFields();
 								},
 								error : function(ts) {
 									//alert(ts.responseText);
@@ -217,11 +217,13 @@
 							});
 						});
 						//ajax for updating work exp
-						$.clearFormFields = function(area) {
-							$(area)
-									.find(
-											'input[type=text], input[type=password], input[type=number],input[type=url], input[type=email], textarea')
-									.val('');
+						function clearFormFields() {
+							$('#educationInstitutionName').val('');
+							$('#educationLevel').val('');
+							$('#educationTitle').val('');
+							$('#educationDatetimepickerStart').val('');
+							$('#educationDatetimepickerEnd').val('');
+							$('#educationRemark').val('');
 						};
 						$('#addEducationModal').on('hidden.bs.modal',
 								function(e) {

@@ -1,4 +1,5 @@
 package util;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,11 +36,18 @@ public class EmailAlert{
 	
 	@Autowired
 	PostedJobService postedJobService=new PostedJobService();
+	
+			//* "0 0 * * * *" = the top of every hour of every day.
+			//	* "*/10 * * * * *" = every ten seconds.
+			//* "0 0 8-10 * * *" = 8, 9 and 10 o'clock of every day.
+			//* "0 0/30 8-10 * * *" = 8:00, 8:30, 9:00, 9:30 and 10 o'clock every day.
+			//* "0 0 9-17 * * MON-FRI" = on the hour nine-to-five weekdays
+			//* "0 0 0 25 12 ?" = every Christmas Day at midnight
 
-	@Scheduled(cron="0 0 1 * * MON,THU")
+	@Scheduled(cron="0 0/2 0 * * * ")
 	public void execute(){
-		int i=0;
-		i=i+10;
+		eas.getRequestedjobspool().clear();
+		eas.getNamespool().clear();
 		//get email address and subject
 		List<EmailAlertRequest> verifiedRequests= eas.getVerifiedRequests();
 		//get job by subject
@@ -62,7 +70,8 @@ public class EmailAlert{
 //		for(int i=0;i<this.getRequestedjobspool().size();i++){
 //			
 //		}
-		i=10;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+		String today = sdf.format(new Date());
 		for(Map.Entry<String, List<PostedJob>> entry:eas.getRequestedjobspool().entrySet()){
 			String email=entry.getKey().toString();
 			String name=eas.getNamespool().get(email).toString();
@@ -70,7 +79,7 @@ public class EmailAlert{
 			eas.setName(name);
 			eas.setPositions(positions);
 			String messages=eas.getPositionmessage(); 
-			eas.sendemailalert(email, "check if it works", "it should work", messages);
+			eas.sendemailalert(email, "Jobs from siraflega.com on "+today, "List of jobs newly posted on siraflega.com", messages);
 		}
 		//eas.sendemailalert("biliyala.ezd2@gmail.com",eas.getPositionmessage("email rescipiant name", new ArrayList<PostedJob>()),"msg desc","msg subj");
 	}

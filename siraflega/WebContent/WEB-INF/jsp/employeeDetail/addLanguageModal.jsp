@@ -13,14 +13,14 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">Edit work experience</h4>
+				<h4 class="modal-title" id="myModalLabel">Edit sills</h4>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal">
 					<input type="hidden" id="languageEditId" /> <input type="hidden"
 						id="languageEditIndex" />
 					<div class="form-group">
-						<label for="languageName" class="col-sm-3 control-label">Language:</label>
+						<label for="languageName" class="col-sm-3 control-label">Skill:</label>
 						<div class="col-sm-9">
 							<input type="text" class="form-control " id="languageName" />
 						</div>
@@ -31,12 +31,13 @@
 						<div class="col-sm-9">
 						<select id="proficiencyLevel"
 								class="form-control selectpicker">
-								<option value="No Practical Proficiency">No Practical Proficiency</option>
+								<option value="No Practical Proficiency">Beginner Proficiency</option>
 								<option value="Elementary Proficiency">Elementary Proficiency</option>
 								<option value="Limited Working Proficiency">Limited Working Proficiency</option>
 								<option value="Minimum Professional Proficiency">Minimum Professional Proficiency</option>
+								<option value="Medium Professional Proficiency">Medium Professional Proficiency</option>
 								<option value="Full Professional Proficiency">Full Professional Proficiency</option>
-								<option value="Native Proficiency">Native Proficiency</option>
+								<option value="Expert proficiency">Expert level Proficiency</option>
 								</select>
 						</div>
 					</div>
@@ -56,6 +57,9 @@
 </div>
 <script type="text/javascript">
 	//prepare exp list
+	function clearFormFields() {
+							$('#languageName').val('');
+						};
 	function addLanguageData(data) {
 		var rowToAdd = '<tr>' + '<td>'
 				+ data.name
@@ -96,7 +100,7 @@
 					var row = addLanguageData(data);
 					$('#languageProfLevel > tbody:last-child').append(row);
 					$('#addLanguageModal').modal('hide');
-					// 									$.clearFormFields(this);
+					clearFormFields();
 				},
 				error : function(ts) {
 					//alert(ts.responseText);
@@ -119,7 +123,7 @@
 				var row = addLanguageData(data);
 				$('#languageProfLevel tbody tr').eq(indexToBeUpdated).replaceWith(row);
 				$('#addLanguageModal').modal('hide');
-				// 									$.clearFormFields(this);
+				clearFormFields();
 			},
 			error : function(ts) {
 				//alert(ts.responseText);

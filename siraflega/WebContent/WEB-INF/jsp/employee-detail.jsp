@@ -34,11 +34,12 @@
 				</h2>
 			</div>
 
-			<strong class="dicorated">Age: </strong>${employee.age }<br> <strong
-				class="dicorated">Sex: </strong>${employee.sex=='F'?'Female':'Male' }<br>
+			<strong class="dicorated">Age: </strong>${employee.age==0?'':employee.age }<br> <strong
+				class="dicorated">Sex: </strong>${employee.sex=='F'?'Female':(employee.sex=='M'?'Female':'') }<br>
 			<strong class="dicorated">Address: </strong>${employee.address }<br>
 			<strong class="dicorated">Telephone: </strong>${employee.telephone}<br>
 			<strong class="dicorated">E-mail: </strong>${userEmail}<br>
+			<div style="text-align: justify;"><strong class="dicorated">Summary: </strong>${employee.summary}</div><br>
 			<c:if test="${!isNewEmployee}">
 <%-- 			<c:out value="${!isNewEmployee}"></c:out> --%>
 				<div class="titleTwo">
@@ -143,7 +144,7 @@
 					</c:forEach>
 				</ul>
 				<div class="titleTwo">
-					<span class="titleTwoText">Languages</span>
+					<span class="titleTwoText">Skills</span>
 					<security:authorize access="isAuthenticated()">
 						<button type="button" class="btn  " id="addLanguageBtn"
 							data-toggle="modal" data-target="#addLanguageModal">
@@ -157,7 +158,7 @@
 					<thead
 						style="background-color: #959697; color: #fff; font-weight: bold;">
 						<tr>
-							<td>Language</td>
+							<td>Skill</td>
 							<td>Proficiency Level</td>
 							<td></td>
 						</tr>

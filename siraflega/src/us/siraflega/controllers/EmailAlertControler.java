@@ -58,8 +58,6 @@ public class EmailAlertControler {
 		emailAlertRequest.setRecEmailAddress(alertRequesterEmail);
 		emailAlertRequest.setRecName(alertRequesterName);
 		emailAlertRequest.setPosition(emailAlertRequestPosition);
-		int i=0;
-		i=i+10;
 		String verificatinmsgs[]=emailAlertService.getVerificationMessage(alertRequesterEmail,emailAlertRequestPosition).split("#");
 		emailAlertRequest.setVerifyKey(verificatinmsgs[0]);
 		if(emailAlertService.saveAlertRequest(emailAlertRequest)){

@@ -86,4 +86,9 @@
 		<put-attribute name="current" value="previewJob" />
 		<put-attribute name="body" value="/WEB-INF/jsp/jobPost.jsp" />
 	</definition>
+	<definition name="applyforjob" extends="common">
+		<put-attribute name="title" value="Job application" />
+		<put-attribute name="current" value="previewJob" />
+		<put-attribute name="body" value="/WEB-INF/jsp/application.jsp" />
+	</definition>
 </tiles-definitions>

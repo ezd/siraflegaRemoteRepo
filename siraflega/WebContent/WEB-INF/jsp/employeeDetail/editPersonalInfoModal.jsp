@@ -30,48 +30,54 @@
 							<label for="firstName" class="col-sm-3 control-label">First
 								Name:</label>
 							<div class="col-sm-9">
-								<frm:input path="firstName" class="form-control" />
+								<form:input path="firstName" class="form-control" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="middleName" class="col-sm-3 control-label">Middle
 								Name:</label>
 							<div class="col-sm-9">
-								<frm:input path="middleName" class="form-control" />
+								<form:input path="middleName" class="form-control" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="lastName" class="col-sm-3 control-label">Last
 								Name:</label>
 							<div class="col-sm-9">
-								<frm:input path="lastName" class="form-control" />
+								<form:input path="lastName" class="form-control" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="age" class="col-sm-3 control-label">Age:</label>
 							<div class="col-sm-9">
-								<frm:input path="age" class="form-control" />
+								<form:input path="age" class="form-control" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="sex" class="col-sm-3 control-label">Sex:</label>
 							<div class="col-sm-9">
-								<frm:select path="sex">
-									<frm:option value="F">Female</frm:option>
-									<frm:option value="M">Male</frm:option>
-								</frm:select>
+								<form:select path="sex">
+									<form:option value="F">Female</form:option>
+									<form:option value="M">Male</form:option>
+								</form:select>
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="address" class="col-sm-3 control-label">Address:</label>
 							<div class="col-sm-9">
-								<frm:input path="address" class="form-control" />
+								<form:input path="address" class="form-control" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="telephone" class="col-sm-3 control-label">Telephone:</label>
 							<div class="col-sm-9">
-								<frm:input path="telephone" class="form-control" />
+								<form:input path="telephone" class="form-control" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="summary" class="col-sm-3 control-label">Summary about yourself:</label>
+							<div class="col-sm-9">
+								<form:textarea path="summary" class="form-control" rows="7" cols="30" maxlength="1000" placeholder="Use up to 1000 character"/>
 							</div>
 						</div>
 

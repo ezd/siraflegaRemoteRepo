@@ -19,6 +19,7 @@
  font-size: 20px; 
  line-height: 20px; 
  margin: 0; 
+ 
 }
 
 .title {
@@ -60,7 +61,8 @@
 																<span style="color: red">Deadline has passed</span>
 															</c:when>
 															<c:when test="${postedJob.deadLine ge currentDate}">
-																<span style="color: blue">On progress</span>
+<!-- 															/apply/{jobId} -->
+																<span style="color: green">On progress<a href="${pageContext.request.contextPath}/apply/${postedJob.id}" style="float: right"><strong>Apply</strong></a></span>
 															</c:when>
 														</c:choose>
 													</p>

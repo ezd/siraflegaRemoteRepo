@@ -72,10 +72,10 @@
 	});
 	$('#workExpList').delegate('.deleteWorkBtn','click',function(e) {
 		var parrentUli = $(this).parent().parent();
-		var selectedLisIndex = $(this).parent().index();
+		var selectedLisIndex = $(this).parent().parent('li').index();
 		var idtodelete = $(this).attr('data-idToDelete');
 		$('#nameItemToBeDeleted').html("Work Experience");
-		$('#deleteConfirmationMessage').html("Do you want the work exprinace to be deleted?");
+		$('#deleteConfirmationMessage').html("Are you sure you want to delete the work exprinace from the list?");
 		$('#deleteConfirmedBtn').attr('data-idToBeDelete',idtodelete);
 		$('#deleteConfirmedBtn').attr('data-deleteItem','Work Experience');
 		$('#deleteConfirmedBtn').attr('data-deleteIndex',selectedLisIndex);
@@ -83,10 +83,10 @@
 	});
 	$('#educationList').delegate('.deleteEducationBtn','click',function(e) {
 		var parrentUli = $(this).parent().parent();
-		var selectedLisIndex = $(this).parent().index();
+		var selectedLisIndex = $(this).parent().parent('li').index();
 		var idtodelete = $(this).attr('data-educationToDelete');
 		$('#nameItemToBeDeleted').html("Education");
-		$('#deleteConfirmationMessage').html("Do you want the Education to be deleted?");
+		$('#deleteConfirmationMessage').html("Are you sure you want to delete the education from the list?");
 		$('#deleteConfirmedBtn').attr('data-idToBeDelete',idtodelete);
 		$('#deleteConfirmedBtn').attr('data-deleteItem','Education');
 		$('#deleteConfirmedBtn').attr('data-deleteIndex',selectedLisIndex);
@@ -97,7 +97,7 @@
 		var selectedLisIndex = $(this).parent().parent().index();
 		var idtodelete = $(this).attr('data-languageToDelete');
 		$('#nameItemToBeDeleted').html("Language");
-		$('#deleteConfirmationMessage').html("Do you want the Language to be deleted?");
+		$('#deleteConfirmationMessage').html("Are you sure you want to delete the language from the list?");
 		$('#deleteConfirmedBtn').attr('data-idToBeDelete',idtodelete);
 		$('#deleteConfirmedBtn').attr('data-deleteItem','Language');
 		$('#deleteConfirmedBtn').attr('data-deleteIndex',selectedLisIndex);

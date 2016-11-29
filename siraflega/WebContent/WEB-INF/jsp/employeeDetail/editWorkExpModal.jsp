@@ -75,7 +75,7 @@
 						<label for="description" class="col-sm-3 control-label">Description:</label>
 						<div class="col-sm-9">
 							<textarea name="description" id="wdescription"
-								class="form-control editDescription" cols="30" rows="5"></textarea>
+								class="form-control editDescription" cols="30" rows="5" placeholder="Use up to 1000 character" maxlength="1000"></textarea>
 						</div>
 					</div>
 
@@ -196,9 +196,13 @@
 								}),
 								success : function(data) {
 									var list = addExData(data);
+									if(data.isCurrentlyWorking==true){
 									$('#workExpList').prepend(list);
+									}else{
+										$('#workExpList').append(list);
+									}
 									$('#editWorkExpModal').modal('hide');
-									$.clearInput(this);
+									clearFormFields();
 								},
 								error : function(ts) {
 									//alert(ts.responseText);
@@ -225,21 +229,12 @@
 																}),
 														success : function(data) {
 															// 	populateExData(data);
-															var indexToBeUpdated = $(
-																	'#editWorkExpModal .editIndex')
-																	.val();
+															var indexToBeUpdated = $('#editWorkExpModal .editIndex').val();
 															var list = addExData(data);
-															$('#workExpList')
-																	.children()
-																	.eq(indexToBeUpdated).replaceWith(list);
-															$('#workExpList')
-																	.listview(
-																			'refresh');
-															$(
-																	'#editWorkExpModal')
-																	.modal(
-																			'hide');
-															$.clearInput(this);
+															$('#workExpList').children().eq(indexToBeUpdated).replaceWith(list);
+															$('#workExpList').listview('refresh');
+															$('#editWorkExpModal').modal('hide');
+															clearFormFields();
 														},
 														error : function(ts) {
 															//alert(ts.responseText);
@@ -248,12 +243,17 @@
 										});
 						//ajax to delete work exp
 
-						$.clearFormFields = function(area) {
-							$(area).find('input[type=text], input[type=password], input[type=number],input[type=url], input[type=email], textarea').val('');
+						function clearFormFields() {
+							$('#wpostion').val('');
+							$('#datetimepicker6').val('');
+							$('#datetimepicker7').val('');
+							$('#isCurrentlyChk').prop('checked', false);
+							$('#wdescription').val('');
+							
 						};
 						$('#editWorkExpModal').on('hidden.bs.modal',
 								function(e) {
-									$.clearFormFields(this);
+							clearFormFields();
 								});
 
 					});

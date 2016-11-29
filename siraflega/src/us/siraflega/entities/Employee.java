@@ -3,10 +3,12 @@ package us.siraflega.entities;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -25,7 +27,10 @@ public class Employee {
 	String address;
 	int age;
 	String sex;
-	String skills;
+	@Lob
+	@Column(length = 10000)
+	String summary;
+	
 	@OneToMany(mappedBy="employee",cascade=CascadeType.REMOVE)
 	List<Education> educations;
 	@OneToMany(mappedBy="talkedby",cascade=CascadeType.REMOVE)
@@ -99,11 +104,11 @@ public class Employee {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	public String getSkills() {
-		return skills;
+	public String getSummary() {
+		return summary;
 	}
-	public void setSkills(String skills) {
-		this.skills = skills;
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
 	public List<Education> getEducations() {
 		return educations;

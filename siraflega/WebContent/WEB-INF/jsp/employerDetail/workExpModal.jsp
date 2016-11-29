@@ -194,7 +194,13 @@
 					}),
 					success : function(data) {
 						var list = addExData(data);
-						$('#workExpList').prepend(list);
+						if(data.isCurrentlyWorking==true){
+							$('#workExpList').prepend(list);
+						}else
+							{
+							$('#workExpList').append(list);
+							}
+						
 						$('#editWorkExpModal').modal('hide');
 					},
 					error : function(ts) {
@@ -202,7 +208,7 @@
 					}
 				});
 			});
-						//ajax for updating work exp
+						//ajax for updating work exp should be added
 			$("#updateEmployerWrokExp").on("click",function() {
 				$.ajax({
 					type : 'POST',
@@ -234,8 +240,10 @@
 						//ajax to delete work exp
 
 						$.clearFormFields = function(area) {
-							$(area).find('input[type=text], input[type=password], input[type=number],input[type=url], input[type=email], textarea')
-									.val('');
+							$('#wpostion').val('');
+// 							$('#datetimepicker6').val('');
+// 							$('#datetimepicker7').val('');
+							$('#isCurrently').prop('checked', false);
 						};
 						$('#employerWorkExpModal').on('hidden.bs.modal',
 								function(e) {

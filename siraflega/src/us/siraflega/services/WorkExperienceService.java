@@ -17,12 +17,16 @@ public class WorkExperienceService {
 	}
 
 	public WorkExperience updateExpriance(WorkExperience workExpToBeEdited) {
+		if(workExpToBeEdited.isCurrentlyWorking()){
+			workExperienceRepository.setOffCurrentlyWorking(false);
+		}
 		return workExperienceRepository.save(workExpToBeEdited);
 	}
 
 	public WorkExperience saveExpriance(WorkExperience newWorkExp) {
-		if(newWorkExp.isCurrentlyWorking())
+		if(newWorkExp.isCurrentlyWorking()){
 			workExperienceRepository.setOffCurrentlyWorking(false);
+		}
 		WorkExperience savedEx = workExperienceRepository.save(newWorkExp);
 		return savedEx;
 	}

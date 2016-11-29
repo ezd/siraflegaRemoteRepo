@@ -44,7 +44,10 @@
 	z-index: 5000;
 }
 </style>
-
+<!-- style for jquery tab -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+<!-- style for jquery eded -->
 <!-- cdn starts here -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
@@ -224,7 +227,7 @@ h5 {
 				<security:authorize
 					access="hasAnyRole('ROLE_EMPLOYEE','ROLE_EMPLOYER')">
 					<li class="${current == 'userDetail' ? 'active' : ''}"><a
-						href="<spring:url value="/userDetail.html" />">My User Info</a></li>
+						href="<spring:url value="/userDetail.html" />">My Account</a></li>
 					<li class="${current == 'account' ? 'active' : ''}"><a
 						href="<spring:url value="/account.html" />">My Profile</a></li>
 				</security:authorize>
@@ -234,8 +237,8 @@ h5 {
 				</security:authorize>
 				<security:authorize access="!isAuthenticated()">
 					<li class="${current == 'register' ? 'active' : ''}" id="registerlink"><a
-<%-- 						href="<spring:url value="/register.html" />" --%>
-							href="index.html"
+						href="<spring:url value="/register.html" />"
+<%--							href="index.html" --%>
 						title="Coming soon">Register</a></li>
 						
 				</security:authorize>

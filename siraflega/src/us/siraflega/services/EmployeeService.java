@@ -37,7 +37,7 @@ public class EmployeeService {
 	}
 public List<WorkExperience> getExpeianceWithCompany(Employee employee){
 	List<WorkExperience> expriances= workExperienceRepository
-			.findByWorkedByOrderByStartsDesc(employee);
+			.findByWorkedByOrderByEndsDesc(employee);
 	for(WorkExperience experiance:expriances){
 		
 		Company company=companyRepository.findByExperienceRefers(experiance);
@@ -69,6 +69,10 @@ public List<WorkExperience> getExpeianceWithCompany(Employee employee){
 	public Employee saveEmployeeInfo(Employee employee) {
 		return employeeRepository.save(employee);
 		
+	}
+	public Employee getEmployeeBy(Integer applicantId) {
+		// TODO Auto-generated method stub
+		return employeeRepository.findOne(applicantId);
 	}
 
 }

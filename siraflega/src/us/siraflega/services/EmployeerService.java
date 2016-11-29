@@ -35,7 +35,7 @@ public class EmployeerService {
 	public Employer getFullEmployerBy(String email) {
 		Employer employer=getEmployerBy(email);
 		if(employer!=null){
-		List<Work>employerWorks=workRepository.findByWorkedByOrderByStartsFromDesc(employer);
+		List<Work>employerWorks=workRepository.findByWorkedByOrderByUptoDesc(employer);
 		employer.setWorks(employerWorks);
 //		Company company=companyRepository.findByAgents(employer);
 		//employer.setWorksFor(company);

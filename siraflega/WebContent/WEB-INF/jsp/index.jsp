@@ -255,6 +255,8 @@ ul {
 		$('#email_alertme').val(null);
 // 		$('#position_alertme').val('selectpositon');
 // 		$('#position_alertme').html('Select position');
+		$("#position_alertme option:selected").prop("selected", false);
+		$("#position_alertme").prop("selectedIndex", 0);
 		$("#position_alertme").val($("#position_alertme option:first").val());
 		$("#position_alertme option:first").attr('selected','selected');
 		$('#alert_errormsg').css('display','none');
@@ -266,14 +268,10 @@ ul {
 		  return regex.test(email);
 	}
 		
-		$('#btnClose').click(function(){
-			clearAlertForm();
-			});
-		$('#btnCancel').click(function(){
-			clearAlertForm();
-			});
+		
 		
 		$('#btnAlert').click(function(){
+			clearAlertForm();
 			var aname=$('#name_alertme');
 			var aemail=$('#email_alertme');
 			var aposition=$('#position_alertme');

@@ -14,7 +14,7 @@ import us.siraflega.entities.WorkExperience;
 
 public interface WorkRepository extends JpaRepository<Work, Integer>{
 
-	List<Work> findByWorkedByOrderByStartsFromDesc(Employer employer);
+	List<Work> findByWorkedByOrderByUptoDesc(Employer employer);
 
 	@Modifying
 	@Query("UPDATE Work w set w.currentlyWorking = ?1")

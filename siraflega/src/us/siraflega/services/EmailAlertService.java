@@ -114,8 +114,10 @@ public class EmailAlertService {
 		this.positions = positions;
 	}
 
-	static Random rand = new Random();
-	int intrandom = rand.nextInt();
+	int getRandomNumber(){
+		Random rand = new Random();
+		return rand.nextInt();
+	}
 
 	public void setPositionmessage(String positionmessage) {
 		this.positionmessage = positionmessage;
@@ -139,8 +141,8 @@ public class EmailAlertService {
 			if (!oldPosition.equals(job.getPosition())) {
 				messagetosend += "<h3> New " + job.getPosition() + " jobs<h3>";
 			}
-			messagetosend += "<div style=\"width:500px;text-align: justify; \">"
-					+ "<a href=\"www.google.com/jobid34344\"><h3>" + job.getPosition() + " for "
+			messagetosend += "<div style=\"text-align: justify; \">"
+					+ "<a href=\"http://siraflega.com/jobPost/"+job.getId()+".html\"><h3>" + job.getPosition() + " for "
 					+ job.getCompany().getName() + "</h3></a>" + "<p style=\"margin-top: -10px;\">"
 					+ this.shortString(job.getDiscription()) + ".</p>" + "</div>";
 			oldPosition = job.getPosition();
@@ -150,13 +152,15 @@ public class EmailAlertService {
 	}
 
 	public String getVerificationMessage(String email,String position) {
-///verifyEmailAlert/{verifykey}/{email}/{position}
-		String key=this.intrandom+"";
+///verifyEmailAlert/{verifykey}/{email}/{position} 
+		String key=this.getRandomNumber()+"";
 		return key+"#Thank you for requesting email verification "
 				+ "from Siraflega&copy; for <b>"+position+"</b> positions. "
 				+ "Pleas follow the following link to <a href=\"http://siraflega.com/verifyEmailAlert?e="
 				+ email + "&&k=" + key + "&&p="+position+"\">verify your email alert request.</a>";
 	}
+	//http://localhost:8080/siraflega for local version
+	//http://siraflega.com/ for online version
 
 	public void sendemailalert(String to, String subject, String description, String messageText) {
 		// TODO Auto-generated method stub
@@ -170,7 +174,7 @@ public class EmailAlertService {
 		props.put("mail.smtp.auth", "true");
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("seatac.test@gmail.com", "test654321");
+				return new PasswordAuthentication("siraflega2016@gmail.com", "2016siraflega");
 			}
 		});
 		try {

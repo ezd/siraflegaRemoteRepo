@@ -66,7 +66,7 @@ public class InitDBService {
 	@Autowired
 	EmailAlertRepository emailAlertRepository;
 	
-	/*
+	
 	@PostConstruct
 	public void init() {
 		
@@ -139,7 +139,7 @@ public class InitDBService {
 		employee.setMiddleName("EmpMN");
 		employee.setLastName("EmpLN");
 		employee.setSex("M");
-		employee.setSkills("C++,Java,PHP");
+		employee.setSummary("I am a software developer with years of experience working with different software developer companies using different technologies. I have both theoretical and practical knowledge which are required for software engineering. I have participated on all phases of SDLC and have used different techniques and technologies in each phase. I have worked in water fall as well as agile(BDD,TDD) settings. I have worked as junior programmer, senior programmer and team leader.I have experience in  bash, Java, Servlets, JSP, JSF, Spring framework, Hibernate,J2EE, Ajax, Maven, JavaScript, CSS, PHP, Drupal, Ruby and Ruby on rails on different projects. In general my specialty is on the area of Java, PHP and Ruby. I have worked as a software developer at Ericsson on cloud computing project (virtualization). I am passionate about programming and dedicated person. I have excellent team working sprite and interpersonal skills which I developed them through working with several coworkers and through several clients interaction for requirement elicitation, effort and cost estimation, statues reporting and user assistance. I can speak English fluently and Swedish well.");
 		employee.setTelephone("0911-701777");
 		employee.setAddress("Kolfea kifleketema, Addis Ababa, Ethiopia");
 		// education1
@@ -398,7 +398,7 @@ for(int i=0;i<12;i++){
 		
 		EmailAlertRequest ear3=new EmailAlertRequest();
 		ear3.setPosition(job2.getPosition());
-		ear3.setRecEmailAddress("seatac.test@gmail.com");
+		ear3.setRecEmailAddress("biliyala.ezd2@gmail.com");
 		ear3.setRecName("Kebede");
 		ear3.setVerified(true);
 		ear3.setVerifyKey("vcx12903843");
@@ -422,6 +422,6 @@ for(int i=0;i<12;i++){
 //			e.printStackTrace();
 //		}
 		
-	}*/
+	}
 
 }

@@ -12,7 +12,7 @@ import us.siraflega.entities.WorkExperience;
 
 public interface WorkExperienceRepository extends JpaRepository<WorkExperience, Integer>{
 
-	List<WorkExperience> findByWorkedByOrderByStartsDesc(Employee employee);
+	List<WorkExperience> findByWorkedByOrderByEndsDesc(Employee employee);
 	@Modifying
 	@Query("UPDATE WorkExperience wx set wx.currentlyWorking = ?1")
 	@Transactional

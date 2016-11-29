@@ -60,19 +60,31 @@ p.title {
 /* #personalInformation div{ */
 /* border: 1px solid red; */
 /* } */
+#errorMsg{
+display: none;
+
+}
+#successMsg{
+display: none;
+}
+.userInput{
+display: none;
+}
+#saveChangeBtn{
+display: none;
+}
+#cancelChangeBtn{
+display: none;
+}
 </style>
 <script type="text/javascript">
+$( function() {
+    $( "#tabs" ).tabs({
+      collapsible: false
+    });
+  } );
 	$(function() {
-
-		$('#errorMsg').hide();
-		$('.userInput').hide();
-		$('.lables').show();
-		$('#saveChangeBtn').hide();
-		$('#cancelChangeBtn').hide();
-		$('#editUserBtn').show();
-		$('#userPassUpdateArea').hide();
-		$('#passwordChangeRequest').show();//passwordChangeRequest passwordChangeAction
-		$('#passwordChangeAction').hide();
+		
 		$('#editUserBtn').on('click', function() {
 			$('#saveChangeBtn').show();
 			$('#cancelChangeBtn').show();
@@ -80,106 +92,34 @@ p.title {
 			$('.lables').hide();
 			$('#editUserBtn').hide();
 		});
-		$('#passwordChangeRequest').on('click', function(){
-			$('#passwordChangeRequest').hide();
-			$('#passwordChangeAction').show();
-			$('#passwordChangeRequest').hide();
-			
-		});
-		$('#cancelChangeBtn').on('click', function() {
-			$('#saveChangeBtn').hide();
-			$('#cancelChangeBtn').hide();
+		$('#cancelChangeBtn').on('click', function(e) {
+			$('#userInfoUpdateAreaForm').unbind('submit');//first remove propageted submit 
 			$('.userInput').hide();
 			$('.lables').show();
 			$('#editUserBtn').show();
+			$('#saveChangeBtn').hide();
+			$('#cancelChangeBtn').hide();
+			$( "#tabs" ).tabs({ active: 0 });
+			
+		});
+		$('#cancelPasswordChange').on('click', function(e) {
+			//$('#passwordUpdateAreaForm').unbind('submit');//first remove propageted submit 
+			$('#oldPassword2').val(null);
+			$('#newPassword').val(null);
+			$('#reNewPassword').val(null);
+			$( "#tabs" ).tabs({ active: 0 });
+			
 		});
 
-		$('#changePassBtn').on('click', function() {
-			$('#userInfoUpdateArea').hide();
-			$('#userPassUpdateArea').show();
-			$('#saveNewPass').show();
-			$('#cancelPass').show();
-		});
-		
-		$('#cancelPass').on('click', function() {
-			$('#userInfoUpdateArea').show();
-			$('#userPassUpdateArea').hide();
-			$('#saveNewPass').hide();
-			$('#cancelPass').hide();
-		});
-		
-// 		$("#passUpdateAreaForm").validate({
-// 			onfocusout: function(e) {
-// 	              this.element(e);
-// 	          },
-// 				rules : {
-// 					newPassword: {
-// 						required: true,
-// 						minlength: 5
-// 						},
-// 					reNewPassword: {
-// 						required: true,
-// 						minlength: 5,
-// 						equalTo: "#newPassword"
-// 						},
-					
-// 					},
-// 					messages : {
-// 					newPassword: {
-// 						required: "Please provide a password",
-// 						minlength: "Your password must be at least 5 characters long"
-// 						},
-// 					reNewPassword: {
-// 						required: "Please provide a password",
-// 						minlength: "Your password must be at least 5 characters long",
-// 						equalTo: "Please enter the same password as above"
-// 						}
-// 					},
-					
-// 			submitHandler:function(){
-// 				$('#saveNewPass').on('click',function() {
-// 					alert("user updated withllll:" + $('#userEmailLb').html() + "," + $('#newPassword').val());
-// 					$.ajax({
-// 						type : 'POST',
-// 						url : 'updatePassword',
-// 						contentType : 'application/json',
-// 						dataType : 'json',
-// 						data : JSON.stringify({
-// 							userEmail : $('#userEmailLb').html(),
-// 							userPassword : $('#newPassword').val(),
-// 							userOldPassword:$('#oldPassword').val(),
-// 						}),
-// 						success : function(data) {
-// 							if (data.redirect == 'true') {
-// 								window.location.replace("${pageContext.request.contextPath}/userDetail");
-// 							} else {
-// 								// Process the expected results...
-// 							}
-// 						},
-// 						error : function(ts) {
-// 							alert(ts.responseText);
-// 						}
-// 							});
-// 					$('#userInfoUpdateArea').show();
-// 					$('#userPassUpdateArea').hide();
-// 					$('#saveNewPass').hide();
-// 					$('#cancelPass').hide();
-// 						});
-// 			}
-// 		});
-
-
+		$('#saveChangeBtn').on('click',function() {
 		$("#userInfoUpdateAreaForm").validate({
-					
 			onfocusout: function(e) {
 	              this.element(e);
 	          },
-		
 				rules : {
 					userNameIn : {
 						required : true,
 						minlength : 2,
-						lettersonly:true
 						},
 					userEmailIn : {
 						required: true,
@@ -187,16 +127,7 @@ p.title {
 						},	
 					oldPassword: {
 						required: true,
-						minlength: 5
-						},
-					newPassword: {
-						required: true,
-						minlength: 5
-						},
-					reNewPassword: {
-						required: true,
-						minlength: 5,
-						equalTo: "#newPassword"
+						minlength: 6
 						}
 					},
 					
@@ -210,21 +141,12 @@ p.title {
 						agree: "Enter valid email"
 						},
 					oldPassword: {
-						required: "Enter old password",
-						minlength: "Your password must be at least 5 characters long"
-						},
-					newPassword: {
-						required: "Please provide a password",
-						minlength: "Your password must be at least 5 characters long"
-						},
-					reNewPassword: {
-						required: "Please provide a password",
-						minlength: "Your password must be at least 5 characters long",
-						equalTo: "Please enter the same password as above"
+						required: "Enter password",
+						minlength: "Your password must be at least 6 characters long"
 						}
 					},
 	submitHandler:function(){
-		$('#saveChangeBtn').on('click',function() {
+		
 				$.ajax({
 							type : 'POST',
 							url : '${pageContext.request.contextPath}/updateUser',
@@ -232,39 +154,30 @@ p.title {
 							dataType : 'json',
 							data : JSON
 									.stringify({
-										userName : $('#userNameIn')
-												.val(),
-										userEmail : $(
-												'#userEmailIn')
-												.val(),
-										userOldPassword : $(
-												'#oldPassword')
-												.val(),
-										userNewPassword : $(
-												'#newPassword')
-												.val()
+										userName : $('#userNameIn').val(),
+										userEmail : $('#userEmailIn').val(),
+										userOldPassword : $('#userPassword').val()
 									}),
 							success : function(data) {
-								if (data.isExists == 'exist') {
-									$('#errorMsg').html('User name or email is already being used');
-									$('#errorMsg').show().fadeOut(3000);
-						
-								} else if (data.isPassCorrect == 'notCorrect'){
-									//return jsonObject.put("isExists", "exist").toString();
-									$('#errorMsg').html('This old password does not exist');
-									$('#errorMsg').show().fadeOut(3000);
-								}
-								else {
-									if (data.redirect == 'true') {
-		 								window.location.replace("${pageContext.request.contextPath}/userDetail");
-		 								}
-									$('#errorMsg') .html( 'The information is updated successfuly!!');
-									$('#errorMsg').show().fadeOut( 3000);
+								if (data.isPassCorrect == 'notCorrect'){
+									$('#errorMsg').html('This password does not exist');
+									$('#errorMsg').show().fadeOut(5000);
+								}else if (data.isEmaiExist == 'EmaiExist'){//isEmaiExist
+									$('#errorMsg').html('Email is already used! try another email.');
+									$('#errorMsg').show().fadeOut(5000);
+								}else if (data.isUserNameExist == 'UserNameExist'){
+									$('#errorMsg').html('User name is already used! try another name');
+									$('#errorMsg').show().fadeOut(5000);
+								}else {
+		 							//window.location.replace("${pageContext.request.contextPath}/userDetail");
+									$('#successMsg').html('The information is updated successfuly!!');
+									$('#successMsg').show().fadeOut(5000);
 									$('#userIdIn').val(data.id);
 									$('#userNameIn').val( data.userName);
 									$('#userEmailIn').val( data.email);
 									$('#userNameLb').html( data.userName);
 									$('#userEmailLb').html( data.email);
+									$('#userPassword').val(null);
 								}
 							},
 							error : function(ts) {
@@ -276,9 +189,90 @@ p.title {
 				$('.userInput').hide();
 				$('.lables').show();
 				$('#editUserBtn').show();
-			});
+				$( "#tabs" ).tabs({ active: 0 });
+				
 		} 
+					});
 		});
+// 		$('#userInfoUpdateAreaForm').submit(function (e) {
+// 		    e.preventDefault();
+		    
+// 		    return false;
+// 		});
+		
+		
+// 		parssword update starts###############################################
+$('#savePasswordChange').on('click',function(e) {
+	$("#passwordUpdateAreaForm").validate({
+			onfocusout: function(e) {
+	              this.element(e);
+	          },
+				rules : {
+					oldPassword2: {
+						required: true,
+						minlength: 6
+						},
+					newPassword: {
+						required: true,
+						minlength: 6
+						},
+					reNewPassword: {
+						required: true,
+						minlength: 6,
+						equalTo: "#newPassword"
+						}
+					},
+				
+				messages : {
+					oldPassword2: {
+						required: "Enter old password",
+						minlength: "Your password must be at least 6 characters long"
+						},
+					newPassword: {
+						required: "Please provide a password",
+						minlength: "Your password must be at least 6 characters long"
+						},
+					reNewPassword: {
+						required: "Please provide a password",
+						minlength: "Your password must be at least 6 characters long",
+						equalTo: "Please enter the same password as above"
+						}
+				},
+				submitHandler:function(){
+					
+					$.ajax({
+								type : 'POST',
+								url : '${pageContext.request.contextPath}/updatePassword',
+								contentType : 'application/json',
+								dataType : 'json',
+								data : JSON
+										.stringify({
+											passwordTochange : $('#oldPassword2').val(),
+											newPassword : $('#newPassword').val()
+										}),
+								success : function(data) {
+									if (data.isPassCorrect == 'notCorrect'){
+										$('#errorMsg').html('Incorrect password!');
+										$('#errorMsg').show().fadeOut(5000);
+									}else {
+			 							//window.location.replace("${pageContext.request.contextPath}/userDetail");
+										$('#successMsg').html('The password is updated successfuly!!');
+										$('#successMsg').show().fadeOut(5000);
+									}
+								},
+								error : function(ts) {
+									//alert(ts.responseText);
+								}
+							});
+					$( "#tabs" ).tabs({ active: 1 });
+					
+			}
+	});
+	//return false;
+ });
+	
+// 		password update ends here #############################################################
+		
 		
 	});
 
@@ -291,67 +285,91 @@ p.title {
 	<div class="col-md-8">
 		<div class="container-fluid container-holder">
 			<div id="userAccountInformation">
-				<form id="userInfoUpdateAreaForm">
+				<div class="alert alert-danger" id="errorMsg"></div>
+				<div class="alert alert-success" id="successMsg"></div>
+				<p class="title">
+					<c:choose>
+						<c:when test="${type eq 'employer' }">
+							<c:out value="Employer user information" />
+						</c:when>
+						<c:when test="${type eq 'employee' }">
+							<c:out value="Employee user information" />
+						</c:when>
+					</c:choose>
+				</p>
+				<input type="hidden" value="${user.id}" id="userIdIn" />
+
+
+				<div id="tabs">
+					<ul>
+						<li><a href="#tabs-1">User Info</a></li>
+						<li><a href="#tabs-2">Change Password</a></li>
+					</ul>
+					<div id="tabs-1">
+						<form id="userInfoUpdateAreaForm">
+							<p>
+								<span class="caption">User name:</span> <span class="lables"
+									id="userNameLb"> ${user.userName}</span> <input
+									class="form-control userInput" value="${user.userName}"
+									id="userNameIn" name="userNameIn" />
+							</p>
+							<p>
+								<span class="caption">User email:</span> <span class="lables"
+									id="userEmailLb"> ${user.email}</span> <input
+									class="form-control userInput" value="${user.email}"
+									id="userEmailIn" name="userEmailIn" />
+							</p>
+
+							<p>
+								<span class="captionPass">Password:</span> <span
+									class="lables" id="userPassLb">******</span>
+									<span class="userInput"> <input
+									class="form-control " id="userPassword"
+									name="oldPassword" type="password" /></span>
+							</p>
+							<p>
+								<input type="button" class="btn btn-primary" id="editUserBtn" value="Edit user" /> 
+								<input type="submit" class="btn btn-primary" id="saveChangeBtn" value="Save Change"  /> 
+								<input type="submit" class="cancel btn btn-primary" id="cancelChangeBtn" value="Cancel" />
+
+							</p>
+						</form>
+					</div>
+					<div id="tabs-2">
+						<form id="passwordUpdateAreaForm">
+							<p>
+								<span class="captionPass">Old password:</span> <input
+									class="form-control" id="oldPassword2" name="oldPassword2" />
+							</p>
+							<p>
+								<span class="captionPass">New password:</span> <input
+									class="form-control" id="newPassword" name="newPassword" />
+							</p>
+							<p>
+								<span class="captionPass">Re-enter New password:</span> <input
+									class="form-control" id="reNewPassword" name="reNewPassword" />
+							</p>
+							<p>
+								<input type="submit" class="btn btn-primary" id="savePasswordChange"
+									value="Save Change" /> <input type="button"
+									class="cancel btn btn-primary" id="cancelPasswordChange"
+									value="Cancel" />
+
+							</p>
+						</form>
+					</div>
+				</div>
+
+				<p>	
+					<a class="btn btn-link" href="${pageContext.request.contextPath}/account">Build your Profile</a>
+				</p>
+
 				
-<!-- 				<div id="userInfoUpdateArea"> -->
-					<div class="alert alert-danger" id="errorMsg"></div>
-					<p class="title">
-						<c:choose>
-							<c:when test="${type eq 'employer' }">
-								<c:out value="Employer user information" />
-							</c:when>
-							<c:when test="${type eq 'employee' }">
-								<c:out value="Employee user information" />
-							</c:when>
-						</c:choose>
-					</p>
-					<input type="hidden" value="${user.id}" id="userIdIn" />
-					<p>
-						<span class="caption">User name:</span>
-						<span class="lables" id="userNameLb"> ${user.userName}</span>
-						<input class="form-control userInput" value="${user.userName}" id="userNameIn"  name="userNameIn" />
-					</p>
-					<p>
-						<span class="caption">User email:</span>
-						<span class="lables" id="userEmailLb"> ${user.email}</span>
-						<input class="form-control userInput" value="${user.email}" id="userEmailIn" name="userEmailIn"/>
-					</p>
-
-					<p>
-						<span class="captionPass">Old password:</span>
-						<span class="lables" id="userPassLb">******</span>
-						<input class="form-control userInput" id="oldPassword" name="oldPassword"/>
-					</p>
-					<div id="passwordChangeRequest">
-						<p>
-							<button type="button" id="passwordChange_btn" class="userInput btn btn-link" >Change your password?</button>
-						</p>
-						
-					</div>
-					
-					<div id="passwordChangeAction">
-						<p>
-						<span class="userInput">New password:</span>
-						<input class="form-control userInput" id="newPassword" name="newPassword"/>
-						</p>
-					<p>
-						<span class="userInput">Re-enter New password:</span>
-						<input class="form-control userInput" id="reNewPassword" name="reNewPassword"/>
-					</p>
-					</div>
-
-					<p>	
-						<input type="button" class="btn btn-link" id="editUserBtn" value="Edit user" />
-						<input type="submit" class="btn btn-link" id="saveChangeBtn" value="Save Change"/>
-						<input type="button" class="btn btn-link" id="cancelChangeBtn" value="Cancel"/>
-						<a class="btn btn-link" href="${pageContext.request.contextPath}/account">Build your Profile</a>
-					</p>					
-
-				</form>
 			</div>
 			<br>
 
 		</div>
 	</div>
 </body>
+
 </html>

@@ -1,7 +1,6 @@
 package us.siraflega.controllers;
 
 import java.security.Principal;
-import java.sql.Blob;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.Random;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,19 +16,13 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.hibernate.Hibernate;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -52,13 +44,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 
+import us.siraflega.entities.Application;
 import us.siraflega.entities.Company;
-import us.siraflega.entities.Education;
 import us.siraflega.entities.Employee;
 import us.siraflega.entities.Employer;
 import us.siraflega.entities.PostedJob;
@@ -66,7 +57,7 @@ import us.siraflega.entities.Role;
 import us.siraflega.entities.User;
 import us.siraflega.entities.Work;
 import us.siraflega.entities.WorkExperience;
-import us.siraflega.repositories.WorkRepository;
+import us.siraflega.services.ApplicationService;
 import us.siraflega.services.CompanyService;
 import us.siraflega.services.EmployeeService;
 import us.siraflega.services.EmployeerService;
@@ -82,6 +73,7 @@ public class UserController {
 	public User construct() {
 		return new User();
 	}
+
 	@ModelAttribute("job")
 	public PostedJob constructJob() {
 		return new PostedJob();
@@ -117,6 +109,8 @@ public class UserController {
 	WorkeService workService;
 	@Autowired
 	PostedJobService postedJobService;
+	@Autowired
+	ApplicationService applicationService;
 
 	@RequestMapping("/users")
 	public String getUsersList(Model model) {
@@ -149,10 +143,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String registerUser(Model model, @ModelAttribute("user") User user,
-			@RequestParam("type") String type,
-			final RedirectAttributes redirectAttributes,
-			HttpServletRequest request) {
+	public String registerUser(Model model, @ModelAttribute("user") User user, @RequestParam("type") String type,
+			final RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		String unEncPass = user.getPassword();
 		String unEncUserName = user.getUserName();
 		if ((userService.getUserByEmail(user.getEmail()) != null)
@@ -173,29 +165,24 @@ public class UserController {
 	@Autowired
 	protected AuthenticationManager authenticationManager;
 
-	private void authenticateUserAndSetSession(String username,
-			String password, HttpServletRequest request) {
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-				username, password);
+	private void authenticateUserAndSetSession(String username, String password, HttpServletRequest request) {
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
 
 		// generate session if one doesn't exist
 		request.getSession();
 
 		token.setDetails(new WebAuthenticationDetails(request));
 		try {
-			Authentication authenticatedUser = authenticationManager
-					.authenticate(token);
-			SecurityContextHolder.getContext().setAuthentication(
-					authenticatedUser);
+			Authentication authenticatedUser = authenticationManager.authenticate(token);
+			SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@RequestMapping(value = "/userDetail", method = RequestMethod.GET)
-	public String registerUserDetail(Model model, Principal principal,
-			HttpServletRequest request, HttpServletResponse response,
-			final RedirectAttributes redirectAttributes) {
+	public String registerUserDetail(Model model, Principal principal, HttpServletRequest request,
+			HttpServletResponse response, final RedirectAttributes redirectAttributes) {
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		if (user == null) {
@@ -213,15 +200,13 @@ public class UserController {
 		model.addAttribute("employer", employer);
 		if (userRole.getName().toString().equalsIgnoreCase("ROLE_EMPLOYEE")) {
 			model.addAttribute("type", "employee");
-		} else if (userRole.getName().toString()
-				.equalsIgnoreCase("ROLE_EMPLOYER")) {
+		} else if (userRole.getName().toString().equalsIgnoreCase("ROLE_EMPLOYER")) {
 			model.addAttribute("type", "employer");
 		}
 		return "userDetail";
 	}
 
-	private void logOutAndInvalidate(HttpServletRequest request,
-			HttpServletResponse response) {
+	private void logOutAndInvalidate(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			session.invalidate();
@@ -248,34 +233,27 @@ public class UserController {
 		props.put("mail.smtp.password", "test654321");
 		props.put("mail.smtp.port", "587");
 		props.put("mail.smtp.auth", "true");
-		Session session = Session.getDefaultInstance(props,
-				new javax.mail.Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(
-								"seatac.test@gmail.com", "test654321");
-					}
-				});
+		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication("seatac.test@gmail.com", "test654321");
+			}
+		});
 		try {
 			// Create a default MimeMessage object.
 			MimeMessage message = new MimeMessage(session);
 			// Set From: header field of the header.
 			message.setFrom(new InternetAddress(from));
 			// Set To: header field of the header.
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					to));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			// Set Subject: header field
 			message.setDescription("This is the discription");
 			message.setSubject("xProfile combilation reminder from Siraflega.com!");
 			// Now set the actual message
 
-			message.setContent(
-					"<body><strong>Hi "
-							+ user.getUserName()
-							+ "</strong>, <br>"
-							+ "You have created user account on <a href=\"www.siraflega.com\">www.siraflega.com</a> not yet completed. "
-							+ "In order to get the full penefit of the application please complete your <a href=\"www.siraflega.com\">profile</a>.<br>"
-							+ "Best regards,<br>" + "Admin</body>",
-					"text/html; charset=utf-8");
+			message.setContent("<body><strong>Hi " + user.getUserName() + "</strong>, <br>"
+					+ "You have created user account on <a href=\"www.siraflega.com\">www.siraflega.com</a> not yet completed. "
+					+ "In order to get the full penefit of the application please complete your <a href=\"www.siraflega.com\">profile</a>.<br>"
+					+ "Best regards,<br>" + "Admin</body>", "text/html; charset=utf-8");
 			// message.setText();
 			Transport.send(message);
 			result = "Sent message successfully....";
@@ -295,8 +273,8 @@ public class UserController {
 	}
 
 	@RequestMapping("/account")
-	public String getMyAccount(Model model, Principal principal,
-			HttpServletRequest request, HttpServletResponse response) {
+	public String getMyAccount(Model model, Principal principal, HttpServletRequest request,
+			HttpServletResponse response) {
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		if (user == null) {
@@ -316,7 +294,7 @@ public class UserController {
 			return "employee-detail";
 		}
 		if (employer != null) {
-			Work currentWork = employer.getWorks()==null? employer.getWorks().get(0):null;
+			Work currentWork = employer.getWorks() == null ? employer.getWorks().get(0) : null;
 			model.addAttribute("employer", employer);
 			for (Work work : employer.getWorks()) {
 				if (work.isCurrentlyWorking()) {
@@ -345,8 +323,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/updateEmployee", method = RequestMethod.POST)
-	public String updateEmployee(@ModelAttribute("employee") Employee employee,
-			Model model, Principal principal) {
+	public String updateEmployee(@ModelAttribute("employee") Employee employee, Model model, Principal principal) {
 		User logedInUser = userService.getUserByName(principal.getName());
 		if (employee.getId() != null) {
 			employee.setEmail(logedInUser.getEmail());
@@ -360,8 +337,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/saveEmployeePersonalInfo", method = RequestMethod.POST)
-	public String saveEmployeePersonalInfo(
-			@ModelAttribute("employee") Employee employee, Model model) {
+	public String saveEmployeePersonalInfo(@ModelAttribute("employee") Employee employee, Model model) {
 		Employee savedEmployee = employeeService.saveEmployeeInfo(employee);
 		String status;
 		if (savedEmployee != null) {
@@ -381,8 +357,6 @@ public class UserController {
 		return gson.toJson(savedCompany);
 	}
 
-	
-
 	@RequestMapping(value = "/deleteWorkExp", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String deleteWorkExp(@RequestBody String jsonWork) {
 
@@ -394,38 +368,31 @@ public class UserController {
 
 	// updatePassword
 	@RequestMapping(value = "/updateUser", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String updateUser(@RequestBody String jsonUser,
-			Principal principal, HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody String updateUser(@RequestBody String jsonUser, Principal principal,
+			HttpServletRequest request, HttpServletResponse response) {
 		String name = principal.getName();
 		User exisitingUser = userService.getUserByName(name);
 		JSONObject jsonObject = new JSONObject(jsonUser);
 		String newUserName = jsonObject.getString("userName");
 		String newUserEmail = jsonObject.getString("userEmail");
-		String userPassword = jsonObject.getString("userOldPassword"); //not found
-		String userNewPassword = jsonObject.getString("userNewPassword");
-		User updatedUser=null;
-		BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
-		if(!encoder.matches(userPassword, exisitingUser.getPassword())) {
+		String userPassword = jsonObject.getString("userOldPassword"); // not
+																		// found
+		User updatedUser = null;
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		if (!encoder.matches(userPassword, exisitingUser.getPassword())) {
 			return jsonObject.put("isPassCorrect", "notCorrect").toString();
-		}
-		else {
+		} else if (!exisitingUser.getEmail().equalsIgnoreCase(newUserEmail)
+				&& userService.getUserByEmail(newUserEmail) != null) {
+			return jsonObject.put("isEmaiExist", "EmaiExist").toString();
+		} else if (!exisitingUser.getUserName().equalsIgnoreCase(newUserName)
+				&& userService.getUserByName(newUserName) != null) {
+			return jsonObject.put("isUserNameExist", "UserNameExist").toString();
+		} else {
 			exisitingUser.setUserName(newUserName);
 			exisitingUser.setEmail(newUserEmail);
-			if(!userNewPassword.equals("")){
-				userPassword=userNewPassword;
-			exisitingUser.setPassword(userPassword);
-			updatedUser = userService.saveUser(exisitingUser);
+			updatedUser = userService.saveUserWithOutPassword(exisitingUser);
 			logOutAndInvalidate(request, response);
-			authenticateUserAndSetSession(updatedUser.getUserName(),
-					userPassword, request);
-			}else{
-				updatedUser = userService.saveUser(exisitingUser);
-			}
-			
-			// authenticateUserAndSetSession(updatedUser.getUserName(),
-			// updatedUser.getPassword(), request);
-			
-			jsonObject.put("redirect", "true");
+			authenticateUserAndSetSession(updatedUser.getUserName(), userPassword, request);
 			jsonObject.put("id", "" + updatedUser.getId());
 			jsonObject.put("userName", updatedUser.getUserName());
 			jsonObject.put("email", updatedUser.getEmail());
@@ -434,38 +401,30 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String updatePassword(
-			@RequestBody String jsonUserPassword, Principal principal,
+	public @ResponseBody String updatePassword(@RequestBody String jsonUserPassword, Principal principal,
 			HttpServletRequest request, HttpServletResponse response) {
 		JSONObject jsonObject = new JSONObject(jsonUserPassword);
-		String newUserEmail = jsonObject.getString("userEmail").trim();
-		String newUserPassword = jsonObject.getString("userPassword");
-		String inputOldpassunEncoded = jsonObject.getString("userOldPassword");
-		
-		BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
-		String  inputOldpassEncoded=encoder.encode(inputOldpassunEncoded);
-		User exisitingUser = userService.getUserByEmail(newUserEmail);
-		//exisitingUser.setEmail(newUserEmail);
-		//compare the oldpassword from user from getstring with exisstinguser.getpassword
-		//encrypte oldpasswor compare with  exisstinguser.getpassword
-		//if succes continue if not redirect /userdetil?userpasswordsaved:notsave page
-		//BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
-		//string  inputOldpassEncoded=encoder.encode(inputOldpassunEncodedinputOldpassunEncoded);
-		//exisitingUser.getPassword().equals(inputOldpassEncoded);
-		exisitingUser.setPassword(newUserPassword);
-		User updatedUser = userService.saveUser(exisitingUser);
-		if (updatedUser != null) {
+		String newUserPassword = jsonObject.getString("newPassword");
+		String inputOldpassunEncoded = jsonObject.getString("passwordTochange");
+		String name = principal.getName();
+		User exisitingUser = userService.getUserByName(name);
+		User updatedUser = null;
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		if (!encoder.matches(inputOldpassunEncoded, exisitingUser.getPassword())) {
+			return jsonObject.put("isPassCorrect", "notCorrect").toString();
+		} else {
+			exisitingUser.setPassword(newUserPassword);
+			updatedUser = userService.saveUser(exisitingUser);
 			logOutAndInvalidate(request, response);
-			authenticateUserAndSetSession(updatedUser.getUserName(),
-					newUserPassword, request);
-			jsonObject.put("redirect", "true");
+			authenticateUserAndSetSession(updatedUser.getUserName(), newUserPassword, request);
+
 		}
+
 		return jsonObject.toString();
 	}
 
 	@RequestMapping(value = "/updateEmployerInfo", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String updateEmployerInfo(
-			@RequestBody String jsonEmployer) {
+	public @ResponseBody String updateEmployerInfo(@RequestBody String jsonEmployer) {
 		JSONObject jsonObject = new JSONObject(jsonEmployer);
 		String firstName = jsonObject.getString("fName");
 		String meddileName = jsonObject.getString("mName");
@@ -486,8 +445,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/saveEmployerInfo", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String saveEmployerInfo(
-			@RequestBody String jsonEmployer) {
+	public @ResponseBody String saveEmployerInfo(@RequestBody String jsonEmployer) {
 		JSONObject jsonObject = new JSONObject(jsonEmployer);
 		String firstName = jsonObject.getString("fName");
 		String meddileName = jsonObject.getString("mName");
@@ -508,8 +466,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/saveWrorkExp", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String saveWorkExp(@RequestBody String jsonWork,
-			Principal principal) {
+	public @ResponseBody String saveWorkExp(@RequestBody String jsonWork, Principal principal) {
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		Employee employee = employeeService.getEmployeeBy(user.getEmail());
@@ -519,8 +476,7 @@ public class UserController {
 		String startDate = jsonObject.getString("startDate");
 		Date start_Date = null;
 		try {
-			start_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-					.parse(startDate);
+			start_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(startDate);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -528,8 +484,7 @@ public class UserController {
 		String endDate = jsonObject.getString("endDate");
 		Date end_Date = null;
 		try {
-			end_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-					.parse(endDate);
+			end_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(endDate);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -537,8 +492,7 @@ public class UserController {
 		String description = jsonObject.getString("description");
 		String workExpId = jsonObject.getString("workExpId");
 		boolean isCurrentlyWorking = jsonObject.getBoolean("isCurrent");
-		Company newCompanySelected = companyService.getCompany(Integer
-				.parseInt(companyId));
+		Company newCompanySelected = companyService.getCompany(Integer.parseInt(companyId));
 		WorkExperience newWorkExp = new WorkExperience();
 		newWorkExp.setWorkedBy(employee);
 		newWorkExp.setCompany(newCompanySelected);
@@ -547,8 +501,7 @@ public class UserController {
 		newWorkExp.setEnds(end_Date);
 		newWorkExp.setDiscription(description);
 		newWorkExp.setCurrentlyWorking(isCurrentlyWorking);
-		WorkExperience savedWorkExp = workExperienceService
-				.saveExpriance(newWorkExp);
+		WorkExperience savedWorkExp = workExperienceService.saveExpriance(newWorkExp);
 		jsonObject.put("id", "" + savedWorkExp.getId());
 		jsonObject.put("companyId", "" + savedWorkExp.getCompany().getId());
 		jsonObject.put("position", savedWorkExp.getPostion());
@@ -556,16 +509,14 @@ public class UserController {
 		jsonObject.put("endDate", savedWorkExp.getEnds() + "");
 		jsonObject.put("companyName", savedWorkExp.getCompany().getName());
 		jsonObject.put("companyCity", savedWorkExp.getCompany().getCity());
-		jsonObject
-				.put("companyCountry", savedWorkExp.getCompany().getCountry());
+		jsonObject.put("companyCountry", savedWorkExp.getCompany().getCountry());
 		jsonObject.put("description", savedWorkExp.getDiscription());
 		jsonObject.put("isCurrentlyWorking", savedWorkExp.isCurrentlyWorking());
 		return jsonObject.toString();
 	}
 
 	@RequestMapping(value = "/saveEmployerWrorkExp", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String saveEmployerWrorkExp(
-			@RequestBody String jsonWork, Principal principal) {
+	public @ResponseBody String saveEmployerWrorkExp(@RequestBody String jsonWork, Principal principal) {
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		Employer employer = employerService.getEmployerBy(user.getEmail());
@@ -575,8 +526,7 @@ public class UserController {
 		String startDate = jsonObject.getString("startDate");
 		Date start_Date = null;
 		try {
-			start_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-					.parse(startDate);
+			start_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(startDate);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -584,15 +534,13 @@ public class UserController {
 		String endDate = jsonObject.getString("endDate");
 		Date end_Date = null;
 		try {
-			end_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-					.parse(endDate);
+			end_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(endDate);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		boolean isCurrentlyWorking = jsonObject.getBoolean("isCurrent");
-		Company newCompanySelected = companyService.getCompany(Integer
-				.parseInt(companyId));
+		Company newCompanySelected = companyService.getCompany(Integer.parseInt(companyId));
 		Work newWorkExp = new Work();
 		newWorkExp.setWorkedBy(employer);
 		newWorkExp.setCompany(newCompanySelected);
@@ -612,6 +560,7 @@ public class UserController {
 		jsonObject.put("isCurrentlyWorking", savedWorkExp.isCurrentlyWorking());
 		return jsonObject.toString();
 	}
+
 	@RequestMapping(value = "/updateWrorkExp", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String updateWorkExp(@RequestBody String jsonWork) {
 		JSONObject jsonObject = new JSONObject(jsonWork);
@@ -620,34 +569,29 @@ public class UserController {
 		String startDate = jsonObject.getString("startDate");
 		Date start_Date = null;
 		try {
-			start_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-					.parse(startDate);
+			start_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(startDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		String endDate = jsonObject.getString("endDate");
 		Date end_Date = null;
 		try {
-			end_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-					.parse(endDate);
+			end_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(endDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		String description = jsonObject.getString("description");
 		String workExpId = jsonObject.getString("workExpId");
 		boolean isCurrentlyWorking = jsonObject.getBoolean("isCurrent");
-		Company newCompanySelected = companyService.getCompany(Integer
-				.parseInt(companyId));
-		WorkExperience workExpToBeEdited = workExperienceService
-				.getworkExpriance(Integer.parseInt(workExpId));
+		Company newCompanySelected = companyService.getCompany(Integer.parseInt(companyId));
+		WorkExperience workExpToBeEdited = workExperienceService.getworkExpriance(Integer.parseInt(workExpId));
 		workExpToBeEdited.setCompany(newCompanySelected);
 		workExpToBeEdited.setPostion(position);
 		workExpToBeEdited.setStarts(start_Date);
 		workExpToBeEdited.setEnds(end_Date);
 		workExpToBeEdited.setDiscription(description);
 		workExpToBeEdited.setCurrentlyWorking(isCurrentlyWorking);
-		WorkExperience savedWorkExp = workExperienceService
-				.updateExpriance(workExpToBeEdited);
+		WorkExperience savedWorkExp = workExperienceService.updateExpriance(workExpToBeEdited);
 		jsonObject.put("id", "" + savedWorkExp.getId());
 		jsonObject.put("companyId", "" + savedWorkExp.getCompany().getId());
 		jsonObject.put("position", savedWorkExp.getPostion());
@@ -655,15 +599,14 @@ public class UserController {
 		jsonObject.put("endDate", savedWorkExp.getEnds() + "");
 		jsonObject.put("companyName", savedWorkExp.getCompany().getName());
 		jsonObject.put("companyCity", savedWorkExp.getCompany().getCity());
-		jsonObject
-				.put("companyCountry", savedWorkExp.getCompany().getCountry());
+		jsonObject.put("companyCountry", savedWorkExp.getCompany().getCountry());
 		jsonObject.put("description", savedWorkExp.getDiscription());
 		jsonObject.put("isCurrentlyWorking", savedWorkExp.isCurrentlyWorking());
 		return jsonObject.toString();
 	}
+
 	@RequestMapping(value = "/updateEmployerWrokExp", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String updateEmployerWrokExp(
-			@RequestBody String jsonWork, Principal principal) {
+	public @ResponseBody String updateEmployerWrokExp(@RequestBody String jsonWork, Principal principal) {
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		Employer employer = employerService.getEmployerBy(user.getEmail());
@@ -674,8 +617,7 @@ public class UserController {
 		String startDate = jsonObject.getString("startDate");
 		Date start_Date = null;
 		try {
-			start_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-					.parse(startDate);
+			start_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(startDate);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -683,15 +625,13 @@ public class UserController {
 		String endDate = jsonObject.getString("endDate");
 		Date end_Date = null;
 		try {
-			end_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-					.parse(endDate);
+			end_Date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(endDate);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		boolean isCurrentlyWorking = jsonObject.getBoolean("isCurrent");
-		Company newCompanySelected = companyService.getCompany(Integer
-				.parseInt(companyId));
+		Company newCompanySelected = companyService.getCompany(Integer.parseInt(companyId));
 		Work existingWorkExp = workService.getWorkExp(Integer.parseInt(workExpId));
 		existingWorkExp.setWorkedBy(employer);
 		existingWorkExp.setCompany(newCompanySelected);
@@ -711,7 +651,8 @@ public class UserController {
 		jsonObject.put("isCurrentlyWorking", savedWorkExp.isCurrentlyWorking());
 		return jsonObject.toString();
 	}
-	//deleteEmployerWorkExp
+
+	// deleteEmployerWorkExp
 	@RequestMapping(value = "/deleteEmployerWorkExp", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String deleteEmployerWorkExp(@RequestBody String jsonWork) {
 
@@ -720,62 +661,66 @@ public class UserController {
 		workService.deleteExp(Integer.parseInt(idToBeDeleted));
 		return jsonObject.toString();
 	}
-	//employerPosts
+
+	// employerPosts
 	@RequestMapping("/employerPosts/{pageNumber}")
-	public String registerForm(Model model,Principal principal,@PathVariable int pageNumber) {
-		String userName=principal.getName();
-		User user=userService.getUserByName(userName);
-		Employer employer=employerService.getEmployerBy(user.getEmail());
-		//count should be used to count total
-		int totalJobsSize=postedJobService.getPostedJobs(employer)==null?0:postedJobService.getPostedJobs(employer).size();
-		int pageHoldingCapacity=6;
-		int totalPageSize=(totalJobsSize%pageHoldingCapacity==0?totalJobsSize/pageHoldingCapacity:((totalJobsSize-(totalJobsSize%pageHoldingCapacity))/pageHoldingCapacity)+1);
+	public String registerForm(Model model, Principal principal, @PathVariable int pageNumber) {
+		String userName = principal.getName();
+		User user = userService.getUserByName(userName);
+		Employer employer = employerService.getEmployerBy(user.getEmail());
+		// count should be used to count total
+		int totalJobsSize = postedJobService.getPostedJobs(employer) == null ? 0
+				: postedJobService.getPostedJobs(employer).size();
+		int pageHoldingCapacity = 6;
+		int totalPageSize = (totalJobsSize % pageHoldingCapacity == 0 ? totalJobsSize / pageHoldingCapacity
+				: ((totalJobsSize - (totalJobsSize % pageHoldingCapacity)) / pageHoldingCapacity) + 1);
 		model.addAttribute("totalPageSize", totalPageSize);
-		List<PostedJob>postedJobs=postedJobService.getPostedJobs(employer,pageNumber,pageHoldingCapacity);
+		List<PostedJob> postedJobs = postedJobService.getPostedJobs(employer, pageNumber, pageHoldingCapacity);
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("employer", employer);
 		model.addAttribute("postedJobs", postedJobs);
 		model.addAttribute("currentDate", new Date());
 		List<Company> companyList = companyService.getCompanyList();
 		model.addAttribute("companyObjList", companyList);
-		
-		int startat=1;
-		int endat=10;
-		if(totalPageSize<=10){
-			startat=1;
-			endat=totalPageSize;
-		}else if(pageNumber<=5){
-			startat=1;
-			endat=10;
-		}else if((pageNumber+5)>totalPageSize){
-			startat=totalPageSize-10;
-			endat=totalPageSize;
-		}else{
-			startat=pageNumber-4;
-			endat=pageNumber+5;
+
+		int startat = 1;
+		int endat = 10;
+		if (totalPageSize <= 10) {
+			startat = 1;
+			endat = totalPageSize;
+		} else if (pageNumber <= 5) {
+			startat = 1;
+			endat = 10;
+		} else if ((pageNumber + 5) > totalPageSize) {
+			startat = totalPageSize - 10;
+			endat = totalPageSize;
+		} else {
+			startat = pageNumber - 4;
+			endat = pageNumber + 5;
 		}
 		model.addAttribute("startat", startat);
 		model.addAttribute("endat", endat);
-		
-		
+
 		return "employerPosts";
 	}
-//	DD/MM/YYYY
+
+	// DD/MM/YYYY
 	@InitBinder
 	public void initBinderAll(WebDataBinder binder) {
-	    binder.registerCustomEditor(Company.class, new CompanyPropertyEditor());
-	    
+		binder.registerCustomEditor(Company.class, new CompanyPropertyEditor());
+
 	}
-	@RequestMapping(value="/postJob",method=RequestMethod.POST)
-	String postJob(Model model,@ModelAttribute @Valid PostedJob job,BindingResult result, Principal principal ){
-		String userName=principal.getName();
-		User user=userService.getUserByName(userName);
-		Employer poster=employerService.getEmployerBy(user.getEmail());
+
+	@RequestMapping(value = "/postJob", method = RequestMethod.POST)
+	String postJob(Model model, @ModelAttribute @Valid PostedJob job, BindingResult result, Principal principal) {
+		String userName = principal.getName();
+		User user = userService.getUserByName(userName);
+		Employer poster = employerService.getEmployerBy(user.getEmail());
 		job.setJobPostedBy(poster);
-		if(job.getId()==null){
-		postedJobService.save(job);
-		}else{
-			PostedJob existingJob=postedJobService.getPostdJob(job.getId());
+		if (job.getId() == null) {
+			postedJobService.save(job);
+		} else {
+			PostedJob existingJob = postedJobService.getPostdJob(job.getId());
 			existingJob.setCompany(job.getCompany());
 			existingJob.setDeadLine(job.getDeadLine());
 			existingJob.setDiscription(job.getDiscription());
@@ -792,24 +737,63 @@ public class UserController {
 			postedJobService.save(existingJob);
 		}
 		return "redirect:/employerPosts/1.html";
-				//"redirect:/employerPosts/1.html";
+		// "redirect:/employerPosts/1.html";
 	}
-	
 
-	@RequestMapping(value="/jobPost/{jobId}", method=RequestMethod.GET)
-	String preview(Model model, @PathVariable int jobId){ 
-		PostedJob postedJob=postedJobService.getPostdJob(jobId);
+	@RequestMapping(value = "/jobPost/{jobId}", method = RequestMethod.GET)
+	String preview(Model model, @PathVariable int jobId) {
+		PostedJob postedJob = postedJobService.getPostdJob(jobId);
 		model.addAttribute("postedJob", postedJob);
 		model.addAttribute("currentDate", new Date());
 		return "previewJob";
 	}
-//	deletePostedJob
+
+	// deletePostedJob
 	@RequestMapping(value = "/deletePostedJob", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody String deletePostedJob(@RequestBody String jsonPostedJob) {
 
 		JSONObject jsonObject = new JSONObject(jsonPostedJob);
 		String idToBeDeleted = jsonObject.getString("id");
 		postedJobService.deletePostedJob(Integer.parseInt(idToBeDeleted));
+		return jsonObject.toString();
+	}
+
+	@RequestMapping(value = "/apply/{jobId}", method = RequestMethod.GET)
+	String apply(Model model, @PathVariable int jobId, Principal principal) {
+		String name = principal.getName();
+		User user = userService.getUserByName(name);
+		Employee employee = employeeService.getEmployeeBy(user.getEmail());
+		PostedJob postedJob = postedJobService.getPostdJob(jobId);
+		Application application=applicationService.getApplication(jobId,employee.getId());
+		
+		model.addAttribute("employee", employee);
+		model.addAttribute("postedJob", postedJob);
+		model.addAttribute("currentDate", new Date());
+		model.addAttribute("application", application);
+		boolean isApplied=applicationService.isApplied(employee.getId(), jobId);
+		model.addAttribute("isApplied", isApplied);
+		
+		System.out.println("Is applied for this job before?:-----------------------"+isApplied+"------------------");
+		return "applyforjob";
+	}
+
+	/**
+	 * applicantId : $('#empId').val(), jobId : $('#jobId').val(),
+	 * applicationLetter : $('#letterPr').val(),
+	 * 
+	 * @param jsonApplication
+	 * @return
+	 */
+	@RequestMapping(value = "/apply", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody String apply(@RequestBody String jsonApplication) {
+
+		JSONObject jsonObject = new JSONObject(jsonApplication);
+		String applicantId = jsonObject.getString("applicantId");
+		String jobId = jsonObject.getString("jobId");
+		String applicationLetter = jsonObject.getString("applicationLetter");
+		applicationService.saveApplication(Integer.parseInt(applicantId), Integer.parseInt(jobId), applicationLetter);
+		boolean isApplied=applicationService.isApplied(Integer.getInteger(applicantId), Integer.getInteger(jobId));
+		jsonObject.put("isApplied", isApplied);
 		return jsonObject.toString();
 	}
 }
