@@ -20,11 +20,20 @@ public class PostedJobService {
 	@Autowired
 	JobRepository jobRepository;
 
+	@Autowired
+	ApplicationService applicationService;
+
 	public List<PostedJob> getPostedJobs(Employer employer, int pageNumber, int pageHoldingCapacity) {
 		// new PageRequest(0, 10, Direction.DESC, "publishedDate")
 		// , new PageRequest(pageNumber, 10, Direction.DESC, "deadLine")
-		return jobRepository.findByJobPostedBy(employer,
+		List<PostedJob> postedJobs = jobRepository.findByJobPostedBy(employer,
 				new PageRequest(pageNumber - 1, pageHoldingCapacity, Direction.DESC, "deadLine"));
+		if (!postedJobs.isEmpty()) {
+			for (int i = 0; i < postedJobs.size(); i++) {
+				postedJobs.get(i).setNumberofApplies(applicationService.numberofApplicants(postedJobs.get(i).getId()));
+			}
+		}
+		return postedJobs;
 	}
 
 	public List<PostedJob> getPostedJobs(Employer employer) {

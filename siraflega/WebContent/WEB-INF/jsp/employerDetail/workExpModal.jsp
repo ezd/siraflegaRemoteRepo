@@ -241,8 +241,8 @@
 
 						$.clearFormFields = function(area) {
 							$('#wpostion').val('');
-// 							$('#datetimepicker6').val('');
-// 							$('#datetimepicker7').val('');
+							$('.endDate').val('');
+							$('.startDate').val('');
 							$('#isCurrently').prop('checked', false);
 						};
 						$('#employerWorkExpModal').on('hidden.bs.modal',

@@ -37,6 +37,13 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/employee-detail.jsp" />
 		<put-attribute name="current" value="users" />
 	</definition>
+	
+	<definition name="employee-detail-cv" extends="common">
+		<put-attribute name="title" value="Employee Detail" />
+		<put-attribute name="body" value="/WEB-INF/jsp/employee-detailCV.jsp" />
+		<put-attribute name="current" value="users" />
+	</definition>
+	
 	<definition name="employee-detail-account" extends="employee-detail">
 		<put-attribute name="title" value="Employee Account" />
 		<put-attribute name="current" value="account" />
@@ -90,5 +97,10 @@
 		<put-attribute name="title" value="Job application" />
 		<put-attribute name="current" value="previewJob" />
 		<put-attribute name="body" value="/WEB-INF/jsp/application.jsp" />
+	</definition>
+	<definition name="applicationsDetail" extends="common">
+		<put-attribute name="title" value="Application Detail" />
+		<put-attribute name="current" value="applicationsDetail" />
+		<put-attribute name="body" value="/WEB-INF/jsp/applicationsDetail.jsp" />
 	</definition>
 </tiles-definitions>

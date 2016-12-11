@@ -14,4 +14,6 @@ public interface ApplicationRepository extends  JpaRepository<Application, Integ
 
 	List<Application> findByJobId(Integer jobId);
 
+	long countByJobId(Integer id);
+
 }

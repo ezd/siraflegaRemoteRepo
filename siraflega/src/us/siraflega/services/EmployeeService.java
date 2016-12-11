@@ -70,9 +70,10 @@ public List<WorkExperience> getExpeianceWithCompany(Employee employee){
 		return employeeRepository.save(employee);
 		
 	}
-	public Employee getEmployeeBy(Integer applicantId) {
+	public Employee getEmployeeByID(Integer applicantId) {
 		// TODO Auto-generated method stub
-		return employeeRepository.findOne(applicantId);
+		Employee employee =employeeRepository.findOne(applicantId);
+		return employee;
 	}
 
 }

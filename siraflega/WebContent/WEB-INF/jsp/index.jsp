@@ -125,7 +125,7 @@ ul {
 									<c:set var="desc" value="${postedJob.discription}" />
 									${postedJob.discription}... <a
 										href="${pageContext.request.contextPath}/jobPost/${postedJob.id}.html">read
-										More</a>
+										more</a>
 								</p>
 
 							</div>

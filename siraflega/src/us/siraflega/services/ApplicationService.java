@@ -16,7 +16,9 @@ import us.siraflega.repositories.ApplicationRepository;
 public class ApplicationService {
 	@Autowired
 	ApplicationRepository applicationRepository;
+	@Autowired
 	PostedJobService postedJobService;
+	@Autowired
 	EmployeeService employeeService;
 	
 	
@@ -42,12 +44,22 @@ public class ApplicationService {
 		}
 		return jobs;
 	}
+	String shortString(String longString,int numberOfWords){
+		String string="";
+		String[] words=longString.split(" ");
+		for(int i=0;i<(words.length>numberOfWords?numberOfWords:words.length);i++)
+			string+=words[i]+" ";
+		return string;
+	}
 	
-	public List<Employee> getApplicants(Integer jobId){
+	public List<Employee> getApplicants(int jobId){
 		List<Application> applications= applicationRepository.findByJobId(jobId);
 		List<Employee> applicants=new ArrayList<Employee>();
 		for(Application application:applications){
-			applicants.add(employeeService.getEmployeeBy(application.getApplicantId()));
+			Integer applicantId=application.getApplicantId();
+			Employee applicant=employeeService.getEmployeeByID(applicantId);
+			applicant.setSummary(this.shortString(applicant.getSummary(), 80));
+			applicants.add(applicant);
 		}
 		return applicants;
 	}
@@ -57,6 +69,12 @@ public class ApplicationService {
 		if(applications.isEmpty())
 			return null;
 		return applications.get(0);
+	}
+	public long numberofApplicants(Integer id) {
+		
+		long numberofApplyees= applicationRepository.countByJobId(id);
+		System.out.println(numberofApplyees+ ":appleid for "+id);
+		return numberofApplyees;
 	}
 
 }

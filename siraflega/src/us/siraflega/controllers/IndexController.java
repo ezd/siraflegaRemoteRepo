@@ -23,70 +23,88 @@ import us.siraflega.services.PostedJobService;
 
 @Controller
 public class IndexController {
-	private final int PAGE_HOLDING_CAPACITY=10;
+	private final int PAGE_HOLDING_CAPACITY = 10;
 	int pageNumber;
 	@Autowired
 	PostedJobService postedJobService;//
 	@Autowired
 	CompanyService companyService;
-	@RequestMapping({"/index","/"})
-	public String getIndex(Model model){
-		int totalJobsSize=postedJobService.getPostedJobsSize();
-		pageNumber=1;
-		int totalPageSize=(totalJobsSize%PAGE_HOLDING_CAPACITY==0?totalJobsSize/PAGE_HOLDING_CAPACITY:((totalJobsSize-(totalJobsSize%PAGE_HOLDING_CAPACITY))/PAGE_HOLDING_CAPACITY)+1);
-		model.addAttribute("totalPageSize", totalPageSize);
-		List<PostedJob>postedJobs=postedJobService.getPostedJobs(pageNumber,PAGE_HOLDING_CAPACITY);
-		
-		for(PostedJob job:postedJobs)
-			job.setDiscription(this.shortString(job.getDiscription()));
+
+	@RequestMapping({ "/index", "/" })
+	public String getIndex(Model model) {
+		pageNumber = 1;
+		List<PostedJob> postedJobs = postedJobService.getPostedJobs(pageNumber, PAGE_HOLDING_CAPACITY);
+		for (PostedJob job : postedJobs)
+			job.setDiscription(this.shortString(job.getDiscription(), 20));
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("postedJobs", postedJobs);
 		model.addAttribute("catigory", "all");
 		model.addAttribute("currentDate", new Date());
-		List<String>positionList=postedJobService.getPositionList();
+		List<String> positionList = postedJobService.getPositionList();
 		model.addAttribute("positions", positionList);
-		if(totalPageSize<=10){
+		int totalJobsSize = postedJobService.getPostedJobsSize();
+		int totalPageSize = (totalJobsSize % PAGE_HOLDING_CAPACITY == 0 ? totalJobsSize / PAGE_HOLDING_CAPACITY
+				: ((totalJobsSize - (totalJobsSize % PAGE_HOLDING_CAPACITY)) / PAGE_HOLDING_CAPACITY) + 1);
+		model.addAttribute("totalPageSize", totalPageSize);
+		if (totalPageSize <= 10) {
 			model.addAttribute("startat", 1);
 			model.addAttribute("endat", totalPageSize);
-		}else{
-			model.addAttribute("startat", 1);
-			model.addAttribute("endat", 10);
+		} else if (totalPageSize < (pageNumber + 5)) {
+			if ((totalPageSize - 10) > 1)
+				model.addAttribute("startat", (totalPageSize - 10));
+			else
+				model.addAttribute("startat", 1);
+			model.addAttribute("endat", totalPageSize);
+		} else {
+			model.addAttribute("startat", (pageNumber - 4));
+			model.addAttribute("endat", pageNumber + 5);
 		}
 		return "index";
 	}
+
 	//
-	
-	@RequestMapping(value="/jobPosts/{category}/{number}")
-	public String pageJobs(Model model,@PathVariable("category") String category, @PathVariable("number") int pageNumber){
-		int totalJobsSize=postedJobService.getPostedJobsSize(category);
-//		pageNumber=pageNumber;
-		int totalPageSize=(totalJobsSize%PAGE_HOLDING_CAPACITY==0?totalJobsSize/PAGE_HOLDING_CAPACITY:((totalJobsSize-(totalJobsSize%PAGE_HOLDING_CAPACITY))/PAGE_HOLDING_CAPACITY)+1);
-		model.addAttribute("totalPageSize", totalPageSize);
-		List<PostedJob>postedJobs=postedJobService.getPostedJobs(pageNumber,category,PAGE_HOLDING_CAPACITY);
-		for(PostedJob job:postedJobs)
-			job.setDiscription(this.shortString(job.getDiscription()));
+	// 12345678911 12 13 14 15 16 17 18 19 20 21 22 23
+	@RequestMapping(value = "/jobPosts/{category}/{number}")
+	public String pageJobs(Model model, @PathVariable("category") String category,
+			@PathVariable("number") int pageNumber) {
+		// pageNumber=pageNumber;
+		List<PostedJob> postedJobs = postedJobService.getPostedJobs(pageNumber, category, PAGE_HOLDING_CAPACITY);
+		for (PostedJob job : postedJobs)
+			job.setDiscription(this.shortString(job.getDiscription(), 20));
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("catigory", category);
 		model.addAttribute("postedJobs", postedJobs);
-		List<String>positionList=postedJobService.getPositionList();
+		List<String> positionList = postedJobService.getPositionList();
 		model.addAttribute("positions", positionList);
 		model.addAttribute("currentDate", new Date());
-		if(totalPageSize<=10){
+		int totalJobsSize = postedJobService.getPostedJobsSize(category);
+		int totalPageSize = (totalJobsSize % PAGE_HOLDING_CAPACITY == 0 ? totalJobsSize / PAGE_HOLDING_CAPACITY
+				: ((totalJobsSize - (totalJobsSize % PAGE_HOLDING_CAPACITY)) / PAGE_HOLDING_CAPACITY) + 1);
+		model.addAttribute("totalPageSize", totalPageSize);
+		if (totalPageSize <= 10) {
 			model.addAttribute("startat", 1);
 			model.addAttribute("endat", totalPageSize);
-		}else{
-			model.addAttribute("startat", 1);
-			model.addAttribute("endat", 10);
+		} else if (totalPageSize < (pageNumber + 5)) {
+			if ((totalPageSize - 10) > 1)
+				model.addAttribute("startat", (totalPageSize - 10));
+			else
+				model.addAttribute("startat", 1);
+			model.addAttribute("endat", totalPageSize);
+		} else {
+			model.addAttribute("startat", (pageNumber - 4));
+			model.addAttribute("endat", pageNumber + 5);
 		}
 		return "index";
 	}
-	String shortString(String longString){
-		String string="";
-		String[] words=longString.split(" ");
-		for(int i=0;i<(words.length>20?20:words.length);i++)
-			string+=words[i]+" ";
+
+	String shortString(String longString, int numberOfWords) {
+		String string = "";
+		String[] words = longString.split(" ");
+		for (int i = 0; i < (words.length > numberOfWords ? numberOfWords : words.length); i++)
+			string += words[i] + " ";
 		return string;
 	}
+
 	@RequestMapping(value = "/catigories", method = RequestMethod.GET)
 	@ResponseBody
 	public String getcatigories(HttpServletRequest req) {

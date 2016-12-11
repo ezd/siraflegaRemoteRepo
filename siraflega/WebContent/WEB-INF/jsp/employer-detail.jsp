@@ -94,8 +94,7 @@
 										value="${experience.startsFrom}" /> </span> 
 										- 
 								<span id="endDateExp"><fmt:formatDate type="date" 
-										value="${experience.upto}" /></span> 
-										| 
+										value="${experience.upto}" /></span> | 
 								<span id="workExpCity">${experience.company.city}</span>,<span
 									id="workExpCountry">${experience.company.country}</span>
 							</h6>

@@ -75,9 +75,10 @@
 					<p class="values">
 						<c:choose>
 							<c:when test="${isApplied eq true}">
-							<button class="btn btn-info" id="btnBack">Applied Job Go back!</button>
+							<span class="input-group-btn"><button class="btn btn-info" id="btnBack"><span class="glyphicon glyphicon-chevron-left"></span>You have applied, Go back!</button></span> 
 							</c:when>
 							<c:when test="${isApplied eq false}">
+							<button class="btn btn-info" id="btnBack"><span class="glyphicon glyphicon-chevron-left"></span>Go back</button> 
 							<button class="btn btn-primary" id="btnApply">Apply</button>
 							</c:when>
 						</c:choose>

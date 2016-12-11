@@ -69,6 +69,8 @@ import us.siraflega.services.WorkeService;
 @Controller
 public class UserController {
 
+	private final int PAGE_HOLDING_CAPACITY2 = 6;
+
 	@ModelAttribute("user")
 	public User construct() {
 		return new User();
@@ -663,44 +665,39 @@ public class UserController {
 	}
 
 	// employerPosts
+	private final int PAGE_HOLDING_CAPACITYX = 4;
+
 	@RequestMapping("/employerPosts/{pageNumber}")
 	public String registerForm(Model model, Principal principal, @PathVariable int pageNumber) {
 		String userName = principal.getName();
 		User user = userService.getUserByName(userName);
 		Employer employer = employerService.getEmployerBy(user.getEmail());
-		// count should be used to count total
 		int totalJobsSize = postedJobService.getPostedJobs(employer) == null ? 0
 				: postedJobService.getPostedJobs(employer).size();
-		int pageHoldingCapacity = 6;
-		int totalPageSize = (totalJobsSize % pageHoldingCapacity == 0 ? totalJobsSize / pageHoldingCapacity
-				: ((totalJobsSize - (totalJobsSize % pageHoldingCapacity)) / pageHoldingCapacity) + 1);
+		int totalPageSize = (totalJobsSize % PAGE_HOLDING_CAPACITYX == 0 ? totalJobsSize / PAGE_HOLDING_CAPACITYX
+				: ((totalJobsSize - (totalJobsSize % PAGE_HOLDING_CAPACITYX)) / PAGE_HOLDING_CAPACITYX) + 1);
 		model.addAttribute("totalPageSize", totalPageSize);
-		List<PostedJob> postedJobs = postedJobService.getPostedJobs(employer, pageNumber, pageHoldingCapacity);
+		if (totalPageSize <= 10) {
+			model.addAttribute("startat", 1);
+			model.addAttribute("endat", totalPageSize);
+			System.out.println(1 + " up to " + totalPageSize);
+		} else if (totalPageSize < (pageNumber + 5)) {
+			model.addAttribute("startat", (totalPageSize - 10));
+			model.addAttribute("endat", totalPageSize);
+			System.out.println((totalPageSize - 10) + " up to " + totalPageSize);
+		} else {
+			model.addAttribute("startat", (pageNumber - 4));
+			model.addAttribute("endat", (pageNumber + 5));
+			System.out.println((pageNumber - 4) + " up to " + (pageNumber + 5));
+		}
+		model.addAttribute("totalPageSize", totalPageSize);
+		List<PostedJob> postedJobs = postedJobService.getPostedJobs(employer, pageNumber, PAGE_HOLDING_CAPACITYX);
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("employer", employer);
 		model.addAttribute("postedJobs", postedJobs);
 		model.addAttribute("currentDate", new Date());
 		List<Company> companyList = companyService.getCompanyList();
 		model.addAttribute("companyObjList", companyList);
-
-		int startat = 1;
-		int endat = 10;
-		if (totalPageSize <= 10) {
-			startat = 1;
-			endat = totalPageSize;
-		} else if (pageNumber <= 5) {
-			startat = 1;
-			endat = 10;
-		} else if ((pageNumber + 5) > totalPageSize) {
-			startat = totalPageSize - 10;
-			endat = totalPageSize;
-		} else {
-			startat = pageNumber - 4;
-			endat = pageNumber + 5;
-		}
-		model.addAttribute("startat", startat);
-		model.addAttribute("endat", endat);
-
 		return "employerPosts";
 	}
 
@@ -764,16 +761,17 @@ public class UserController {
 		User user = userService.getUserByName(name);
 		Employee employee = employeeService.getEmployeeBy(user.getEmail());
 		PostedJob postedJob = postedJobService.getPostdJob(jobId);
-		Application application=applicationService.getApplication(jobId,employee.getId());
-		
+		Application application = applicationService.getApplication(jobId, employee.getId());
+
 		model.addAttribute("employee", employee);
 		model.addAttribute("postedJob", postedJob);
 		model.addAttribute("currentDate", new Date());
 		model.addAttribute("application", application);
-		boolean isApplied=applicationService.isApplied(employee.getId(), jobId);
+		boolean isApplied = applicationService.isApplied(employee.getId(), jobId);
 		model.addAttribute("isApplied", isApplied);
-		
-		System.out.println("Is applied for this job before?:-----------------------"+isApplied+"------------------");
+
+		System.out
+				.println("Is applied for this job before?:-----------------------" + isApplied + "------------------");
 		return "applyforjob";
 	}
 
@@ -792,8 +790,88 @@ public class UserController {
 		String jobId = jsonObject.getString("jobId");
 		String applicationLetter = jsonObject.getString("applicationLetter");
 		applicationService.saveApplication(Integer.parseInt(applicantId), Integer.parseInt(jobId), applicationLetter);
-		boolean isApplied=applicationService.isApplied(Integer.getInteger(applicantId), Integer.getInteger(jobId));
+		boolean isApplied = applicationService.isApplied(Integer.getInteger(applicantId), Integer.getInteger(jobId));
 		jsonObject.put("isApplied", isApplied);
 		return jsonObject.toString();
 	}
+
+	// applicationDetail
+	@RequestMapping(value = "/applicationsDetail/{jobId}", method = RequestMethod.GET)
+	public String applicationsDetail(Model model, @PathVariable int jobId) {
+
+		// List<Employee> applicants = applicationService.getApplicants(jobId);
+		// int totalApplicantSize = applicants.isEmpty() ? 0 :
+		// applicants.size();
+		// pageNumber = 1;
+		// int totalPageSize = (totalApplicantSize % PAGE_HOLDING_CAPACITY == 0
+		// ? totalApplicantSize / PAGE_HOLDING_CAPACITY
+		// : ((totalApplicantSize - (totalApplicantSize %
+		// PAGE_HOLDING_CAPACITY)) / PAGE_HOLDING_CAPACITY) + 1);
+		// model.addAttribute("totalPageSize", totalPageSize);
+		// if (totalPageSize <= PAGE_HOLDING_CAPACITY) {
+		// model.addAttribute("startat", 1);
+		// model.addAttribute("endat", totalPageSize);
+		// model.addAttribute("applicants", applicants.subList(1,
+		// totalPageSize));
+		// } else {
+		// model.addAttribute("startat", 1);
+		// model.addAttribute("endat", PAGE_HOLDING_CAPACITY);
+		// model.addAttribute("applicants", applicants.subList(1,
+		// PAGE_HOLDING_CAPACITY));
+		// }
+
+		return "redirect:/applicationsDetail/" + jobId + "/1";
+	}
+
+	private final int PAGE_HOLDING_CAPACITYZ = 4;
+	// int pageNumber;
+
+	@RequestMapping(value = "/applicationsDetail/{jobId}/{pageId}", method = RequestMethod.GET)
+	public String applicationsDetail(Model model, @PathVariable int jobId, @PathVariable int pageId) {
+
+		List<Employee> applicants = applicationService.getApplicants(jobId);
+		int totalApplicantSize = applicants.isEmpty() ? 0 : applicants.size();
+		// pageNumber = 1;
+		int totalPageSize = (totalApplicantSize % PAGE_HOLDING_CAPACITYZ == 0
+				? totalApplicantSize / PAGE_HOLDING_CAPACITYZ
+				: ((totalApplicantSize - (totalApplicantSize % PAGE_HOLDING_CAPACITYZ)) / PAGE_HOLDING_CAPACITYZ) + 1);
+		model.addAttribute("totalPageSize", totalPageSize);
+		if (totalPageSize <= 10) {
+			model.addAttribute("startat", 1);
+			model.addAttribute("endat", totalPageSize);
+			System.out.println(1 + " up to " + totalPageSize);
+		} else if (totalPageSize < (pageId + 5)) {
+			model.addAttribute("startat", (totalPageSize - 10));
+			model.addAttribute("endat", totalPageSize);
+			System.out.println((totalPageSize - 10) + " up to " + totalPageSize);
+		} else {
+			model.addAttribute("startat", (pageId - 4));
+			model.addAttribute("endat", (pageId + 5));
+			System.out.println((pageId - 4) + " up to " + (pageId + 5));
+		}
+
+		if (totalApplicantSize < PAGE_HOLDING_CAPACITYZ) {
+			model.addAttribute("applicants", applicants.subList(0, totalApplicantSize));
+		} else if (totalApplicantSize < (PAGE_HOLDING_CAPACITYZ * pageId)) {
+			model.addAttribute("applicants",
+					applicants.subList(PAGE_HOLDING_CAPACITYZ * (pageId - 1), totalApplicantSize));
+		} else {
+			model.addAttribute("applicants",
+					applicants.subList(PAGE_HOLDING_CAPACITYZ * (pageId - 1), PAGE_HOLDING_CAPACITYZ * pageId));
+		}
+		model.addAttribute("pageNumber", pageId);
+		// applicants
+		return "applicationsDetail";
+	}
+
+	/// cv/20.html
+	@RequestMapping("/cv/{applicantId}")
+	public String getCV(Model model, @PathVariable int applicantId, HttpServletRequest request,
+			HttpServletResponse response) {
+		Employee employee = employeeService.getEmployeeByID(applicantId);
+		Employee employeeFullInfo = employeeService.getFullEmployeeBy(employee.getEmail());
+		model.addAttribute("employee", employeeFullInfo);
+		return "employee-detail-cv";
+	}
+
 }

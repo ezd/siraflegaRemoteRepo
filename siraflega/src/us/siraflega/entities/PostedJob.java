@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
@@ -35,6 +36,10 @@ public class PostedJob {
 	String howToApply;
 	String email;
 	String phone;
+	
+	@Transient
+	long numberofApplies=0;
+	
 	@ManyToOne
 	@JoinColumn(name="company_id")
 	Company company;
@@ -42,6 +47,13 @@ public class PostedJob {
 	@JoinColumn(name="poster_id")
 	Employer jobPostedBy;
 	
+	
+	public long getNumberofApplies() {
+		return numberofApplies;
+	}
+	public void setNumberofApplies(long numberofApplies) {
+		this.numberofApplies = numberofApplies;
+	}
 	public Employer getJobPostedBy() {
 		return jobPostedBy;
 	}

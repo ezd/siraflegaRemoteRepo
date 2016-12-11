@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import us.siraflega.entities.Application;
 import us.siraflega.entities.Company;
 import us.siraflega.entities.Education;
 import us.siraflega.entities.EmailAlertRequest;
@@ -27,6 +28,7 @@ import us.siraflega.entities.Role;
 import us.siraflega.entities.User;
 import us.siraflega.entities.Work;
 import us.siraflega.entities.WorkExperience;
+import us.siraflega.repositories.ApplicationRepository;
 import us.siraflega.repositories.CompanyRepository;
 import us.siraflega.repositories.EducationRepository;
 import us.siraflega.repositories.EmailAlertRepository;
@@ -65,6 +67,9 @@ public class InitDBService {
 	WorkRepository workRepository;
 	@Autowired
 	EmailAlertRepository emailAlertRepository;
+	@Autowired
+	ApplicationRepository applicationRepository;
+	
 	
 	
 	@PostConstruct
@@ -121,6 +126,8 @@ public class InitDBService {
 		empUser.setRole(employeeRole);
 		empUser.setEmail("employeeuser@gmail.com");
 		userRepository.save(empUser);
+		
+		
 		User emprUser = new User();
 		emprUser.setUserName("emprempr");
 		emprUser.setPassword(encoder.encode("emprempr"));
@@ -421,6 +428,53 @@ for(int i=0;i<12;i++){
 //			System.out.println("error in scheduler rrrrrrrrrrrrrrrrrrrrrrrrr");
 //			e.printStackTrace();
 //		}
+		
+		
+		for(int m=0;m<=20;m++){
+			empUser = new User();
+			empUser.setUserName("empemp"+m);
+			empUser.setPassword(encoder.encode("empemp"+m));
+			empUser.setEnabled(true);
+//			roles = new ArrayList<Role>();
+//			roles.add(employeeRole);
+			empUser.setRole(employeeRole);
+			empUser.setEmail(m+"employeeuser@gmail.com");
+			userRepository.save(empUser);
+			
+			employee = new Employee();
+			employee.setAge(18);
+			employee.setEmail(m+"employeeuser@gmail.com");
+			System.out.println(employee.getEmail());
+			employee.setFirstName("EmpFN");
+			employee.setMiddleName("EmpMN");
+			employee.setLastName("EmpLN");
+			employee.setSex("M");
+			employee.setSummary(m+"I am a software developer with years of experience working with different software developer companies using different technologies. I have both theoretical and practical knowledge which are required for software engineering. I have participated on all phases of SDLC and have used different techniques and technologies in each phase. I have worked in water fall as well as agile(BDD,TDD) settings. I have worked as junior programmer, senior programmer and team leader.I have experience in  bash, Java, Servlets, JSP, JSF, Spring framework, Hibernate,J2EE, Ajax, Maven, JavaScript, CSS, PHP, Drupal, Ruby and Ruby on rails on different projects. In general my specialty is on the area of Java, PHP and Ruby. I have worked as a software developer at Ericsson on cloud computing project (virtualization). I am passionate about programming and dedicated person. I have excellent team working sprite and interpersonal skills which I developed them through working with several coworkers and through several clients interaction for requirement elicitation, effort and cost estimation, statues reporting and user assistance. I can speak English fluently and Swedish well.");
+			employee.setTelephone("0911-701777");
+			employee.setAddress("Kolfea kifleketema, Addis Ababa, Ethiopia");
+			employeeRepository.save(employee);
+			
+		}
+		
+		Application ap;
+		for(int m=1;m<=20;m++){
+			ap=new Application();
+			ap.setApplicantId(m);
+			ap.setJobId(13);
+			ap.setApplicationDate(new Date());
+			ap.setLetter(m+"-some applicatin date for informamtion i am interested some applicatin date for informamtion i am interested some "
+					+ "applicatin date for informamtion i am interested some applicatin date for informamtion i am interested "
+					+ "some applicatin date for informamtion i am interested some applicatin date for informamtion i am interested "
+					+ "some applicatin date for informamtion i am interested some applicatin date for informamtion i am interested "
+					+ "some applicatin date for informamtion i am interested some applicatin date for informamtion i am interested "
+					+ "some applicatin date for informamtion i am interested some applicatin date for informamtion i am interested "
+					+ "some applicatin date for informamtion i am interested "
+					+ "some applicatin date for informamtion i am interested some applicatin date for informamtion i am interested some "
+					+ "applicatin date for informamtion i am interested some applicatin date for informamtion i am interested "
+					+ "");
+			applicationRepository.save(ap);
+		}
+		
 		
 	}
 

@@ -160,7 +160,7 @@ $( function() {
 									}),
 							success : function(data) {
 								if (data.isPassCorrect == 'notCorrect'){
-									$('#errorMsg').html('This password does not exist');
+									$('#errorMsg').html('This old password does not exist');
 									$('#errorMsg').show().fadeOut(5000);
 								}else if (data.isEmaiExist == 'EmaiExist'){//isEmaiExist
 									$('#errorMsg').html('Email is already used! try another email.');

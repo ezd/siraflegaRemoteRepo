@@ -90,7 +90,10 @@ border-radius: 0px;
 											</c:when>
 										</c:choose>
 									</td>
-									<td class="text-sucyyyyyyyyyyss">$150.00</td>
+									<td class="text-sucyyyyyyyyyyss"><c:choose>
+									<c:when test="${postedJob.numberofApplies eq 0}">None</c:when>
+									<c:when test="${postedJob.numberofApplies gt 0}"><a href="${pageContext.request.contextPath}/applicationsDetail/${postedJob.id}.html">${postedJob.numberofApplies} application<c:if test="${postedJob.numberofApplies gt 1}" >s</c:if></a></c:when>
+									</c:choose></td>
 									<td class="text-info">
 										<div class="btn-group" style="width: 70px">
 											<button class="btn btn-primary btn-sm pull-left" id="updateJobBtn"
@@ -104,9 +107,11 @@ border-radius: 0px;
 											>
 												<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 											</button>
+											<c:if test="${postedJob.numberofApplies eq 0}">
 											<button class="btn btn-danger btn-sm pull-right deletePostedJobBtn"  data-id="${postedJob.id}" >
 												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 											</button>
+											</c:if>
 										</div>
 									</td>
 								</div>
@@ -211,11 +216,42 @@ border-radius: 0px;
 					</tbody>
 				</table>
 			</div>
-			<div class="row pageFooter">
-				<nav>
+<!-- 			<div class="row pageFooter"> -->
+<!-- 				<nav> -->
+<!-- 				<ul class="pagination" id="jobsPagination"> -->
+<%-- 					<c:if test="${totalPageSize>1}"> --%>
+<!-- 						<li id="previousPage"><a href="#" aria-label="Previous"> -->
+<!-- 								<span aria-hidden="true">&laquo;</span> -->
+<!-- 						</a></li> -->
+<%-- 					</c:if> --%>
+<%-- 					<c:forEach var="i" begin="${startat}" end="${endat}"> --%>
+<%-- 						<c:choose> --%>
+<%-- 							<c:when test="${i == pageNumber}"> --%>
+<!-- 								<li class="active"> -->
+<%-- 							</c:when> --%>
+<%-- 							<c:when test="${i != pageNumber}"> --%>
+<!-- 								<li class=""> -->
+<%-- 							</c:when> --%>
+<%-- 						</c:choose> --%>
+<!-- 						<a -->
+<%-- 							href="${pageContext.request.contextPath}/employerPosts/${i}.html"><c:out --%>
+<%-- 								value="${i}" /> </a> --%>
+<!-- 						</li> -->
+<%-- 					</c:forEach> --%>
+<%-- 					<c:if test="${totalPageSize>1}"> --%>
+<!-- 						<li id="nextPage"><a href="#" aria-label="Next"> <span -->
+<!-- 								aria-hidden="true">&raquo;</span> -->
+<!-- 						</a></li> -->
+<%-- 					</c:if> --%>
+<!-- 				</ul> -->
+<!-- 				</nav> -->
+<!-- 			</div> -->
+<div class="row pageFooter">
+			<input type="hidden" id="totalPageSize" value="${totalPageSize}">
+			<nav>
 				<ul class="pagination" id="jobsPagination">
 					<c:if test="${totalPageSize>1}">
-						<li id="previousPage"><a href="#" aria-label="Previous">
+						<li id="previousPage"><a href="${pageContext.request.contextPath}/employerPosts/${pageNumber>1?(pageNumber-1):1}.html" aria-label="Previous">
 								<span aria-hidden="true">&laquo;</span>
 						</a></li>
 					</c:if>
@@ -225,7 +261,7 @@ border-radius: 0px;
 								<li class="active">
 							</c:when>
 							<c:when test="${i != pageNumber}">
-								<li class="">
+								<li class="" id="${i}">
 							</c:when>
 						</c:choose>
 						<a
@@ -234,13 +270,13 @@ border-radius: 0px;
 						</li>
 					</c:forEach>
 					<c:if test="${totalPageSize>1}">
-						<li id="nextPage"><a href="#" aria-label="Next"> <span
+						<li id="nextPage"><a href="${pageContext.request.contextPath}/employerPosts/${pageNumber<totalPageSize?(pageNumber+1):totalPageSize}.html" aria-label="Next"> <span
 								aria-hidden="true">&raquo;</span>
 						</a></li>
 					</c:if>
 				</ul>
-				</nav>
-			</div>
+			</nav>
+		</div>
 		</div>
 	</div>
 </body>
