@@ -23,7 +23,7 @@ import us.siraflega.services.PostedJobService;
 
 @Controller
 public class IndexController {
-	private final int PAGE_HOLDING_CAPACITY = 10;
+	private final int PAGE_HOLDING_CAPACITY = 20;
 	int pageNumber;
 	@Autowired
 	PostedJobService postedJobService;//
@@ -35,7 +35,8 @@ public class IndexController {
 		pageNumber = 1;
 		List<PostedJob> postedJobs = postedJobService.getPostedJobs(pageNumber, PAGE_HOLDING_CAPACITY);
 		for (PostedJob job : postedJobs)
-			job.setDiscription(this.shortString(job.getDiscription(), 20));
+			job.setDiscription(this.shortString(job.getDiscription(), 60));
+
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("postedJobs", postedJobs);
 		model.addAttribute("catigory", "all");
@@ -67,10 +68,9 @@ public class IndexController {
 	@RequestMapping(value = "/jobPosts/{category}/{number}")
 	public String pageJobs(Model model, @PathVariable("category") String category,
 			@PathVariable("number") int pageNumber) {
-		// pageNumber=pageNumber;
 		List<PostedJob> postedJobs = postedJobService.getPostedJobs(pageNumber, category, PAGE_HOLDING_CAPACITY);
 		for (PostedJob job : postedJobs)
-			job.setDiscription(this.shortString(job.getDiscription(), 20));
+			job.setDiscription(this.shortString(job.getDiscription(), 60));
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("catigory", category);
 		model.addAttribute("postedJobs", postedJobs);
@@ -81,6 +81,7 @@ public class IndexController {
 		int totalPageSize = (totalJobsSize % PAGE_HOLDING_CAPACITY == 0 ? totalJobsSize / PAGE_HOLDING_CAPACITY
 				: ((totalJobsSize - (totalJobsSize % PAGE_HOLDING_CAPACITY)) / PAGE_HOLDING_CAPACITY) + 1);
 		model.addAttribute("totalPageSize", totalPageSize);
+		
 		if (totalPageSize <= 10) {
 			model.addAttribute("startat", 1);
 			model.addAttribute("endat", totalPageSize);

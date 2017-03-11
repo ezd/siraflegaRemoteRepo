@@ -66,7 +66,7 @@ public class ApplicationService {
 	public Application getApplication(int jobId, Integer applicantId) {
 		// TODO Auto-generated method stub
 		List<Application> applications=applicationRepository.findByApplicantIdAndJobId(applicantId,jobId);
-		if(applications.isEmpty())
+		if(applications.isEmpty()||applications==null)
 			return null;
 		return applications.get(0);
 	}

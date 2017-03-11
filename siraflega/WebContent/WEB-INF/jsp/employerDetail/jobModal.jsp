@@ -5,7 +5,7 @@
 <div class="modal fade" id="jobModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
-		<div class="modal-content">
+		<div class="modal-content overflowstyle" >
 			<form:form id="newjobform" class="form-horizontal" commandName="job"
 				action="${pageContext.request.contextPath}/postJob" method="post">
 				<div class="modal-header">
@@ -42,7 +42,7 @@
 						<label for="discription" class="col-sm-2 control-label">Description:</label>
 						<div class="col-sm-10">
 							<form:textarea class="form-control" path="discription"
-								id="discription" rows="4" />
+								id="discription" rows="3" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -81,7 +81,7 @@
 							skills:</label>
 						<div class="col-sm-10">
 							<form:textarea class="form-control" path="rqdSkills"
-								id="rqdSkills" rows="4" />
+								id="rqdSkills" rows="3" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -89,7 +89,7 @@
 							education:</label>
 						<div class="col-sm-10">
 							<form:textarea class="form-control" path="rqdEducation"
-								id="rqdEducation" rows="4" />
+								id="rqdEducation" rows="3" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -108,7 +108,7 @@
 							to apply:</label>
 						<div class="col-sm-10">
 							<form:textarea class="form-control" path="howToApply"
-								id="howToApply" rows="4" />
+								id="howToApply" rows="3" />
 						</div>
 					</div>
 					<div class="form-group">

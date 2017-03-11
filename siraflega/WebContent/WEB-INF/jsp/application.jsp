@@ -28,9 +28,13 @@
 					<h4>To whom it may Concern</h4>
 				</div>
 			</div>
+			<br>
 			<div class="row outPutRow">
 				<div class="col-xs-12"
 					style="margin: 0px; padding: 0px; text-align: justify;">
+					<c:choose>
+					<c:when test="${empty employee or employee.summary ==''or empty employee.summary }"><a href="${pageContext.request.contextPath}/account.html">Your summary is not Complete. Please build your summary.</a></c:when>
+					</c:choose>
 					<p class="values" id="jobSummary">${employee.summary}
 						<input type="hidden" id="jobId" value="${postedJob.id}"> <input
 							type="hidden" id="empId" value="${employee.id}">
@@ -50,13 +54,13 @@
 			<div class="row outPutRow">
 				<div class="col-xs-12"
 					style="margin: 0px; padding: 0px; text-align: justify;">
+					<span class="values" style="float: left;" id="letterPr" >${application==null?'':application.letter}</span>
 					<button class="btn btn-link" data-toggle="modal"
-						data-target="#letterModal" id="addLetter">
+						data-target="#letterModal" id="addLetter" style="float: left;">
 						<span class="glyphicon glyphicon-pencil" id="btnSign"
 							style="float: right;"></span> <span id="btnText">State
 							your reason for being a good fit for the position...</span>
 					</button>
-					<p class="values" id="letterPr">${application==null?'':application.letter}</p>
 				</div>
 			</div>
 			<div class="row outPutRow">
@@ -122,29 +126,33 @@
 	$(document).ready(function() {
 						$('#saveChangeBtn').on('click',
 										function() {
-											if ($('#letterTxt').html() != 'use less than 1200 caracters') {
-												$('#btnText').html('');
-												$("#btnSign").attr('class','glyphicon glyphicon-edit');
-												$("#btnSign").css('float','right');
-												$('#letterPr').val($('#letterTxt').val());
-												$('#letterPr').html($('#letterTxt').html());
-
-											}
-
-											if ($('#letterTxt').html() == ''|| !$("#letterTxt").val()) {
+											if ($('#letterTxt').html() == 'use less than 1200 caracters' || $('#letterTxt').val() == '') {
 												$('#btnText').html('State your reason for being a good fit for the position...');
+												$('#btnText').text('State your reason for being a good fit for the position...');
 												$("#btnSign").attr('class','glyphicon glyphicon-pencil');
 												$("#btnSign").css('float','right');
 												$('#letterPr').val('');
 												$('#letterPr').html('');
+												$('#letterPr').text('');
+											}else { //($('#letterTxt').html() == ''|| !$("#letterTxt").val()) 
+												$('#btnText').html('');
+												$("#btnSign").attr('class','glyphicon glyphicon-edit');
+												$("#btnSign").css('float','right');
+												$('#letterPr').val($('#letterTxt').val());
+												$('#letterPr').html($('#letterTxt').val());
+												$('#letterPr').text($('#letterTxt').val());
+												//$('#letterPr').html(tinymce.get('letterTxt').getContent());
 											}
 
 											$('#letterModal').modal('toggle');
 										});
 
 						$('#addLetter').on('click', function() {
-							$('#letterTxt').val($('#letterPr').val());
+							//tinyMCE.triggerSave();
+							$('#letterTxt').val($('#letterPr').html());
 							$('#letterTxt').html($('#letterPr').html());
+							$('#letterTxt').text($('#letterPr').html());
+							//tinymce.get('letterTxt').setContent($('#letterPr').html());
 						});
 						$("#btnApply").on("click",
 										function() {

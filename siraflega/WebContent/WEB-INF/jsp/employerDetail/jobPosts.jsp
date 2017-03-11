@@ -90,7 +90,7 @@ border-radius: 0px;
 											</c:when>
 										</c:choose>
 									</td>
-									<td class="text-sucyyyyyyyyyyss"><c:choose>
+									<td class="text-success"><c:choose>
 									<c:when test="${postedJob.numberofApplies eq 0}">None</c:when>
 									<c:when test="${postedJob.numberofApplies gt 0}"><a href="${pageContext.request.contextPath}/applicationsDetail/${postedJob.id}.html">${postedJob.numberofApplies} application<c:if test="${postedJob.numberofApplies gt 1}" >s</c:if></a></c:when>
 									</c:choose></td>

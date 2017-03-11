@@ -8,7 +8,7 @@
 <%-- 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script> --%>
 	<div class="modal fade" id="editPersonalInfoModal" tabindex="-1"
 		role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog overflowstyle" role="document">
 
 			<form:form id="updateEmpInfo" class="form-horizontal"
 				commandName="employee"

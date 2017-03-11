@@ -669,6 +669,7 @@ public class UserController {
 
 	@RequestMapping("/employerPosts/{pageNumber}")
 	public String registerForm(Model model, Principal principal, @PathVariable int pageNumber) {
+		
 		String userName = principal.getName();
 		User user = userService.getUserByName(userName);
 		Employer employer = employerService.getEmployerBy(user.getEmail());
@@ -700,7 +701,6 @@ public class UserController {
 		model.addAttribute("companyObjList", companyList);
 		return "employerPosts";
 	}
-
 	// DD/MM/YYYY
 	@InitBinder
 	public void initBinderAll(WebDataBinder binder) {
@@ -757,21 +757,25 @@ public class UserController {
 
 	@RequestMapping(value = "/apply/{jobId}", method = RequestMethod.GET)
 	String apply(Model model, @PathVariable int jobId, Principal principal) {
+		int i=0;
+		i++;
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		Employee employee = employeeService.getEmployeeBy(user.getEmail());
 		PostedJob postedJob = postedJobService.getPostdJob(jobId);
-		Application application = applicationService.getApplication(jobId, employee.getId());
-
+		
 		model.addAttribute("employee", employee);
 		model.addAttribute("postedJob", postedJob);
 		model.addAttribute("currentDate", new Date());
+		Application application=null;
+		boolean isApplied=false;
+		if(employee!=null){
+		application = applicationService.getApplication(jobId, employee.getId());
+		isApplied = applicationService.isApplied(employee.getId(), jobId);
+		}
 		model.addAttribute("application", application);
-		boolean isApplied = applicationService.isApplied(employee.getId(), jobId);
 		model.addAttribute("isApplied", isApplied);
 
-		System.out
-				.println("Is applied for this job before?:-----------------------" + isApplied + "------------------");
 		return "applyforjob";
 	}
 

@@ -9,13 +9,13 @@
 	</definition>
 
 	<definition name="index" extends="common">
-		<put-attribute name="title" value="Siraflega Test Page" />
+		<put-attribute name="title" value="New Jobs in Ethiopia " />
 		<put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
 		<put-attribute name="current" value="index" />
 	</definition>
 	
 	<definition name="companypage" extends="common">
-		<put-attribute name="title" value="Company detail" />
+		<put-attribute name="title" value="Company Detail" />
 		<put-attribute name="body" value="/WEB-INF/jsp/companydeatil.jsp" />
 		<put-attribute name="current" value="company" />
 	</definition>
@@ -39,7 +39,7 @@
 	</definition>
 	
 	<definition name="employee-detail-cv" extends="common">
-		<put-attribute name="title" value="Employee Detail" />
+		<put-attribute name="title" value="Employee Curriculum Vitae" />
 		<put-attribute name="body" value="/WEB-INF/jsp/employee-detailCV.jsp" />
 		<put-attribute name="current" value="users" />
 	</definition>
@@ -89,12 +89,12 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/jquery.jsp" />
 	</definition>
 	<definition name="previewJob" extends="common">
-		<put-attribute name="title" value="Job detail" />
+		<put-attribute name="title" value="Job Detail" />
 		<put-attribute name="current" value="previewJob" />
 		<put-attribute name="body" value="/WEB-INF/jsp/jobPost.jsp" />
 	</definition>
 	<definition name="applyforjob" extends="common">
-		<put-attribute name="title" value="Job application" />
+		<put-attribute name="title" value="Job Application" />
 		<put-attribute name="current" value="previewJob" />
 		<put-attribute name="body" value="/WEB-INF/jsp/application.jsp" />
 	</definition>

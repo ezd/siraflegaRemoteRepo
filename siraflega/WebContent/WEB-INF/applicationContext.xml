@@ -24,17 +24,21 @@
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/sirafleg_db" />
+		<property name="url" value="jdbc:mysql://localhost:3306/sirafleg_db?useUnicode=yes&amp;characterEncoding=UTF-8" />
 		<property name="username" value="sirafleg_user" />
 		<property name="password" value="2016siraflega2016" />
+		
 	</bean>
 	<!-- jdbc connection ends -->
 	<bean id="emf"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="datasource" />
 		<property name="packagesToScan" value="us.siraflega.entities" />
+		
 		<property name="jpaProperties">
+		
 			<props>
+				
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<!-- <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property> -->
 				<prop key="hibernate.show_sql">false</prop>

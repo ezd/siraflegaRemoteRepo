@@ -8,7 +8,7 @@
 body {
 	padding-top: 40px;
 	padding-bottom: 40px;
-	background-color: #eee;
+/* 	background-color: #eee; */
 }
 
 .form-signin {
@@ -52,21 +52,22 @@ body {
 }
 </style>
 <%@ include file="../defs/lib-file.jsp" %>
-<title>Insert title here</title>
+<title>Login</title>
 </head>
 <c:url value="/login" var="loginUrl"/>
 
 <body>
 	<div class="col-md-8">
 		<div class="container-fluid"
-			style="background-color: #ECE9E6; margin: 10px 2px; padding: 5px; box-shadow: 1px 1px 2px grey; min-height: 500px">
+			style="background-color:#efefef; margin: 10px 2px; padding: 5px; border : 0.5px 0.5px grey; min-height: 500px">
 			<form class="form-signin" action="${loginUrl}" method="post"> 
 				<input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}" />
 				<h2 class="form-signin-heading">Please sign in</h2>
-				<input type="text" name="username" class="form-control" placeholder="User name" required autofocus> 
+				<input style="margin-bottom: 5px;" type="text" name="username" class="form-control" placeholder="User name" required autofocus> 
 				<input type="password" name="password" class="form-control" placeholder="Password"  required>
 				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+				<div align="center" style="margin-top: 5px;"><a  href="${pageContext.request.contextPath}/register.html">New user? Register now</a></div>
 			</form>
 		</div>
 	</div>

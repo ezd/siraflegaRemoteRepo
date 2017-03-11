@@ -74,7 +74,7 @@ public class InitDBService {
 	
 	@PostConstruct
 	public void init() {
-		
+		System.out.println("*********************start*******************************************");
 		
 		
 		Date startDate = null, endDate = null;
@@ -474,6 +474,9 @@ for(int i=0;i<12;i++){
 					+ "");
 			applicationRepository.save(ap);
 		}
+		
+		System.out.println("*********************end*******************************************");
+		
 		
 		
 	}

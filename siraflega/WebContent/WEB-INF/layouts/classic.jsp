@@ -3,7 +3,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> -->
+<meta name="description" content="Welcome to first Ethiopian full functional job searching website.In our site, you can search jobs, create an account, post your CV, apply for jobs, post new jobs and view who applied for it.">
+<meta name="keywords" content="jobs,employee,CV,new graduate,ethiopia">
+<meta name="author" content="Siraflega by Code4fun">
 <%@ include file="../defs/lib-file.jsp"%>
 <title><tiles:getAsString name="title" /></title>
 <tilesx:useAttribute name="current" />
@@ -103,12 +106,26 @@
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
 
-
+<!-- text editor -->
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script>
+tinymce.init({
+	  selector: 'textarea',  // change this value according to your HTML
+	  plugins : 'advlist autolink lists print preview'
+	});
+</script>
 
 <style type="text/css">
 div.container-holder {
 	margin: 10px 2px;
 	padding: 5px;
+}
+
+.overflowstyle{
+    height: 600px;
+    width: 1000px;
+    overflow: auto;
+    border-radius: 0px;
 }
 
 .titile h2 {
@@ -200,6 +217,7 @@ h5 {
 	margin-bottom: 10px;
 }
 </style>
+<meta charset="utf-8" /> 
 </head>
 
 <body>

@@ -35,7 +35,7 @@ ul {
 }
 
 .jobDescription {
-	font-size: 12px;
+	font-size: 13px;
 	font-family: 'Open Sans', sans-serif;
 	color: #4A4A4A;
 }
