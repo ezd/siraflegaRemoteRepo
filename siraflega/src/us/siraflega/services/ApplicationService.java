@@ -33,6 +33,19 @@ public class ApplicationService {
 	public List<Application> getApplications(Integer jobId){
 		return applicationRepository.findByJobId(jobId);
 	}
+	
+	public List<Application> getApplicationsForpost(Integer jobId){
+		List<Application> aplicantsfullInfo=applicationRepository.findByJobId(jobId);
+		for(int i=0;i<aplicantsfullInfo.size();i++){
+			Employee applicantinfo=employeeService.getEmployeeByID(aplicantsfullInfo.get(i).getApplicantId());
+			aplicantsfullInfo.get(i).setApplicantFullName(applicantinfo.getFirstName()==null?"":applicantinfo.getFirstName()+" "
+					+ applicantinfo.getMiddleName()==null?"":applicantinfo.getMiddleName()+" "
+							+ applicantinfo.getLastName()==null?"":applicantinfo.getLastName()+" ");
+			
+		}
+		return aplicantsfullInfo;
+	}
+	
 	public boolean isApplied(Integer applicantId,Integer jobId){
 		return !applicationRepository.findByApplicantIdAndJobId(applicantId,jobId).isEmpty();
 	}

@@ -21,10 +21,12 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 						<h4 class="modal-title" id="myModalLabel">Update employee
-							information</h4>
+							information</h4><p>id is:${jobid}</p>
 					</div>
 					<div class="modal-body">
 						<form:hidden path="id" />
+						<form:hidden path="returnTo" value="${returnTo}" />
+						<form:hidden path="jobid" value="${jobid}" />
 						<form:hidden path="email" />
 						<div class="form-group">
 							<label for="firstName" class="col-sm-3 control-label">First

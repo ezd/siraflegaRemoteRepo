@@ -25,7 +25,7 @@
 			<div class="titile">
 				<security:authorize access="isAuthenticated()">
 					<button type="button" class="btn btn-primary btn-lg"
-						data-toggle="modal" data-target="#editPersonalInfoModal">
+						data-toggle="modal" data-target="#editPersonalInfoModal" >
 						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 					</button>
 				</security:authorize>
@@ -34,7 +34,9 @@
 						value="${employee.firstName} ${employee.middleName} ${employee.lastName}" />
 				</h2>
 			</div>
-
+			<c:if test="${ employee.summary != null && employee.summary != '' && returnTo != null && returnTo !='' }">
+			<a href="${pageContext.request.contextPath}/${returnTo}/${jobid}">Back to the application</a><br>
+			</c:if>
 			<strong class="dicorated">Age: </strong>${employee.age==0?'':employee.age }<br> <strong
 				class="dicorated">Sex: </strong>${employee.sex=='F'?'Female':(employee.sex=='M'?'Female':'') }<br>
 			<strong class="dicorated">Address: </strong>${employee.address }<br>

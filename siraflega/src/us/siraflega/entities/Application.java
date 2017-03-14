@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Transient;
 
 @Entity
 public class Application {
@@ -17,6 +18,24 @@ public class Application {
 	Integer applicantId;
 	Integer jobId;
 	Date applicationDate;
+	
+	@Transient
+	Integer applicatinEmpid;
+	@Transient
+	String applicantFullName;
+	
+	public Integer getApplicatinEmpid() {
+		return applicatinEmpid;
+	}
+	public void setApplicatinEmpid(Integer applicatinEmpid) {
+		this.applicatinEmpid = applicatinEmpid;
+	}
+	public String getApplicantFullName() {
+		return applicantFullName;
+	}
+	public void setApplicantFullName(String applicantFullName) {
+		this.applicantFullName = applicantFullName;
+	}
 	@Lob
 	@Column(length = 10000)
 	String letter;

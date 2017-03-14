@@ -276,7 +276,8 @@ public class UserController {
 
 	@RequestMapping("/account")
 	public String getMyAccount(Model model, Principal principal, HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response,@RequestParam(value="returnTo",required=false) String returnTo, @RequestParam(value="jobid",required=false) String jobId ) {
+		
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		if (user == null) {
@@ -291,6 +292,10 @@ public class UserController {
 		List<Company> companyList = companyService.getCompanyList();
 		model.addAttribute("companyList", getCompanyNameList(companyList));
 		model.addAttribute("companyObjList", companyList);
+		//this values for returning
+		model.addAttribute("returnTo", returnTo);
+		model.addAttribute("jobid", jobId);
+		
 		if (employee != null) {
 			model.addAttribute("employee", employee);
 			return "employee-detail";
@@ -327,6 +332,7 @@ public class UserController {
 	@RequestMapping(value = "/updateEmployee", method = RequestMethod.POST)
 	public String updateEmployee(@ModelAttribute("employee") Employee employee, Model model, Principal principal) {
 		User logedInUser = userService.getUserByName(principal.getName());
+		employee.setSummary(employee.getSummary().substring(3,(employee.getSummary().length()-4)));
 		if (employee.getId() != null) {
 			employee.setEmail(logedInUser.getEmail());
 			employeeService.updateEmployee(employee);
@@ -334,9 +340,9 @@ public class UserController {
 			employee.setEmail(logedInUser.getEmail());
 			employeeService.saveEmployee(employee);
 		}
-
-		return "redirect:/account";
+		return "redirect:/account?returnTo="+employee.getReturnTo()+"&&jobid="+employee.getJobid();
 	}
+	
 
 	@RequestMapping(value = "/saveEmployeePersonalInfo", method = RequestMethod.POST)
 	public String saveEmployeePersonalInfo(@ModelAttribute("employee") Employee employee, Model model) {
@@ -681,15 +687,12 @@ public class UserController {
 		if (totalPageSize <= 10) {
 			model.addAttribute("startat", 1);
 			model.addAttribute("endat", totalPageSize);
-			System.out.println(1 + " up to " + totalPageSize);
 		} else if (totalPageSize < (pageNumber + 5)) {
 			model.addAttribute("startat", (totalPageSize - 10));
 			model.addAttribute("endat", totalPageSize);
-			System.out.println((totalPageSize - 10) + " up to " + totalPageSize);
 		} else {
 			model.addAttribute("startat", (pageNumber - 4));
 			model.addAttribute("endat", (pageNumber + 5));
-			System.out.println((pageNumber - 4) + " up to " + (pageNumber + 5));
 		}
 		model.addAttribute("totalPageSize", totalPageSize);
 		List<PostedJob> postedJobs = postedJobService.getPostedJobs(employer, pageNumber, PAGE_HOLDING_CAPACITYX);
@@ -763,7 +766,6 @@ public class UserController {
 		User user = userService.getUserByName(name);
 		Employee employee = employeeService.getEmployeeBy(user.getEmail());
 		PostedJob postedJob = postedJobService.getPostdJob(jobId);
-		
 		model.addAttribute("employee", employee);
 		model.addAttribute("postedJob", postedJob);
 		model.addAttribute("currentDate", new Date());
@@ -829,11 +831,14 @@ public class UserController {
 
 	private final int PAGE_HOLDING_CAPACITYZ = 4;
 	// int pageNumber;
+	
 
 	@RequestMapping(value = "/applicationsDetail/{jobId}/{pageId}", method = RequestMethod.GET)
 	public String applicationsDetail(Model model, @PathVariable int jobId, @PathVariable int pageId) {
 
-		List<Employee> applicants = applicationService.getApplicants(jobId);
+//		List<Employee> applicants = applicationService.getApplicants(jobId);
+		List<Application> applicants = applicationService.getApplicationsForpost(jobId);
+		
 		int totalApplicantSize = applicants.isEmpty() ? 0 : applicants.size();
 		// pageNumber = 1;
 		int totalPageSize = (totalApplicantSize % PAGE_HOLDING_CAPACITYZ == 0
@@ -843,15 +848,12 @@ public class UserController {
 		if (totalPageSize <= 10) {
 			model.addAttribute("startat", 1);
 			model.addAttribute("endat", totalPageSize);
-			System.out.println(1 + " up to " + totalPageSize);
 		} else if (totalPageSize < (pageId + 5)) {
 			model.addAttribute("startat", (totalPageSize - 10));
 			model.addAttribute("endat", totalPageSize);
-			System.out.println((totalPageSize - 10) + " up to " + totalPageSize);
 		} else {
 			model.addAttribute("startat", (pageId - 4));
 			model.addAttribute("endat", (pageId + 5));
-			System.out.println((pageId - 4) + " up to " + (pageId + 5));
 		}
 
 		if (totalApplicantSize < PAGE_HOLDING_CAPACITYZ) {

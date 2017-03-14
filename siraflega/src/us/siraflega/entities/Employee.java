@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 public class Employee {
@@ -31,6 +32,25 @@ public class Employee {
 	@Column(length = 10000)
 	String summary;
 	
+	@Transient
+	String returnTo;
+	@Transient
+	String jobid;
+	
+	
+	
+	public String getReturnTo() {
+		return returnTo;
+	}
+	public void setReturnTo(String returnTo) {
+		this.returnTo = returnTo;
+	}
+	public String getJobid() {
+		return jobid;
+	}
+	public void setJobid(String jobid) {
+		this.jobid = jobid;
+	}
 	@OneToMany(mappedBy="employee",cascade=CascadeType.REMOVE)
 	List<Education> educations;
 	@OneToMany(mappedBy="talkedby",cascade=CascadeType.REMOVE)

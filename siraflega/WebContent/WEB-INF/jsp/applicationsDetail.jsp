@@ -86,12 +86,12 @@ ul {
 							<div class="mainTitle">
 								<a
 									href="${pageContext.request.contextPath}/cv/${applicant.id}.html"><c:out
-						value="${applicant.firstName} ${applicant.middleName} ${applicant.lastName}" /></a>
+						value="${applicant.applicantFullName}" /></a>
 							</div>
 
 							<div class="applicantSummary">
 								<p>
-									${applicant.summary}... <a
+									${applicant.letter}... <a
 										href="${pageContext.request.contextPath}/cv/${applicant.id}.html">read
 										more</a>
 								</p>
