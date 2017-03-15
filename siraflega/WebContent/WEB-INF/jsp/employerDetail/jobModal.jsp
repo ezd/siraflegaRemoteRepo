@@ -4,8 +4,8 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <div class="modal fade" id="jobModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content overflowstyle" >
+	<div class="modal-dialog overflowstyle" role="document">
+		<div class="modal-content " >
 			<form:form id="newjobform" class="form-horizontal" commandName="job"
 				action="${pageContext.request.contextPath}/postJob" method="post">
 				<div class="modal-header">

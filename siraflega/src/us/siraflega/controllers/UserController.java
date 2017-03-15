@@ -759,7 +759,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/apply/{jobId}", method = RequestMethod.GET)
-	String apply(Model model, @PathVariable int jobId, Principal principal) {
+	String apply(Model model, @PathVariable int jobId, Principal principal,@RequestParam(value="langoption",defaultValue="english") String langoption) {
 		int i=0;
 		i++;
 		String name = principal.getName();
@@ -768,6 +768,7 @@ public class UserController {
 		PostedJob postedJob = postedJobService.getPostdJob(jobId);
 		model.addAttribute("employee", employee);
 		model.addAttribute("postedJob", postedJob);
+		model.addAttribute("langoption", langoption);
 		model.addAttribute("currentDate", new Date());
 		Application application=null;
 		boolean isApplied=false;

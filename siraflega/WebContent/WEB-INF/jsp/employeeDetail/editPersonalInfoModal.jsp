@@ -21,7 +21,7 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 						<h4 class="modal-title" id="myModalLabel">Update employee
-							information</h4><p>id is:${jobid}</p>
+							information</h4>
 					</div>
 					<div class="modal-body">
 						<form:hidden path="id" />

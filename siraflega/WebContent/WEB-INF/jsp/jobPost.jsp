@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <style type="text/css">
 .hiddenRow {
 	padding: 0 !important;
@@ -60,10 +61,14 @@
 															<c:when test="${postedJob.deadLine lt currentDate}">
 																<span style="color: red">Deadline has passed</span>
 															</c:when>
+															
 															<c:when test="${postedJob.deadLine ge currentDate}">
+															<security:authorize access="hasRole('EMPLOYEE')">
 <!-- 															/apply/{jobId} -->
 																<span style="color: green">On progress<a href="${pageContext.request.contextPath}/apply/${postedJob.id}" style="float: right"><strong>Apply</strong></a></span>
+															</security:authorize>
 															</c:when>
+															
 														</c:choose>
 													</p>
 												</div>

@@ -26,7 +26,8 @@
 			<div class="row outPutRow ">
 				<div class="col-xs-12 mainTiltle" style="margin: 0px; padding: 0px;">
 				<p style="float:right">
-					<input type="radio" name="languageOption" value="english" checked> English
+					<input type="hidden" id="languageflag" value="${param.langoption}"/>
+					<input type="radio" name="languageOption" value="english" > English
   					<input type="radio" name="languageOption" value="amharic"> አማርኛ
 					</p>
 					<h4 class="engContent">To whom it may Concern</h4>
@@ -85,6 +86,7 @@
 			<div class="row outPutRow">
 				<div class="col-xs-12"
 					style="margin: 0px; padding: 0px; text-align: justify;">
+					<input type="hidden" id="lettervalue"/>
 					<p class="values engContent">
 						With best regards,<br> <span
 							style="text-transform: capitalize; font-weight: bold"><c:out
@@ -153,32 +155,42 @@
 </body>
 </html>
 <script type="text/javascript">
-	$(document).ready(function() {
-		//language opiton
-		var langoption=$("input[name='languageOption']:checked").val();
-		if('amharic'==langoption){
+var langoption='english';
+function changeLanguge(langoption) {
+	if('amharic'==langoption){
 		$('.engContent').css({'display':'none'});
 		$('.amharicContent').css({'display':'block'});
 		}else{
 			$('.engContent').css({'display':'block'});
 			$('.amharicContent').css({'display':'none'});
 		}
+	$("input[name='languageOption'][value=" + langoption + "]").prop('checked', true);
+	
+}
+	$(document).ready(function() {
+		//language opiton
+		//langoption=$("input[name='languageOption']:checked").val();
+// 		if(langoption==null || langoption==''){
+			
+// 		}
+		langoption=$('#languageflag').val()==''?langoption:$('#languageflag').val();
+		changeLanguge(langoption);
 						$('#saveChangeBtn').on('click',
 										function() {
 							
 											if (tinymce.get('letterTxt').getContent({ format: 'text'}) == '') {
-												alert('hi');
 												$(".btnSign").attr('class','glyphicon glyphicon-pencil');
 												$(".btnSign").css('float','right');
 												$('.letterPr').html('');
+												$('#lettervalue').val('');
 											}else { //($('#letterTxt').html() == ''|| !$("#letterTxt").val()) 
 												$('.btnText').html('');
 												$(".btnSign").attr('class','glyphicon glyphicon-edit');
 												$(".btnSign").css('float','right');
 // 												tinymce.get('letterTxt').getContent({ format: 'text' })
 												$('.letterPr').text(tinymce.get('letterTxt').getContent({ format: 'text' }));
-												alert(tinymce.get('letterTxt').getContent({ format: 'text' }));
 												$('.letterPr').html(tinymce.get('letterTxt').getContent({ format: 'text' }));
+												$('#lettervalue').val(tinymce.get('letterTxt').getContent({ format: 'text' }));
 											}
 
 											$('#letterModal').modal('toggle');
@@ -193,22 +205,15 @@
 						});
 						
 						$("input[name='languageOption']").on("click",function(){
-							var langoption=$("input[name='languageOption']:checked").val();
-							if('amharic'==langoption){
-							alert("i am amharic");
-							$('.engContent').css({'display':'none'});
-							$('.amharicContent').css({'display':'block'});
-							}else{
-								alert("i am english");
-								$('.engContent').css({'display':'block'});
-								$('.amharicContent').css({'display':'none'});
-							}
+							langoption=$("input[name='languageOption']:checked").val();
+							changeLanguge(langoption);
 						});
 						$("#btnApply").on("click",function() {
 							if($("#empId").val()==null || $("#empId").val()==''){
 								$('#yoursummary').css({'border-color':'red', 'border-width':"1px", 'border-style': 'solid'});
 							}else{
 								$('#yoursummary').css({'border-color':'black' , 'border-width':"1px", 'border-style': 'none'});
+								var langoption=$("input[name='languageOption']:checked").val();
 								$.ajax({
 									type : 'POST',
 									url : '${pageContext.request.contextPath}/apply/',
@@ -216,10 +221,11 @@
 									dataType : 'json',
 									data : JSON.stringify({applicantId : $('#empId').val(),
 												jobId : $('#jobId').val(),
-												applicationLetter : $('letterPr').text(),
+												applicationLetter : $('#lettervalue').val(),
 											}),
 									success : function(data) {
-										window.location.replace('${pageContext.request.contextPath}/apply/'+ $('#jobId').val());
+										window.location.replace('${pageContext.request.contextPath}/apply/'+ $('#jobId').val()+"?langoption="+langoption);
+										
 									},
 									error : function(ts) {
 										alert(ts.responseText);
