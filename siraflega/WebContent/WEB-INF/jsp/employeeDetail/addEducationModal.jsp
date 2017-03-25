@@ -6,7 +6,7 @@
 <!-- Modal -->
 <div class="modal fade" id="addEducationModal" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog overflowstyle" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
@@ -30,14 +30,14 @@
 					<div class="form-group">
 						<label for="educationLevel" class="col-sm-3 control-label">Degree:</label>
 						<div class="col-sm-9">
-							<input type="text" class="form-control " id="educationLevel" />
+							<input type="text" class="form-control " id="educationLevel" placeholder="Ex. BSc." />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="educationTitle" class="col-sm-3 control-label">Award
 							title:</label>
 						<div class="col-sm-9">
-							<input type="text" class="form-control " id="educationTitle" />
+							<input type="text" class="form-control " id="educationTitle" placeholder="Ex. Software Engineering" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -90,20 +90,15 @@
 		var listToAdd = '<li>' 
 					+'<div class="titleThree">'
 						+ '<security:authorize access="isAuthenticated()">'
-							+ '<button type="button" class="btn btn-danger btn-sm deleteEducationBtn" '
-							+ 'data-educationToDelete="'+data.id+'"'+'><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>'
-							+ '<button type="button" class="btn btn-primary btn-sm trigerEducationEdit" id="editEducationBtn" '
-							+ 'data-toggle="modal" data-target="#addEducationModal" data-educationId="'
+							+ '<button type="button" class="btn btn-danger btn-sm deleteEducationBtn" data-educationToDelete="'+data.id+'"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>'
+							+ '<button type="button" class="btn btn-primary btn-sm trigerEducationEdit" id="editEducationBtn" data-toggle="modal" data-target="#addEducationModal" data-educationId="'
 							+ data.id
 							+ '" '
-							+ 'data-institute="'+ data.institute+ '" '
-							+ 'data-educationLevel="'+ data.level+ '" '
-							+ 'data-educationTitle="'+ data.title+ '" '
-							+ 'data-educationStart="'
+							+ 'data-institute="'+ data.institute+ '" data-educationLevel="'+ data.level+ '" data-educationTitle="'+ data.title+ '" data-educationStart="'
 							+ $.datepicker.formatDate('yy-mm-dd', new Date(data.startDate))+ '" '
 							+ 'data-educationEnd="'
 							+ $.datepicker.formatDate('yy-mm-dd', new Date(data.endDate))+ '" '
-							+ 'data-educationRemark="'+ data.remark+ '"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button> '
+							+ "data-educationRemark='"+ data.remark+ "'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> "
 						+ '</security:authorize>'
 						+ '<span class="titleThreeText">'+ data.institute+ '</span> '
 					+'</div>'
@@ -163,6 +158,7 @@
 								});
 						//ajax for saving new exp
 						$("#saveEducation").on("click", function() {
+							if( ($(".startEducationDate").val()!='' &&  $(".startEducationDate").val()!=null)&&($(".endEducationDate").val()!=null&&$(".endEducationDate").val()!='')){
 							$.ajax({
 								type : 'POST',
 								url : '${pageContext.request.contextPath}/saveEducation',
@@ -174,7 +170,7 @@
 									title : $("#educationTitle").val(),
 									startDate : $(".startEducationDate").val(),
 									endDate : $(".endEducationDate").val(),
-									remark : $('#educationRemark').val()
+									remark : nicEditors.findEditor( "educationRemark" ).getContent()
 								}),
 								success : function(data) {
 									var list = addEducationData(data);
@@ -186,6 +182,7 @@
 									//alert(ts.responseText);
 								}
 							});
+							}
 						});
 						//ajax for updating education
 						$("#updateEducation").on("click", function() {
@@ -201,7 +198,7 @@
 									title : $("#educationTitle").val(),
 									startDate : $(".startEducationDate").val(),
 									endDate : $(".endEducationDate").val(),
-									remark : $('#educationRemark').val()
+									remark : nicEditors.findEditor( "educationRemark" ).getContent()
 								}),
 								success : function(data) {
 									var indexToBeUpdated = $('#educationEditIndex').val();

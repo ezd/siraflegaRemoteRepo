@@ -106,14 +106,18 @@
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
 
-<!-- text editor -->
+<!-- text editor 
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 <script>
 tinymce.init({
 	  selector: 'textarea',  // change this value according to your HTML
 	  plugins : 'advlist autolink lists print preview'
 	});
-</script>
+</script>-->
+<script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script>
+<script type="text/javascript">
+        bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+  </script>
 
 <style type="text/css">
 div.container-holder {
@@ -123,9 +127,13 @@ div.container-holder {
 
 .overflowstyle{
     height: 90%;
-    width: 90%;
+    width: 1000px;
     overflow: auto;
     border-radius: 0px;
+}
+.overflowstyle textarea{
+    height: 200px;
+    width: 800px;
 }
 
 .titile h2 {
@@ -269,7 +277,7 @@ h5 {
 				</security:authorize>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li></li>
+				<li>${timesvisited} times visited</li>
 				<!--             <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li> -->
 			</ul>
 		</div>

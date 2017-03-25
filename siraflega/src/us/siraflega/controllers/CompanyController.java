@@ -18,7 +18,6 @@ public class CompanyController {
 	
 	@RequestMapping(value="/company/{companyId}", method=RequestMethod.GET)
 	String getCampany(Model model,@PathVariable int companyId){
-		System.out.println("it is comiiiiiiiiiiiiiiiiiiiiiiiiiiiiiing");
 		
 		Company company=companyService.getCompany(companyId);
 		model.addAttribute("company",company);

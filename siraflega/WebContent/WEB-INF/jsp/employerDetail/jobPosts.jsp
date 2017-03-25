@@ -96,13 +96,13 @@ border-radius: 0px;
 									</c:choose></td>
 									<td class="text-info">
 										<div class="btn-group" style="width: 70px">
-											<button class="btn btn-primary btn-sm pull-left" id="updateJobBtn"
-											data-id="${postedJob.id}" data-discription="${postedJob.discription}"
+											<button class="btn btn-primary btn-sm pull-left updateJobBtn"
+											data-id="${postedJob.id}" data-discription='${postedJob.discription}'
 											data-position="${postedJob.position}" data-sallery="${postedJob.sallery}"
 											data-postedDate="${postedJob.postedDate}" data-deadLine="${postedJob.deadLine}"
-											data-rqdSkills="${postedJob.rqdSkills}" data-rqdEducation="${postedJob.rqdEducation}"
+											data-rqdSkills='${postedJob.rqdSkills}' data-rqdEducation='${postedJob.rqdEducation}'
 											data-rqdExperianceyears="${postedJob.rqdExperianceyears}"
-											data-howToApply="${postedJob.howToApply}" data-email="${postedJob.email}"
+											data-howToApply='${postedJob.howToApply}' data-email="${postedJob.email}"
 											data-phone="${postedJob.phone}" data-companyId="${postedJob.company.id}"
 											>
 												<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -312,13 +312,15 @@ border-radius: 0px;
 					$('#delet_Modal').modal('toggle');
 					
 				});
-				$('#updateJobBtn').click(function(){
+				$('.updateJobBtn').click(function(){
 					$('#jobId').val($(this).attr('data-id'));
 					$('.prevCompanyId').val($(this).attr('data-companyId'));
 					$('#editCompany').val($(this).attr('data-companyId'));
 					$('#editCompany').selectpicker('render');
 					$('#position').val($(this).attr('data-position'));
-					$('#discription').val($(this).attr('data-discription'));
+// 					tinyMCE.get('discription').setContent($(this).attr('data-discription'));
+					nicEditors.findEditor( "discription" ).setContent( $(this).attr("data-discription") );
+// 					$('#discription').val(tinyMCE.get('discription').setContent($(this).attr('data-discription')));
 					$('#sallery').val($(this).attr('data-sallery'));
 					var std = $(this).attr("data-postedDate").split(' ');
 					var fmtStDt = formatedDate(std[0]);
@@ -326,9 +328,12 @@ border-radius: 0px;
 					var entd = $(this).attr("data-deadLine").split(' ');
 					var fmtenDt = formatedDate(entd[0]);
 					$('#deadLine').val(fmtenDt);
-					$('#rqdSkills').val($(this).attr('data-rqdSkills'));
-					$('#rqdEducation').val($(this).attr('data-rqdEducation'));
-					$('#howToApply').val($(this).attr('data-howToApply'));
+					nicEditors.findEditor( "rqdSkills" ).setContent( $(this).attr("data-rqdSkills") );
+					nicEditors.findEditor( "rqdEducation" ).setContent( $(this).attr("data-rqdEducation") );
+					nicEditors.findEditor( "howToApply" ).setContent( $(this).attr("data-howToApply") );
+// 					$('#rqdSkills').val(tinyMCE.get('rqdSkills').setContent($(this).attr('data-rqdSkills')));
+// 					$('#rqdEducation').val(tinyMCE.get('rqdEducation').setContent($(this).attr('data-rqdEducation')));
+// 					$('#howToApply').val(tinyMCE.get('howToApply').setContent($(this).attr('data-howToApply')));
 					$('#rqdExperianceyears').val($(this).attr('data-rqdExperianceyears'));
 					$('#email').val($(this).attr('data-email'));
 					$('#phone').val($(this).attr('data-phone'));

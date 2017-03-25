@@ -79,6 +79,7 @@ public class EducationController {
 			e.printStackTrace();
 		}
 		String remark=jsonObject.getString("remark");
+		System.out.println("***********remark is:"+remark);
 		Education newEducation=new Education();
 		newEducation.setEmployee(employee);
 		newEducation.setEndDate(end_Date);

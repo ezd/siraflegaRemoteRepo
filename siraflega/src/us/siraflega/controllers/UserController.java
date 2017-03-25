@@ -276,8 +276,9 @@ public class UserController {
 
 	@RequestMapping("/account")
 	public String getMyAccount(Model model, Principal principal, HttpServletRequest request,
-			HttpServletResponse response,@RequestParam(value="returnTo",required=false) String returnTo, @RequestParam(value="jobid",required=false) String jobId ) {
-		
+			HttpServletResponse response, @RequestParam(value = "returnTo", required = false) String returnTo,
+			@RequestParam(value = "jobid", required = false) String jobId) {
+
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
 		if (user == null) {
@@ -292,10 +293,10 @@ public class UserController {
 		List<Company> companyList = companyService.getCompanyList();
 		model.addAttribute("companyList", getCompanyNameList(companyList));
 		model.addAttribute("companyObjList", companyList);
-		//this values for returning
+		// this values for returning
 		model.addAttribute("returnTo", returnTo);
 		model.addAttribute("jobid", jobId);
-		
+
 		if (employee != null) {
 			model.addAttribute("employee", employee);
 			return "employee-detail";
@@ -332,7 +333,7 @@ public class UserController {
 	@RequestMapping(value = "/updateEmployee", method = RequestMethod.POST)
 	public String updateEmployee(@ModelAttribute("employee") Employee employee, Model model, Principal principal) {
 		User logedInUser = userService.getUserByName(principal.getName());
-		employee.setSummary(employee.getSummary().substring(3,(employee.getSummary().length()-4)));
+		employee.setSummary(this.getRawText(employee.getSummary()));
 		if (employee.getId() != null) {
 			employee.setEmail(logedInUser.getEmail());
 			employeeService.updateEmployee(employee);
@@ -340,10 +341,18 @@ public class UserController {
 			employee.setEmail(logedInUser.getEmail());
 			employeeService.saveEmployee(employee);
 		}
-		return "redirect:/account?returnTo="+employee.getReturnTo()+"&&jobid="+employee.getJobid();
+		if(employee.getReturnTo()==null || employee.getReturnTo()==""){
+			return "redirect:/account";
+		}
+		return "redirect:/account?returnTo=" + employee.getReturnTo() + "&&jobid=" + employee.getJobid();
 	}
 	
-
+	private String getRawText(String htmltext) {
+		String test=htmltext;
+		if (htmltext.startsWith("<") && htmltext.endsWith(">"))
+			test= htmltext.substring(htmltext.indexOf(">")+1,htmltext.lastIndexOf("<")-1);
+		return test;
+	}
 	@RequestMapping(value = "/saveEmployeePersonalInfo", method = RequestMethod.POST)
 	public String saveEmployeePersonalInfo(@ModelAttribute("employee") Employee employee, Model model) {
 		Employee savedEmployee = employeeService.saveEmployeeInfo(employee);
@@ -675,7 +684,7 @@ public class UserController {
 
 	@RequestMapping("/employerPosts/{pageNumber}")
 	public String registerForm(Model model, Principal principal, @PathVariable int pageNumber) {
-		
+
 		String userName = principal.getName();
 		User user = userService.getUserByName(userName);
 		Employer employer = employerService.getEmployerBy(user.getEmail());
@@ -704,6 +713,7 @@ public class UserController {
 		model.addAttribute("companyObjList", companyList);
 		return "employerPosts";
 	}
+
 	// DD/MM/YYYY
 	@InitBinder
 	public void initBinderAll(WebDataBinder binder) {
@@ -723,15 +733,16 @@ public class UserController {
 			PostedJob existingJob = postedJobService.getPostdJob(job.getId());
 			existingJob.setCompany(job.getCompany());
 			existingJob.setDeadLine(job.getDeadLine());
-			existingJob.setDiscription(job.getDiscription());
+			existingJob.setDiscription(this.getRawText(job.getDiscription()));
 			existingJob.setEmail(job.getEmail());
-			existingJob.setHowToApply(job.getHowToApply());
+			existingJob.setHowToApply(this.getRawText(job.getHowToApply()));
 			existingJob.setPhone(job.getPhone());
 			existingJob.setPosition(job.getPosition());
 			existingJob.setPostedDate(job.getPostedDate());
-			existingJob.setRqdEducation(job.getRqdEducation());
+			existingJob.setRqdEducation(this.getRawText(job.getRqdEducation()));
 			existingJob.setRqdExperianceyears(job.getRqdExperianceyears());
-			existingJob.setRqdSkills(job.getRqdSkills());
+			existingJob.setRqdSkills(this.getRawText(job.getRqdSkills()));
+			
 			existingJob.setSallery(job.getSallery());
 			existingJob.setTitle(job.getTitle());
 			postedJobService.save(existingJob);
@@ -759,8 +770,9 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/apply/{jobId}", method = RequestMethod.GET)
-	String apply(Model model, @PathVariable int jobId, Principal principal,@RequestParam(value="langoption",defaultValue="english") String langoption) {
-		int i=0;
+	String apply(Model model, @PathVariable int jobId, Principal principal,
+			@RequestParam(value = "langoption", defaultValue = "english") String langoption) {
+		int i = 0;
 		i++;
 		String name = principal.getName();
 		User user = userService.getUserByName(name);
@@ -770,11 +782,11 @@ public class UserController {
 		model.addAttribute("postedJob", postedJob);
 		model.addAttribute("langoption", langoption);
 		model.addAttribute("currentDate", new Date());
-		Application application=null;
-		boolean isApplied=false;
-		if(employee!=null){
-		application = applicationService.getApplication(jobId, employee.getId());
-		isApplied = applicationService.isApplied(employee.getId(), jobId);
+		Application application = null;
+		boolean isApplied = false;
+		if (employee != null) {
+			application = applicationService.getApplication(jobId, employee.getId());
+			isApplied = applicationService.isApplied(employee.getId(), jobId);
 		}
 		model.addAttribute("application", application);
 		model.addAttribute("isApplied", isApplied);
@@ -832,14 +844,13 @@ public class UserController {
 
 	private final int PAGE_HOLDING_CAPACITYZ = 4;
 	// int pageNumber;
-	
 
 	@RequestMapping(value = "/applicationsDetail/{jobId}/{pageId}", method = RequestMethod.GET)
 	public String applicationsDetail(Model model, @PathVariable int jobId, @PathVariable int pageId) {
 
-//		List<Employee> applicants = applicationService.getApplicants(jobId);
+		// List<Employee> applicants = applicationService.getApplicants(jobId);
 		List<Application> applicants = applicationService.getApplicationsForpost(jobId);
-		
+
 		int totalApplicantSize = applicants.isEmpty() ? 0 : applicants.size();
 		// pageNumber = 1;
 		int totalPageSize = (totalApplicantSize % PAGE_HOLDING_CAPACITYZ == 0

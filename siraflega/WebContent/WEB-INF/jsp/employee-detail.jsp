@@ -38,7 +38,7 @@
 			<a href="${pageContext.request.contextPath}/${returnTo}/${jobid}">Back to the application</a><br>
 			</c:if>
 			<strong class="dicorated">Age: </strong>${employee.age==0?'':employee.age }<br> <strong
-				class="dicorated">Sex: </strong>${employee.sex=='F'?'Female':(employee.sex=='M'?'Female':'') }<br>
+				class="dicorated">Sex: </strong>${employee.sex=='F'?'Female':'Male' }<br>
 			<strong class="dicorated">Address: </strong>${employee.address }<br>
 			<strong class="dicorated">Telephone: </strong>${employee.telephone}<br>
 			<strong class="dicorated">E-mail: </strong>${userEmail}<br>
@@ -73,7 +73,7 @@
 										data-company="${experience.company.id}"
 										data-start="${experience.starts}"
 										data-end="${experience.ends}"
-										data-discription="${experience.discription}"
+										data-discription='${experience.discription}'
 										data-currentlyWorking="${experience.currentlyWorking}"
 										>
 										<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -130,7 +130,7 @@
 										data-educationTitle="${education.title}"
 										data-educationStart="${education.startDate}"
 										data-educationEnd="${education.endDate}"
-										data-educationRemark="${education.remark}">
+										data-educationRemark='${education.remark}'>
 										<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 									</button>
 								</security:authorize>

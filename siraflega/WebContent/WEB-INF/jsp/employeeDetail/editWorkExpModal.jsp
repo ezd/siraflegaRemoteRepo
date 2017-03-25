@@ -6,7 +6,7 @@
 <!-- Modal -->
 <div class="modal fade" id="editWorkExpModal" tabindex="-1"
 	role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog overflowstyle" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
@@ -75,7 +75,7 @@
 						<label for="description" class="col-sm-3 control-label">Description:</label>
 						<div class="col-sm-9">
 							<textarea name="description" id="wdescription"
-								class="form-control editDescription" cols="30" rows="5" placeholder="Use up to 1000 character" maxlength="1000"></textarea>
+								class="form-control editDescription"  placeholder="Use up to 1000 character" maxlength="1000"></textarea>
 						</div>
 					</div>
 
@@ -113,7 +113,7 @@
 				+ 'data-company="'+ data.companyId+ '" '
 				+ 'data-start="'+ $.datepicker.formatDate('yy-mm-dd', new Date(data.startDate))+ '" '
 				+ 'data-end="'+ $.datepicker.formatDate('yy-mm-dd', new Date(data.endDate))+ '" '
-				+ 'data-discription="'+ data.description+'" '
+				+ "data-discription='"+ data.description+"' "
 				+ 'data-currentlyWorking="'+ data.isCurrentlyWorking
 				+ '"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button> '
 				+ '</security:authorize>'
@@ -191,7 +191,7 @@
 									position : $("#wpostion").val(),
 									startDate : $(".startDate").val(),
 									endDate : $(".endDate").val(),
-									description : $("#wdescription").val(),
+									description : nicEditors.findEditor( "wdescription" ).getContent(),
 									isCurrent : $("#isCurrentlyChk").prop('checked')
 								}),
 								success : function(data) {
@@ -212,7 +212,7 @@
 						//ajax for updating work exp
 						$("#updateWrokExp")
 								.on("click",function() {
-									
+									if( ($(".startDate").val()!='' &&  $(".startDate").val()!=null)&&($(".endDate").val()!=null&&$(".endDate").val()!='')){
 											$.ajax({
 														type : 'POST',
 														url : '${pageContext.request.contextPath}/updateWrorkExp',
@@ -224,7 +224,7 @@
 																	position : $("#wpostion").val(),
 																	startDate : $(".startDate").val(),
 																	endDate : $(".endDate").val(),
-																	description : $("#wdescription").val(),
+																	description : nicEditors.findEditor( "wdescription" ).getContent(),
 																	isCurrent : $("#isCurrentlyChk").prop('checked')
 																}),
 														success : function(data) {
@@ -240,6 +240,7 @@
 															//alert(ts.responseText);
 														}
 													});
+									}
 										});
 						//ajax to delete work exp
 

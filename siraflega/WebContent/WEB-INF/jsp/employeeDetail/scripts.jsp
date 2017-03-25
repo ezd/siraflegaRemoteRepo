@@ -22,7 +22,7 @@
 		$('#updateLanguage').hide();
 		$('#saveLanguage').show();
 	});
-	
+	//tinyMCE.get('discription').setContent($(this).attr('data-discription'));
 	$('#workExpList').delegate('.trigerEdit','click',function(e) {
 		$('#updateWrokExp').show();
 		$('#saveWrokExp').hide();
@@ -40,7 +40,10 @@
 		var enddt = $(this).attr("data-end").split(' ');
 		var fmtEndDt = formatedDate(enddt[0]);
 		$('.endDate').val(fmtEndDt);
-		$('.editDescription').val($(this).attr("data-discription"));
+		//workEdit 
+// 		tinyMCE.get('wdescription').setContent($(this).attr("data-discription"));
+// 		$('..nicEdit-main').html($(this).attr("data-discription"));
+		nicEditors.findEditor( "wdescription" ).setContent( $(this).attr("data-discription"));
 		$('#isCurrentlyChk').prop('checked',$(this).attr("data-currentlyWorking")=='true'?true:false);
 	});
 	$('#educationList').delegate('.trigerEducationEdit','click',function(e) {
@@ -58,7 +61,10 @@
 		var enddt = $(this).attr("data-educationEnd").split(' ');
 		var fmtEndDt = formatedDate(enddt[0]);
 		$('.endEducationDate').val(fmtEndDt);
-		$('#educationRemark').val($(this).attr("data-educationRemark"));
+		//educationRemark
+// 		tinyMCE.get('educationRemark').setContent($(this).attr("data-educationRemark"));
+// 		$('#educationRemark').val($(this).attr("data-educationRemark"));
+		nicEditors.findEditor( "educationRemark" ).setContent( $(this).attr("data-educationRemark") );
 	});
 	$('#languageProfLevel').delegate('.trigerLanguageEdit','click',function(e) {
 		$('#updateLanguage').show();

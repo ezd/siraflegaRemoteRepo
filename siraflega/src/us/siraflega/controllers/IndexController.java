@@ -3,9 +3,13 @@ package us.siraflega.controllers;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.google.gson.Gson;
 
@@ -23,6 +28,7 @@ import us.siraflega.services.PostedJobService;
 
 @Controller
 public class IndexController {
+	public static int timesvisited=100;
 	private final int PAGE_HOLDING_CAPACITY = 20;
 	int pageNumber;
 	@Autowired
@@ -30,8 +36,14 @@ public class IndexController {
 	@Autowired
 	CompanyService companyService;
 
+	@Autowired
+	private ServletContext servletContext;
+	
 	@RequestMapping({ "/index", "/" })
-	public String getIndex(Model model) {
+	public String getIndex(Model model, HttpServletRequest request) {
+		timesvisited++;
+		servletContext.setAttribute("timesvisited",timesvisited);
+//		model.addAttribute("timesvisited", timesvisited);
 		pageNumber = 1;
 		List<PostedJob> postedJobs = postedJobService.getPostedJobs(pageNumber, PAGE_HOLDING_CAPACITY);
 		for (PostedJob job : postedJobs)
@@ -97,15 +109,26 @@ public class IndexController {
 		}
 		return "index";
 	}
-
+	private String getRawText(String htmltext) {
+				String rowtext = Jsoup.parse(htmltext).text();
+		return rowtext;
+	}
+	
 	String shortString(String longString, int numberOfWords) {
 		String string = "";
-		String[] words = longString.split(" ");
-		for (int i = 0; i < (words.length > numberOfWords ? numberOfWords : words.length); i++)
-			string += words[i] + " ";
-		return string;
+		String htmlfree=this.getRawText(longString);
+		
+		String[] words = htmlfree.split(" ");
+		for (int i = 0; i < (words.length > numberOfWords ? numberOfWords : words.length); i++){
+			if(words[i].contains("<li>") || words[i].contains("<p>")){
+				string+=this.getRawText(words[i]);
+			}else{
+				string += words[i] + " ";
+			}
+		}
+		return string.trim();
+		
 	}
-
 	@RequestMapping(value = "/catigories", method = RequestMethod.GET)
 	@ResponseBody
 	public String getcatigories(HttpServletRequest req) {

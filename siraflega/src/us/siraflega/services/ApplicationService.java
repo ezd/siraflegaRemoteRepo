@@ -86,7 +86,6 @@ public class ApplicationService {
 	public long numberofApplicants(Integer id) {
 		
 		long numberofApplyees= applicationRepository.countByJobId(id);
-		System.out.println(numberofApplyees+ ":appleid for "+id);
 		return numberofApplyees;
 	}
 

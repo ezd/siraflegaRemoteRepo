@@ -122,7 +122,7 @@ ul {
 
 							<div class="jobDescription">
 								<p>
-									<c:set var="desc" value="${postedJob.discription}" />
+<%-- 									<c:set var="desc" value="${postedJob.discription}" /> --%>
 									${postedJob.discription}... <a
 										href="${pageContext.request.contextPath}/jobPost/${postedJob.id}.html">read
 										more</a>
