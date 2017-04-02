@@ -92,6 +92,13 @@
 						$('#editCompany').on('change',function() {
 											if ($('#editCompany').val() == 'newCompany') {
 												$('#companyModal').modal();
+												$('#cweb').val('');
+												$('#ctele').val('');
+												$('#ccity').val('');
+												$('#ccountry').val('');
+												$('#caddress').val('');
+												$('#caofFocus').val('');
+												$('#cName').val('');
 											} else {
 												$('.prevCompanyId').val($('#editCompany').val());
 											}

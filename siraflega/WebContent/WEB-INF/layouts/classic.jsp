@@ -127,7 +127,7 @@ div.container-holder {
 
 .overflowstyle{
     height: 90%;
-    width: 1000px;
+    width: 1100px;
     overflow: auto;
     border-radius: 0px;
 }

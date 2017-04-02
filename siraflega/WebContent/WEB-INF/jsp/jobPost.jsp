@@ -63,7 +63,7 @@
 															</c:when>
 															
 															<c:when test="${postedJob.deadLine ge currentDate}">
-															<security:authorize access="hasRole('EMPLOYEE')">
+															<security:authorize access="!hasRole('EMPLOYER')">
 <!-- 															/apply/{jobId} -->
 																<span style="color: green">On progress<a href="${pageContext.request.contextPath}/apply/${postedJob.id}" style="float: right"><strong>Apply</strong></a></span>
 															</security:authorize>

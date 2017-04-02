@@ -11,16 +11,32 @@
 	$('.triggerAdd').on('click', function() {
 		$('#updateWrokExp').hide();
 		$('#saveWrokExp').show();
+		nicEditors.findEditor( "wdescription" ).setContent('');
+		$('.endDate').val('');
+		$('.startDate').val('');
+		$('#wpostion').val('');
+		$('#isCurrentlyChk').setAttribute("checked", ""); // For IE
+		$('#isCurrentlyChk').removeAttribute("checked"); // For other browsers
+		$('#isCurrentlyChk').checked = false;
 	});					
 	
 	$('#addEducationBtn').on('click', function() {
 		$('#updateEducation').hide();
 		$('#saveEducation').show();
+		$('#educationInstitutionName').val('');
+		$('#educationLevel').val('');
+		$('#educationTitle').val('');
+		$('.startEducationDate').val('');
+		$('.endEducationDate').val('');
+		nicEditors.findEditor( "educationRemark" ).setContent('');
+		
+		
 	});
 	
 	$('#addLanguageBtn').on('click', function() {
 		$('#updateLanguage').hide();
 		$('#saveLanguage').show();
+		$('#languageName').val('')
 	});
 	//tinyMCE.get('discription').setContent($(this).attr('data-discription'));
 	$('#workExpList').delegate('.trigerEdit','click',function(e) {

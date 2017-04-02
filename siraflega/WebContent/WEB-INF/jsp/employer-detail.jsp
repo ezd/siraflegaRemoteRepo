@@ -39,9 +39,9 @@
 			<div class="titleThree">
 				<h4>
 					<span id="workPostion"> <c:out
-							value="${empty currentWork.postion? 'Your position':currentWork.postion }"></c:out>
+							value="${empty currentWork.postion? 'Currently working ':currentWork.postion }"></c:out>
 						at <c:out
-							value="${empty currentWork.company.name? 'Your company':currentWork.company.name }"></c:out>
+							value="${empty currentWork.company.name? 'un known':currentWork.company.name }"></c:out>
 					</span>
 				</h4>
 			</div>
