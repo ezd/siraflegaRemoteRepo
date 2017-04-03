@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import us.siraflega.entities.Role;
+import us.siraflega.entities.Timesvisited;
 import us.siraflega.entities.User;
 import us.siraflega.repositories.RoleRepository;
+import us.siraflega.repositories.TimesvisitedRepo;
 import us.siraflega.repositories.UserRepository;
 
 
@@ -23,6 +25,9 @@ public class UserService {
 	
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	TimesvisitedRepo timesvisitedRepo;
 	
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
@@ -76,6 +81,11 @@ public class UserService {
 	public User getUserByEmail(String newUserEmail) {
 		// TODO Auto-generated method stub
 		return userRepository.findByEmail(newUserEmail);
+	}
+
+	public int getTimesvisited() {
+		Timesvisited timesVisited= timesvisitedRepo.findOne(1L);
+		return timesVisited.getTimesvisited();
 	}
 
 }

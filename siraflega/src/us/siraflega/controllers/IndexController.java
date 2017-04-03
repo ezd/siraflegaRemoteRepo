@@ -25,6 +25,7 @@ import us.siraflega.entities.Company;
 import us.siraflega.entities.PostedJob;
 import us.siraflega.services.CompanyService;
 import us.siraflega.services.PostedJobService;
+import us.siraflega.services.UserService;
 
 @Controller
 public class IndexController {
@@ -35,15 +36,16 @@ public class IndexController {
 	PostedJobService postedJobService;//
 	@Autowired
 	CompanyService companyService;
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	private ServletContext servletContext;
-	
+	//userService.getTimesvisited()
 	@RequestMapping({ "/index", "/" })
 	public String getIndex(Model model, HttpServletRequest request) {
-		timesvisited++;
+		timesvisited=userService.getTimesvisited();
 		servletContext.setAttribute("timesvisited",timesvisited);
-//		model.addAttribute("timesvisited", timesvisited);
 		pageNumber = 1;
 		List<PostedJob> postedJobs = postedJobService.getPostedJobs(pageNumber, PAGE_HOLDING_CAPACITY);
 		for (PostedJob job : postedJobs)
