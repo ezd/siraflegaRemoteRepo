@@ -85,14 +85,14 @@ ul {
 					<li><div class="col-xs-12 col-md-12" id="jobdisplayarea">
 							<div class="mainTitle">
 								<a
-									href="${pageContext.request.contextPath}/cv/${applicant.id}.html"><c:out
+									href="${pageContext.request.contextPath}/cv/${applicant.applicantId}.html"><c:out
 						value="${applicant.applicantFullName}" /></a>
 							</div>
 
 							<div class="applicantSummary">
 								<p>
 									${applicant.letter}... <a
-										href="${pageContext.request.contextPath}/cv/${applicant.id}.html">read
+										href="${pageContext.request.contextPath}/cv/${applicant.applicantId}.html">read
 										more</a>
 								</p>
 

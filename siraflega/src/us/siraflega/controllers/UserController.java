@@ -684,11 +684,13 @@ public class UserController {
 
 	@RequestMapping("/employerPosts/{pageNumber}")
 	public String registerForm(Model model, Principal principal, @PathVariable int pageNumber) {
-
+		int x = 0;
+		x+=1;
+		int y=x;
 		String userName = principal.getName();
 		User user = userService.getUserByName(userName);
 		Employer employer = employerService.getEmployerBy(user.getEmail());
-		int totalJobsSize = postedJobService.getPostedJobs(employer) == null ? 0
+		int totalJobsSize = (postedJobService.getPostedJobs(employer)==null||postedJobService.getPostedJobs(employer).isEmpty()) ? 0
 				: postedJobService.getPostedJobs(employer).size();
 		int totalPageSize = (totalJobsSize % PAGE_HOLDING_CAPACITYX == 0 ? totalJobsSize / PAGE_HOLDING_CAPACITYX
 				: ((totalJobsSize - (totalJobsSize % PAGE_HOLDING_CAPACITYX)) / PAGE_HOLDING_CAPACITYX) + 1);

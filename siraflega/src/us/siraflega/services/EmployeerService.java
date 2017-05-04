@@ -39,7 +39,7 @@ public class EmployeerService {
 		employer.setWorks(employerWorks);
 //		Company company=companyRepository.findByAgents(employer);
 		//employer.setWorksFor(company);
-		List<PostedJob> postedJobs=jobRepository.findByJobPostedBy(employer);
+		List<PostedJob> postedJobs=jobRepository.findByJobPostedBy(employer.getId());
 //		for(PostedJob job:postedJobs){
 //			Company company=companyRepository.findByJobs(job);
 //		}

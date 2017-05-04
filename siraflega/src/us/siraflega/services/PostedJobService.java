@@ -26,7 +26,7 @@ public class PostedJobService {
 	public List<PostedJob> getPostedJobs(Employer employer, int pageNumber, int pageHoldingCapacity) {
 		// new PageRequest(0, 10, Direction.DESC, "publishedDate")
 		// , new PageRequest(pageNumber, 10, Direction.DESC, "deadLine")
-		List<PostedJob> postedJobs = jobRepository.findByJobPostedBy(employer,
+		List<PostedJob> postedJobs = jobRepository.findByJobPostedBy(employer.getId(),
 				new PageRequest(pageNumber - 1, pageHoldingCapacity, Direction.DESC, "deadLine"));
 		if (!postedJobs.isEmpty()) {
 			for (int i = 0; i < postedJobs.size(); i++) {
@@ -38,7 +38,7 @@ public class PostedJobService {
 
 	public List<PostedJob> getPostedJobs(Employer employer) {
 		// TODO Auto-generated method stub
-		return jobRepository.findByJobPostedBy(employer);
+		return jobRepository.findByJobPostedBy(employer.getId());
 	}
 
 	public void save(PostedJob job) {

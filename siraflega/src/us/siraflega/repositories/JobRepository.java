@@ -16,8 +16,13 @@ import us.siraflega.entities.PostedJob;
 
 public interface JobRepository extends JpaRepository<PostedJob, Integer>{
 
-	List<PostedJob> findByJobPostedBy(Employer employer);
-	List<PostedJob> findByJobPostedBy(Employer employer,Pageable pageable);
+	//SELECT * FROM sirafleg_db.postedjob where poster_id=1;
+//	@Query(value="SELECT * FROM sirafleg_db.postedjob where poster_id=?1",nativeQuery=true)
+	@Query("SELECT pj FROM PostedJob as pj where pj.jobPostedBy.id=:empId")
+	List<PostedJob> findByJobPostedBy(@Param("empId") int empId);
+//	@Query(value="SELECT * FROM sirafleg_db.postedjob where poster_id=?1",nativeQuery=true)
+	@Query("SELECT pj FROM PostedJob as pj where pj.jobPostedBy.id=:empId")
+	List<PostedJob> findByJobPostedBy(@Param("empId") int empId,Pageable pageable);
 	
 //	List<PostedJob> findAll(Pageable pageable);
 	

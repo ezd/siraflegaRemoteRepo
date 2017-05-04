@@ -30,7 +30,7 @@ import us.siraflega.services.UserService;
 @Controller
 public class IndexController {
 	public static int timesvisited=100;
-	private final int PAGE_HOLDING_CAPACITY = 20;
+	private final int PAGE_HOLDING_CAPACITY = 8;
 	int pageNumber;
 	@Autowired
 	PostedJobService postedJobService;//
@@ -44,12 +44,12 @@ public class IndexController {
 	//userService.getTimesvisited()
 	@RequestMapping({ "/index", "/" })
 	public String getIndex(Model model, HttpServletRequest request) {
-		timesvisited=userService.getTimesvisited();
+		timesvisited=userService.updateTimevisitied();
 		servletContext.setAttribute("timesvisited",timesvisited);
 		pageNumber = 1;
 		List<PostedJob> postedJobs = postedJobService.getPostedJobs(pageNumber, PAGE_HOLDING_CAPACITY);
 		for (PostedJob job : postedJobs)
-			job.setDiscription(this.shortString(job.getDiscription(), 60));
+			job.setDiscription(this.shortString(job.getDiscription(), 20));
 
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("postedJobs", postedJobs);
@@ -84,7 +84,7 @@ public class IndexController {
 			@PathVariable("number") int pageNumber) {
 		List<PostedJob> postedJobs = postedJobService.getPostedJobs(pageNumber, category, PAGE_HOLDING_CAPACITY);
 		for (PostedJob job : postedJobs)
-			job.setDiscription(this.shortString(job.getDiscription(), 60));
+			job.setDiscription(this.shortString(job.getDiscription(), 20));
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("catigory", category);
 		model.addAttribute("postedJobs", postedJobs);
@@ -117,18 +117,27 @@ public class IndexController {
 	}
 	
 	String shortString(String longString, int numberOfWords) {
-		String string = "";
+		String text = "";
 		String htmlfree=this.getRawText(longString);
 		
 		String[] words = htmlfree.split(" ");
-		for (int i = 0; i < (words.length > numberOfWords ? numberOfWords : words.length); i++){
-			if(words[i].contains("<li>") || words[i].contains("<p>")){
-				string+=this.getRawText(words[i]);
-			}else{
-				string += words[i] + " ";
-			}
+		int i = 0;
+		boolean itrate=words.length>0;
+			while (itrate) {
+				if(words[i].contains("<li>") || words[i].contains("<p>")){
+					text+=this.getRawText(words[i]);
+				}else{
+					text += words[i] + " ";
+				}
+				if((i+1)<words.length && text.length()<120){
+					itrate=true;
+					i++;
+				}else{
+					itrate=false;
+				}
+				
 		}
-		return string.trim();
+		return text.trim();
 		
 	}
 	@RequestMapping(value = "/catigories", method = RequestMethod.GET)

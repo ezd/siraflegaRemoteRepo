@@ -4,7 +4,7 @@
 <html>
 <head>
 <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> -->
-<meta name="description" content="Welcome to first Ethiopian full functional job searching website.In our site, you can search jobs, create an account, post your CV, apply for jobs, post new jobs and view who applied for it.">
+<meta name="description" content="Welcome to first Ethiopian job searching website. With better functionality to Ethiojobs, ezega and qefira websites.In this site, you can search jobs, create an account, post your CV, apply for jobs, post new jobs and view who applied for it.">
 <meta name="keywords" content="jobs,employee,CV,new graduate,ethiopia">
 <meta name="author" content="Siraflega by Code4fun">
 <%@ include file="../defs/lib-file.jsp"%>
@@ -296,16 +296,5 @@ h5 {
 		<footer> <tiles:insertAttribute name="footer" /> </footer>
 	</div>
 </body>
-<script>
-var oldData;
-$("#registerlink").mouseenter(
-		oldData=$("#registerlink").text();
-		  function() {
-			  $("#registerlink a").text("Coming soon");
-		  });
-$("#registerlink").mouseleave(
-		  function() {
-			  $("#registerlink a").text(oldData);
-		  });
-</script>
+
 </html>
