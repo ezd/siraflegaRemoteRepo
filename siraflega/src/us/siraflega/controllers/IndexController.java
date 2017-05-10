@@ -30,7 +30,7 @@ import us.siraflega.services.UserService;
 @Controller
 public class IndexController {
 	public static int timesvisited=100;
-	private final int PAGE_HOLDING_CAPACITY = 8;
+	private final int PAGE_HOLDING_CAPACITY = 9;
 	int pageNumber;
 	@Autowired
 	PostedJobService postedJobService;//
@@ -42,10 +42,15 @@ public class IndexController {
 	@Autowired
 	private ServletContext servletContext;
 	//userService.getTimesvisited()
-	@RequestMapping({ "/index", "/" })
-	public String getIndex(Model model, HttpServletRequest request) {
+	@RequestMapping({ "/","/index"})
+	public String getToIndex(){
 		timesvisited=userService.updateTimevisitied();
 		servletContext.setAttribute("timesvisited",timesvisited);
+		return "index";
+	}
+	@RequestMapping("/jobs")
+	public String getJobs(Model model, HttpServletRequest request) {
+		
 		pageNumber = 1;
 		List<PostedJob> postedJobs = postedJobService.getPostedJobs(pageNumber, PAGE_HOLDING_CAPACITY);
 		for (PostedJob job : postedJobs)
@@ -74,7 +79,7 @@ public class IndexController {
 			model.addAttribute("startat", (pageNumber - 4));
 			model.addAttribute("endat", pageNumber + 5);
 		}
-		return "index";
+		return "jobs";
 	}
 
 	//
@@ -109,7 +114,7 @@ public class IndexController {
 			model.addAttribute("startat", (pageNumber - 4));
 			model.addAttribute("endat", pageNumber + 5);
 		}
-		return "index";
+		return "jobs";
 	}
 	private String getRawText(String htmltext) {
 				String rowtext = Jsoup.parse(htmltext).text();

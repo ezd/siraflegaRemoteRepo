@@ -8,10 +8,18 @@
 		<put-attribute name="sideBar" value="/WEB-INF/layouts/sideBar.jsp" />
 	</definition>
 
-	<definition name="index" extends="common">
-		<put-attribute name="title" value="New Jobs in Ethiopia " />
+	<definition name="index" template="/WEB-INF/layouts/classichome.jsp">
+		<put-attribute name="footer" value="/WEB-INF/layouts/footer.jsp" />
+		<put-attribute name="sideBar" value="/WEB-INF/layouts/sideBar.jsp" />
+		<put-attribute name="title" value="Jobs in Ethiopia " />
 		<put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
-		<put-attribute name="current" value="index" />
+		<put-attribute name="current" value="home" />
+	</definition>
+	
+	<definition name="jobs" extends="common">
+		<put-attribute name="title" value="New Jobs" />
+		<put-attribute name="body" value="/WEB-INF/jsp/jobs.jsp" />
+		<put-attribute name="current" value="jobs" />
 	</definition>
 	
 	<definition name="companypage" extends="common">

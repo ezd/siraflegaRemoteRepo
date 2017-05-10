@@ -241,11 +241,13 @@ h5 {
 					class="icon-bar"></span> <span class="icon-bar"></span> <span 
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<spring:url value="/index.html" />"><img width="100px" height="51px" src="${pageContext.request.contextPath}/resources/icon.jpg" alt="Siraflega" /></a>
+			<a class="navbar-brand" href="<spring:url value="/index.html" />"><img width="100px" height="51px" src="${pageContext.request.contextPath}/resources/jobslogoopt.png" alt="Siraflega" /></a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li class="${current == 'home' ? 'active' : ''}"><a href="<spring:url value="/index.html" />">Home</a></li>
+				<li class="${current == 'jobs' ? 'active' : ''}"><a
+					href="<spring:url value="/jobs.html" />">Jobs</a></li>
 				<security:authorize access="hasRole('ADMIN')">
 					<li class="${current == 'users' ? 'active' : ''}"><a
 						href="<spring:url value="/users.html" />">Users</a></li>
@@ -276,10 +278,7 @@ h5 {
 					<li><a href="<spring:url value="/logout" />">Logout</a></li>
 				</security:authorize>
 			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li>${timesvisited} times visited</li>
-				<!--             <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li> -->
-			</ul>
+			
 		</div>
 		<!--/.nav-collapse -->
 	</div>

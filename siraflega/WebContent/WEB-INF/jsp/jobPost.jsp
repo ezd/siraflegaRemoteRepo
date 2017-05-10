@@ -48,7 +48,7 @@
 											<div class="row outPutRow ">
 												<div class="col-xs-12 mainTiltle" style="margin: 0px; padding: 0px;">
 													<h4>${postedJob.position}, 
-														${postedJob.company.name}</h4>
+														<a href="${pageContext.request.contextPath}/company/${postedJob.company.id}.html">${postedJob.company.name}</a></h4>
 												</div>
 											</div>
 											<div class="row outPutRow">

@@ -12,14 +12,16 @@
 		
 		<intercept-url pattern="/apply**" access="hasRole('ROLE_EMPLOYEE')" />
 		<intercept-url pattern="/apply/**" access="hasRole('ROLE_EMPLOYEE')" />
-		
+		<intercept-url pattern="/" access="permitAll" />
+		<intercept-url pattern="/index.html" access="permitAll" />
+		<intercept-url pattern="/jobs" access="permitAll" />
 		<intercept-url pattern="/userDetail**"
 			access="hasAnyRole('ROLE_EMPLOYEE','ROLE_EMPLOYER')" />
 		<intercept-url pattern="/account**"
 			access="hasAnyRole('ROLE_EMPLOYEE','ROLE_EMPLOYER')" />
 		<intercept-url pattern="/employerPosts**" access="hasRole('ROLE_EMPLOYER')" />
 		<csrf disabled="true" />
-		<form-login login-page="/login.html" default-target-url="/"  />
+		<form-login login-page="/login.html" default-target-url="/jobs"  />
 		<logout logout-url="/logout"  />
 		<session-management invalid-session-url="/index.html?error=invalidSession"
 			session-authentication-error-url="/index.html?error=authenticationError"
