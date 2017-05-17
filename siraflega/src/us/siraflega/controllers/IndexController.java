@@ -30,7 +30,7 @@ import us.siraflega.services.UserService;
 @Controller
 public class IndexController {
 	public static int timesvisited=100;
-	private final int PAGE_HOLDING_CAPACITY = 9;
+	private final int PAGE_HOLDING_CAPACITY = 15;
 	int pageNumber;
 	@Autowired
 	PostedJobService postedJobService;//
